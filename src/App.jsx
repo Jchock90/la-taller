@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
-import Navbar from './components/Navbar.jsx'
-import Home from './sections/Home.jsx'
-import About from './sections/About.jsx'
-import Services from './sections/Services.jsx'
-import Products from './sections/Products.jsx'
-import Footer from './components/Footer.jsx'
-import WhatsAppContact from './components/WhatsAppContact.jsx'
+import { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import Home from './sections/Home';
+import About from './sections/About';
+import Services from './sections/Services';
+import Products from './sections/Products';
+import Footer from './components/Footer';
+import WhatsAppContact from './components/WhatsAppContact';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
