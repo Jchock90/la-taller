@@ -1,28 +1,45 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import NavBar from './components/NavBar'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import About from './pages/About'
-import Work from './pages/Work'
-import Products from './pages/Products'
+import { useState, useEffect } from 'react';
+import Navbar from './components/Navbar';
+import Home from './sections/Home';
+import About from './sections/About';
+import Services from './sections/Services';
+import Products from './sections/Products';
+import Footer from './components/Footer';
+import WhatsAppContact from './components/WhatsAppContact';
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [currentSection, setCurrentSection] = useState('home');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentSection]);
+
+  const renderSection = () => {
+    switch(currentSection) {
+      case 'home':
+        return <Home />;
+      case 'quien-soy':
+        return <About />;
+      case 'que-hago':
+        return <Services />;
+      case 'que-vendo':
+        return <Products />;
+      default:
+        return <Home />;
+    }
+  };
+
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <NavBar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/quien-soy" element={<About />} />
-            <Route path="/que-hago" element={<Work />} />
-            <Route path="/que-vendo" element={<Products />} />
-          </Routes>
-        </main>
-        <Footer />
+    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
+      <div className="dark:bg-gray-900 dark:text-white">
+        <Navbar setCurrentSection={setCurrentSection} />
+        {renderSection()}
+        <Footer setCurrentSection={setCurrentSection} />
+        <WhatsAppContact />
       </div>
-    </Router>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

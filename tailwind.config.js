@@ -1,5 +1,5 @@
-// tailwind.config.js
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,13 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        serif: ['Merriweather', 'ui-serif', 'Georgia'],
-        mono: ['Fira Code', 'ui-monospace', 'SFMono-Regular'],
-      },
-      colors: {
-        primary: '#1E40AF',
-        secondary: '#F59E0B',
+        overpass: ['Overpass Mono', 'monospace'],
       },
     },
   },

@@ -1,133 +1,86 @@
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMenu, FiX } from 'react-icons/fi';
+import { useState } from 'react';
 
-const NavBar = () => {
-  const [scrolled, setScrolled] = useState(false)
-  const location = useLocation()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+const Navbar = ({ setCurrentSection }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navItems = [
+    { name: 'Home', id: 'home' },
+    { name: 'Quien soy', id: 'quien-soy' },
+    { name: 'Que hago', id: 'que-hago' },
+    { name: 'Tesoro', id: 'que-vendo' }
+  ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true)
-      } else {
-        setScrolled(false)
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Quién soy', path: '/quien-soy' },
-    { name: 'Qué hago', path: '/que-hago' },
-    { name: 'Qué vendo', path: '/que-vendo' },
-  ]
+  const handleNavClick = (id) => {
+    setCurrentSection(id);
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 py-4'
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center">
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-2xl font-bold text-indigo-700"
-            >
-              La Taller
-            </motion.span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`relative px-1 py-2 text-lg font-medium ${
-                  location.pathname === link.path
-                    ? 'text-indigo-600'
-                    : 'text-gray-700 hover:text-indigo-500'
-                }`}
-              >
-                {link.name}
-                {location.pathname === link.path && (
-                  <motion.span
-                    layoutId="navUnderline"
-                    className="absolute left-0 bottom-0 w-full h-0.5 bg-indigo-500"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 text-gray-700 focus:outline-none"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+    <>
+      <motion.nav 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="fixed w-full z-50 flex items-center justify-between p-4 bg-purple-300 shadow-md"
+      >
+        <div className="flex items-center">
+          <img 
+            src="/img/logo.png" 
+            alt="La Taller Logo" 
+            className="h-12 cursor-pointer"
+            onClick={() => handleNavClick('home')}
+          />
         </div>
 
-        {/* Mobile Navigation */}
+        <div className="hidden md:flex space-x-8">
+          {navItems.map((item) => (
+            <motion.a
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              whileHover={{ scale: 1.05, color: '#6366f1' }}
+              className="text-black text-lg font-medium cursor-pointer"
+            >
+              {item.name}
+            </motion.a>
+          ))}
+        </div>
+
+        <button 
+          className="md:hidden text-black"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        </button>
+      </motion.nav>
+
+      {/* Menú móvil */}
+      <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden mt-4 pb-4 space-y-3"
+            className="fixed top-20 left-0 right-0 z-40 bg-white shadow-lg md:hidden"
           >
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`block px-3 py-2 rounded-lg text-lg font-medium ${
-                  location.pathname === link.path
-                    ? 'bg-indigo-100 text-indigo-700'
-                    : 'text-gray-700 hover:bg-indigo-50 hover:text-indigo-600'
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
+            <div className="flex flex-col pt-10 p-4 space-y-4">
+              {navItems.map((item) => (
+                <motion.a
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  whileHover={{ scale: 1.05, color: '#6366f1' }}
+                  className="text-black text-md cursor-pointer py-2 px-4"
+                >
+                  {item.name}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
         )}
-      </div>
-    </header>
-  )
-}
+      </AnimatePresence>
+    </>
+  );
+};
 
-export default NavBar
+export default Navbar;
