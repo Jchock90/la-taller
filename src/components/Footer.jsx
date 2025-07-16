@@ -23,11 +23,11 @@ const Footer = ({ setCurrentSection }) => {
             <img 
               src="/img/logo-white.png" 
               alt="La Taller Logo" 
-              className="h-16 cursor-pointer"
+              className="h-8 cursor-pointer"
               onClick={() => setCurrentSection('home')}
             />
             <p className="text-purple-200">
-              Diseño de indumentaria artesanal y sostenible por Jésica
+              Diseño de indumentaria artesanal y sostenible por Jess
             </p>
             <div className="flex space-x-4">
               <a

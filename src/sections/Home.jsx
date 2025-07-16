@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import Carousel from '../components/Carousel';
 import SpotifyPlayer from '../components/SpotifyPlayer';
+import WhatsAppContact from '../components/WhatsAppContact';
+
 
 const Home = () => {
   const carouselImages = [
@@ -22,6 +24,9 @@ const Home = () => {
         <div className="container mx-auto px-6">
           <SpotifyPlayer />
         </div>
+      </div>
+      <div>
+          <WhatsAppContact />
       </div>
     </section>
   );

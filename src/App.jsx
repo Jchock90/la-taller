@@ -5,10 +5,8 @@ import About from './sections/About';
 import Services from './sections/Services';
 import Products from './sections/Products';
 import Footer from './components/Footer';
-import WhatsAppContact from './components/WhatsAppContact';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
   const [currentSection, setCurrentSection] = useState('home');
 
   useEffect(() => {
@@ -31,12 +29,11 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="dark:bg-gray-900 dark:text-white">
+    <div className={`min-h-screen`}>
+      <div className="bg-white">
         <Navbar setCurrentSection={setCurrentSection} />
         {renderSection()}
         <Footer setCurrentSection={setCurrentSection} />
-        <WhatsAppContact />
       </div>
     </div>
   );
