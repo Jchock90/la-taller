@@ -8,7 +8,7 @@ const Navbar = ({ setCurrentSection }) => {
     { name: 'Home', id: 'home' },
     { name: 'Quien soy', id: 'quien-soy' },
     { name: 'Que hago', id: 'que-hago' },
-    { name: 'Tesoro', id: 'que-vendo' }
+    { name: 'Que vendo', id: 'que-vendo' }
   ];
 
   const handleNavClick = (id) => {
@@ -28,7 +28,7 @@ const Navbar = ({ setCurrentSection }) => {
           <img 
             src="/img/logo.png" 
             alt="La Taller Logo" 
-            className="h-12 cursor-pointer"
+            className="h-8 cursor-pointer"
             onClick={() => handleNavClick('home')}
           />
         </div>
