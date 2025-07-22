@@ -7,15 +7,16 @@ const About = () => {
 
   // Galerías para cada sección
   const galleries = {
-    origen: [
-      'https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749188051/IMG_20250401_134336_023_rnc613.jpg',
-      'https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749187835/IMG_20250401_134347_295_ptpwni.jpg' // Imagen adicional solo en galería
-    ],
-    hiloPropio: [
-      'https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749188256/IMG_20250401_130716_872_keefme.jpg',
-      'https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749188232/IMG_20250401_124837_874_gdg45d.jpg' // Imagen adicional solo en galería
-    ]
-  };
+  origen: [
+    'https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749188051/IMG_20250401_134336_023_rnc613.jpg',
+    'https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749187835/IMG_20250401_134347_295_ptpwni.jpg'
+  ],
+  hiloPropio: [
+    'https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749188256/IMG_20250401_130716_872_keefme.jpg',
+    'https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749188232/IMG_20250401_124837_874_gdg45d.jpg'
+  ]
+};
+
 
   const openImage = (galleryKey, index = 0) => {
     setSelectedImage(galleryKey);

@@ -66,51 +66,51 @@ const Services = () => {
   const [selectedGallery, setSelectedGallery] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const galleries = [
-    {
-      title: "La taller",
-      images: [
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191478/1_r92hkz.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191481/2_zdjmle.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191487/4_jpqhrx.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191492/6_tzaeqp.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191495/8_d6fupl.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191495/7_fhnl2q.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191496/9_qjjpff.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749191497/3_z4vtv9.jpg"
-      ]
-    },
-    {
-      title: "Taller de bombachas",
-      images: [
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190204/1_n5pw9p.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190222/2_qvqrsy.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190224/3_uc6am0.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190215/4_sqoljp.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190222/5_dqpwhk.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190215/6_lvlboz.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190221/7_bunwjq.jpg"
-      ]
-    },
-    {
-      title: "Taller de cianotipia",
-      images: [
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190922/3_cq9mgi.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190907/5_x8qsrk.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190908/8_wslmkq.webp",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190909/9_mvvzwm.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190911/7_inzcpk.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190911/10_jzfpea.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190912/11_jl5bxb.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190913/13_rtszlx.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190913/12_itn46i.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190918/2_ftfp9x.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190920/4_he3ey7.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190921/6_odwtek.jpg",
-        "https://res.cloudinary.com/dtnkj0wdx/image/upload/v1749190895/1_fvngj7.jpg"
-      ]
-    }
-  ];
+const galleries = [
+  {
+    title: "La taller",
+    images: [
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191478/1_r92hkz.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191481/2_zdjmle.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191487/4_jpqhrx.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191492/6_tzaeqp.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191495/8_d6fupl.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191495/7_fhnl2q.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191496/9_qjjpff.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191497/3_z4vtv9.jpg"
+    ]
+  },
+  {
+    title: "Taller de bombachas",
+    images: [
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190204/1_n5pw9p.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190222/2_qvqrsy.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190224/3_uc6am0.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190215/4_sqoljp.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190222/5_dqpwhk.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190215/6_lvlboz.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190221/7_bunwjq.jpg"
+    ]
+  },
+  {
+    title: "Taller de cianotipia",
+    images: [
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190922/3_cq9mgi.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190907/5_x8qsrk.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190908/8_wslmkq.webp",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190909/9_mvvzwm.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190911/7_inzcpk.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190911/10_jzfpea.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190912/11_jl5bxb.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190913/13_rtszlx.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190913/12_itn46i.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190918/2_ftfp9x.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190920/4_he3ey7.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190921/6_odwtek.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190895/1_fvngj7.jpg"
+    ]
+  }
+];
 
   const openGallery = (gallery, index) => {
     setSelectedGallery(gallery);
