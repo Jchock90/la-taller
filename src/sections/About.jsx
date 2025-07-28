@@ -45,7 +45,7 @@ const About = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-3xl md:text-4xl font-bold text-purple-900 mb-8 text-center font-italic"
+        className="text-3xl md:text-4xl font-bold text-black mb-8 text-center font-italic"
       >
         El origen
       </motion.h2>
@@ -58,7 +58,7 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h3 className="text-2xl font-semibold text-purple-800 mb-6 text-center border-b border-purple-200 pb-2">
+          <h3 className="text-2xl font-semibold text-black mb-6 text-center pb-2">
             "La modistería es una extensión de mi cuerpo-memoria, que crece..."
           </h3>
 
@@ -83,7 +83,7 @@ const About = () => {
                 Mi madre aprendió de sus tías y su abuela, con ese tesón de quien sabe que el conocimiento se conquista. Se profesionalizó en el Instituto Moderno Universal "La Victoria", viajando mensualmente a rendir exámenes con su maniquí a cuestas hasta graduarse en 1977.
               </p>
 
-              <blockquote className="italic border-l-4 border-purple-500 pl-4 py-2 text-purple-700">
+              <blockquote className="italic border-l-4 border-black pl-4 py-2 text-black">
                 "El oficio no muere con quien lo lleva, se transforma, se cuela en las manos de quien sigue"
               </blockquote>
             </div>
@@ -97,7 +97,7 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <h3 className="text-3xl md:text-4xl font-bold text-purple-900 mb-12 text-center font-italic">
+          <h3 className="text-3xl md:text-4xl font-bold text-black mb-12 text-center font-italic">
             El Hilo Propio
           </h3>
 
@@ -132,7 +132,7 @@ const About = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mt-12"
         >
-          <blockquote className="text-xl italic text-purple-700">
+          <blockquote className="text-xl italic text-black">
             "Llegó la hora de abrir el círculo, de hacer lugar para quien quiera entrar. Porque el oficio no es solo un oficio, es una manera de habitar el mundo."
           </blockquote>
         </motion.div>

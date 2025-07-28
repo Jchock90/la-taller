@@ -16,7 +16,7 @@ function App() {
   const renderSection = () => {
     switch(currentSection) {
       case 'home':
-        return <Home />;
+        return <Home setCurrentSection={setCurrentSection} />;
       case 'quien-soy':
         return <About />;
       case 'que-hago':
@@ -24,7 +24,7 @@ function App() {
       case 'que-vendo':
         return <Products />;
       default:
-        return <Home />;
+        return <Home setCurrentSection={setCurrentSection} />;
     }
   };
 

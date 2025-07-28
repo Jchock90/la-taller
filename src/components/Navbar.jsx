@@ -38,7 +38,7 @@ const Navbar = ({ setCurrentSection }) => {
             <motion.a
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              whileHover={{ scale: 1.05, color: '#6366f1' }}
+              whileHover={{ scale: 1.05, color: 'white' }}
               className="text-black text-lg font-medium cursor-pointer"
             >
               {item.name}
