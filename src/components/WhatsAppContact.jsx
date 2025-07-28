@@ -13,10 +13,9 @@ const WhatsAppContact = () => {
         href="https://wa.me/5493447552378?text=Hola%20Jésica,%20me%20interesa%20tu%20trabajo"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center bg-green-500 text-white px-4 py-3 rounded-full shadow-lg hover:bg-green-600 transition-colors"
+        className="flex items-center bg-green-500 text-white px-2 py-2 rounded-full shadow-lg hover:bg-green-600 transition-colors"
       >
-        <FaWhatsapp size={24} className="mr-2" />
-        <span>Contactar</span>
+        <FaWhatsapp size={24} className="" />
       </a>
     </motion.div>
   );
