@@ -157,7 +157,7 @@ const galleries = [
   };
 
   return (
-    <section id="que-hago" className="py-20 pt-30 bg-indigo-50">
+    <section id="que-hago" className="py-20 pt-30 bg-white">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
