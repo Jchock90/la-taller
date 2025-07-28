@@ -109,6 +109,29 @@ const galleries = [
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190921/6_odwtek.jpg",
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190895/1_fvngj7.jpg"
     ]
+  },
+  {
+    title: "Taller de infancias",
+    images: [
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679983/IMG_20250715_155506_pa6s9o.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679980/IMG_20250211_185913_a8yr0f.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679978/IMG-20240626-WA0054_f3b7ik.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679978/IMG-20240731-WA0015_wdrn1c.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679978/IMG-20240626-WA0052_fdso9k.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679978/IMG-20240626-WA0045_wm52zq.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679977/IMG-20240626-WA0035_hjjon8.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679977/IMG-20240112-WA0145_gh57h0.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679977/IMG_20250128_200643_qwfcr4.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679977/IMG_20240112_190032_yuty7n.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679977/IMG_20250211_195449_ivfgjz.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679976/IMG-20240112-WA0132_gfxsxa.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679975/IMG_20250122_163546_vswsm2.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679974/IMG_20240112_193139_socwvp.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679974/IMG_20240112_190748_x17qlb.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679973/IMG_20240112_190725_bn7ule.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679972/IMG_20250128_200534_mpk0ej.jpg",
+      "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679967/IMG_20250102_181022_198_q0rj4z.webp"
+    ]
   }
 ];
 
@@ -142,10 +165,37 @@ const galleries = [
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-indigo-900 mb-4">Qué hago</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Servicios especializados que ofrezco para llevar tus ideas de moda a la realidad
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-8">Qué hago</h2>
+          
+          <div className="max-w-4xl mx-auto text-left space-y-6 mb-12">
+            <p className="text-lg text-black leading-relaxed">
+              <strong>Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo.</strong>
+            </p>
+            
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Soy guía, docente e intérprete en el universo de la indumentaria. Enseño a hacer tu ropa desde cero: elegir la tela, imaginar el diseño, trazar el molde, cortar, coser, ajustar, estampar, bordar, revelar… hasta que la prenda toma forma, y con ella, la identidad de quien la viste.
+            </p>
+            
+            <p className="text-lg text-gray-700 leading-relaxed">
+              No solo comparto un saber técnico, comparto un oficio, un lenguaje sensible, una forma de pensar el cuerpo, el deseo y la vida cotidiana.
+            </p>
+            
+            <p className="text-lg text-gray-700 leading-relaxed">
+              Mi trabajo tiene raíces profundas en un linaje de mujeres que transmitían el hacer con las manos, en ronda, en confianza, en comunidad.
+            </p>
+            
+            <p className="text-lg text-gray-700 leading-relaxed">
+              He creado un espacio de aprendizaje sin estructuras rígidas, donde cualquiera puede llegar sin saber nada y salir con una prenda hecha por sus propias manos… y con una parte nueva de sí descubierta.
+            </p>
+            
+            <p className="text-lg text-gray-700 leading-relaxed">
+              No enseño a coser ropa: enseño a habitarla.
+            </p>
+            
+            <p className="text-lg text-black leading-relaxed">
+              <strong>Ofrezco un servicio que es un refugio textil donde cada persona puede explorar a su ritmo, sin juicios ni exigencias. Donde la prenda que nace de tus manos también te enseña algo de vos.</strong>
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -157,7 +207,7 @@ const galleries = [
               transition={{ delay: galleryIndex * 0.2, duration: 0.5 }}
               className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
-              <h3 className="text-xl font-semibold text-indigo-800 mb-6 text-center">
+              <h3 className="text-xl font-semibold text-black mb-6 text-center">
                 {gallery.title}
               </h3>
               

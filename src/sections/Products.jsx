@@ -42,7 +42,7 @@ const Products = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">Tesoro</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Tesoro</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle
           </p>
@@ -57,7 +57,7 @@ const Products = () => {
             className="mb-20"
           >
             <div className="mb-8">
-              <h3 className="text-2xl font-semibold text-purple-800">{collection.name}</h3>
+              <h3 className="text-2xl font-semibold text-black">{collection.name}</h3>
               <p className="text-gray-600">{collection.description}</p>
             </div>
 
@@ -86,7 +86,7 @@ const Products = () => {
                     <motion.button
                       whileHover={{ scale: 1.05, backgroundColor: "purple-300" }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center justify-center w-full bg-purple-300 text-white py-2 px-4 rounded-md"
+                      className="flex items-center justify-center w-full bg-black text-white py-2 px-4 rounded-md"
                     >
                       <FiShoppingCart className="mr-2" />
                       Agregar al carrito
@@ -104,7 +104,7 @@ const Products = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="bg-purple-50 p-8 rounded-lg text-center"
         >
-          <h3 className="text-2xl font-semibold text-purple-900 mb-4">¿Buscas algo personalizado?</h3>
+          <h3 className="text-2xl font-semibold text-black mb-4">¿Buscas algo personalizado?</h3>
           <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
             Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.
           </p>
@@ -112,7 +112,7 @@ const Products = () => {
             href="#contacto"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-block bg-purple-300 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:bg-purple-400 transition-colors"
+            className="inline-block bg-black text-white px-8 py-3 rounded-full font-medium shadow-lg hover:bg-black transition-colors"
           >
             Solicitar diseño personalizado
           </motion.a>
