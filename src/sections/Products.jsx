@@ -34,7 +34,7 @@ const Products = () => {
   ];
 
   return (
-    <section id="que-vendo" className="py-20 pt-30 bg-white">
+    <section id="que-vendo" className="py-20 pt-10 bg-white">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
