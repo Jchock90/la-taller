@@ -22,7 +22,7 @@ const Navbar = ({ setCurrentSection }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="fixed w-full z-50 flex items-center justify-between p-4 bg-purple-300 shadow-md"
+        className="relative w-full z-50 flex items-center justify-between p-4 bg-purple-300 shadow-md"
       >
         <div className="flex items-center">
           <img 
@@ -62,14 +62,14 @@ const Navbar = ({ setCurrentSection }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-20 left-0 right-0 z-40 bg-white shadow-lg md:hidden"
+            className="relative z-40 bg-white shadow-lg md:hidden"
           >
-            <div className="flex flex-col pt-10 p-4 space-y-4">
+            <div className="flex flex-col p-4 space-y-4">
               {navItems.map((item) => (
                 <motion.a
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  whileHover={{ scale: 1.05, color: '#6366f1' }}
+                  whileHover={{ scale: 1.05, color: 'black' }}
                   className="text-black text-md cursor-pointer py-2 px-4"
                 >
                   {item.name}

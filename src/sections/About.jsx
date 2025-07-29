@@ -40,7 +40,7 @@ const About = () => {
   };
 
   return (
-    <section id="quien-soy" className="pt-30 pb-16 px-6 bg-white">
+    <section id="quien-soy" className="pt-10 pb-16 px-6 bg-white">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
