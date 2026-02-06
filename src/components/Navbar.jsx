@@ -54,7 +54,6 @@ const Navbar = ({ setCurrentSection }) => {
         </button>
       </motion.nav>
 
-      {/* Menú móvil */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

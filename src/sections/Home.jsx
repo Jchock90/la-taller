@@ -13,18 +13,15 @@ const Home = ({ setCurrentSection }) => {
 
   return (
     <section id="home" className="relative">
-      {/* Carrusel con márgenes, compensando altura del navbar fijo */}
-      <div className="h-[70vh] w-full px-8 sm:px-16 lg:px-24 xl:px-32 pt-20">
+      <div className="h-[70vh] w-full px-8 sm:px-16 lg:px-24 xl:px-32 pt-10">
         <div className="h-full rounded-lg overflow-hidden shadow-lg max-w-6xl mx-auto">
           <Carousel images={carouselImages} />
         </div>
       </div>
 
-      {/* Contenedor de la imagen y reproductor Spotify */}
       <div className="w-full bg-white py-8">
         <div className="px-8 sm:px-16 lg:px-24 xl:px-32">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Imagen con texto y botón */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -48,7 +45,6 @@ const Home = ({ setCurrentSection }) => {
               </div>
             </motion.div>
 
-            {/* Reproductor Spotify */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}

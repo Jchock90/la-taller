@@ -13,7 +13,6 @@ const Footer = ({ setCurrentSection }) => {
     <footer className="bg-black text-white">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Columna 1: Logo y navegación */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +26,7 @@ const Footer = ({ setCurrentSection }) => {
               onClick={() => setCurrentSection('home')}
             />
             <p className="text-purple-200">
-              Diseño de indumentaria artesanal y sostenible por Jess
+              Diseño de indumentaria artesanal por Jess
             </p>
             <div className="flex space-x-4">
               <a
@@ -38,11 +37,9 @@ const Footer = ({ setCurrentSection }) => {
               >
                 <FiInstagram />
               </a>
-              {/* Agrega más redes sociales si es necesario */}
             </div>
           </motion.div>
 
-          {/* Columna 2: Navegación */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +66,6 @@ const Footer = ({ setCurrentSection }) => {
             </ul>
           </motion.div>
 
-          {/* Columna 3: Contacto */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -79,22 +75,23 @@ const Footer = ({ setCurrentSection }) => {
             <h3 className="text-xl font-semibold">Contacto</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <FiMail className="text-purple-300 mt-1 mr-3" />
-                <span>latallerlaboratoriodeoficios@gmail.com</span>
+                <a href="mailto:latallerlaboratoriodeoficios@gmail.com" className="flex items-center text-purple-100 hover:text-white transition-colors">
+                  <FiMail className="text-purple-300 mt-1 mr-3 text-xl" />
+                  <span className="underline">latallerlaboratoriodeoficios@gmail.com</span>
+                </a>
               </li>
               <li className="flex items-start">
                 <FiPhone className="text-purple-300 mt-1 mr-3" />
                 <span>+54 9 3447 55-2378</span>
               </li>
-              <li className="flex items-start">
+              {/* <li className="flex items-start">
                 <FiMapPin className="text-purple-300 mt-1 mr-3" />
                 <span>Taller ubicado en San José, Entre Ríos, Argentina</span>
-              </li>
+              </li> */}
             </ul>
           </motion.div>
         </div>
 
-        {/* Derechos de autor */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

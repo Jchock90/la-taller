@@ -42,7 +42,6 @@ const Carousel = ({ images }) => {
         />
       ))}
 
-      {/* Indicadores de posición (puntos) mejorados */}
       <div className="absolute bottom-8 left-0 right-0 flex justify-center space-x-3">
         {images.map((_, index) => (
           <button

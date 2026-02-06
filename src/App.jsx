@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import TickerBar from './components/TickerBar';
 import Home from './sections/Home';
 import About from './sections/About';
 import Services from './sections/Services';
@@ -32,6 +33,7 @@ function App() {
     <div className={`min-h-screen`}>
       <div className="bg-white">
         <Navbar setCurrentSection={setCurrentSection} />
+        {currentSection === 'home' && <TickerBar />}
         {renderSection()}
         <Footer setCurrentSection={setCurrentSection} />
       </div>

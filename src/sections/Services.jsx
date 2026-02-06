@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-// Componente Carousel modificado sin texto central
 const SimpleCarousel = ({ images, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState('right');
@@ -44,7 +43,6 @@ const SimpleCarousel = ({ images, onImageClick }) => {
         />
       ))}
 
-      {/* Indicadores de posición (puntos) */}
       <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-3">
         {images.map((_, index) => (
           <button
@@ -227,7 +225,6 @@ const galleries = [
           ))}
         </div>
 
-        {/* Modal de pantalla completa */}
         <AnimatePresence>
           {selectedGallery && (
             <motion.div

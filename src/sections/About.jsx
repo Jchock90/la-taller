@@ -5,7 +5,6 @@ const About = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Galerías para cada sección
   const galleries = {
   origen: [
     'https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749188051/IMG_20250401_134336_023_rnc613.jpg',
@@ -51,7 +50,6 @@ const About = () => {
       </motion.h2>
 
       <div className="max-w-5xl mx-auto">
-        {/* Sección El Origen */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -90,7 +88,6 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Sección El Hilo Propio */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -125,7 +122,6 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Cierre */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -137,7 +133,6 @@ const About = () => {
           </blockquote>
         </motion.div>
 
-        {/* Modal de imagen ampliada */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div

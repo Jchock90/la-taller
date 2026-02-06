@@ -1,0 +1,16 @@
+.ticker-text {
+  will-change: transform;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 18s linear infinite;
+}
