@@ -31,21 +31,23 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
               {cart.length === 0 ? (
                 <p className="text-gray-500 text-center mt-10">Tu carrito está vacío</p>
               ) : (
-                cart.map(item => (
-                  <div key={item.id} className="flex items-center gap-4 border-b pb-4">
+                cart.map((item, idx) => (
+                  <div key={`${item.id}-${idx}`} className="flex items-center gap-4 border-b pb-4">
                     <img src={PRODUCT_IMAGES[item.imageKey]} alt={item.name} className="w-16 h-16 object-cover rounded" />
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{item.name}</h4>
+                      {item.selectedSize && <p className="text-xs text-gray-500">Talle: {item.selectedSize}</p>}
+                      {item.selectedColor && <p className="text-xs text-gray-500">Color: {item.selectedColor}</p>}
                       <p className="text-purple-600 text-sm font-semibold">{item.price}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <button onClick={() => onUpdateQuantity(item.id, -1)} className="p-1 border rounded hover:bg-gray-100"><FiMinus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, -1)} className="p-1 border rounded hover:bg-gray-100"><FiMinus size={14} /></button>
                         <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
-                        <button onClick={() => onUpdateQuantity(item.id, 1)} className="p-1 border rounded hover:bg-gray-100"><FiPlus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, 1)} className="p-1 border rounded hover:bg-gray-100"><FiPlus size={14} /></button>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-semibold">${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</p>
-                      <button onClick={() => onRemove(item.id)} className="text-red-500 hover:text-red-700 mt-1"><FiTrash2 size={16} /></button>
+                      <button onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700 mt-1"><FiTrash2 size={16} /></button>
                     </div>
                   </div>
                 ))

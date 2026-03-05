@@ -6,9 +6,22 @@ import About from './sections/About';
 import Services from './sections/Services';
 import Products from './sections/Products';
 import Footer from './components/Footer';
+import PaymentStatus from './components/PaymentStatus';
 
 function App() {
   const [currentSection, setCurrentSection] = useState('home');
+
+  useEffect(() => {
+    // Detectar rutas de MercadoPago
+    const path = window.location.pathname;
+    if (path === '/success') {
+      setCurrentSection('success');
+    } else if (path === '/failure') {
+      setCurrentSection('failure');
+    } else if (path === '/pending') {
+      setCurrentSection('pending');
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -24,6 +37,12 @@ function App() {
         return <Services />;
       case 'que-vendo':
         return <Products />;
+      case 'success':
+        return <PaymentStatus status="success" setCurrentSection={setCurrentSection} />;
+      case 'failure':
+        return <PaymentStatus status="failure" setCurrentSection={setCurrentSection} />;
+      case 'pending':
+        return <PaymentStatus status="pending" setCurrentSection={setCurrentSection} />;
       default:
         return <Home setCurrentSection={setCurrentSection} />;
     }
@@ -32,10 +51,16 @@ function App() {
   return (
     <div className={`min-h-screen`}>
       <div className="bg-white">
-        <Navbar setCurrentSection={setCurrentSection} />
-        {currentSection === 'home' && <TickerBar />}
+        {!['success', 'failure', 'pending'].includes(currentSection) && (
+          <>
+            <Navbar setCurrentSection={setCurrentSection} />
+            {currentSection === 'home' && <TickerBar />}
+          </>
+        )}
         {renderSection()}
-        <Footer setCurrentSection={setCurrentSection} />
+        {!['success', 'failure', 'pending'].includes(currentSection) && (
+          <Footer setCurrentSection={setCurrentSection} />
+        )}
       </div>
     </div>
   );

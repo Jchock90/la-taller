@@ -2,10 +2,12 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { COLLECTIONS, parsePrice } from '../data/products';
+import { WHATSAPP_URL } from '../data/constants';
 import ProductCard from '../components/ProductCard';
 import { CartPanel, CartButton } from '../components/CartPanel';
 import ProductDetailModal from '../components/ProductDetailModal';
 import CheckoutForm from '../components/CheckoutForm';
+import Toast from '../components/Toast';
 
 const Products = () => {
   const [cart, setCart] = useState(() => {
@@ -17,27 +19,44 @@ const Products = () => {
   const [showCart, setShowCart] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     localStorage.setItem('la-taller-cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (item) => {
+  const addToCart = (item, selectedSize, selectedColor) => {
     setCart(prev => {
-      const existing = prev.find(c => c.id === item.id);
+      const itemKey = `${item.id}-${selectedSize || ''}-${selectedColor || ''}`;
+      const existing = prev.find(c => 
+        c.id === item.id && 
+        c.selectedSize === selectedSize && 
+        c.selectedColor === selectedColor
+      );
       if (existing) {
-        return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c);
+        return prev.map(c => 
+          c.id === item.id && c.selectedSize === selectedSize && c.selectedColor === selectedColor
+            ? { ...c, quantity: c.quantity + 1 }
+            : c
+        );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, quantity: 1, selectedSize, selectedColor }];
     });
+    
+    // Mostrar toast de confirmación
+    const sizeText = selectedSize ? ` (${selectedSize})` : '';
+    const colorText = selectedColor ? ` - ${selectedColor}` : '';
+    setToastMessage(`${item.name}${sizeText}${colorText} agregado al carrito`);
+    setShowToast(true);
   };
 
-  const updateQuantity = (id, delta) => {
-    setCart(prev => prev.map(c => c.id === id ? { ...c, quantity: Math.max(1, c.quantity + delta) } : c));
+  const updateQuantity = (index, delta) => {
+    setCart(prev => prev.map((c, i) => i === index ? { ...c, quantity: Math.max(1, c.quantity + delta) } : c));
   };
 
-  const removeFromCart = (id) => {
-    setCart(prev => prev.filter(c => c.id !== id));
+  const removeFromCart = (index) => {
+    setCart(prev => prev.filter((c, i) => i !== index));
   };
 
   const cartTotal = cart.reduce((sum, c) => sum + parsePrice(c.price) * c.quantity, 0);
@@ -108,7 +127,7 @@ const Products = () => {
             Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.
           </p>
           <motion.a
-            href="https://wa.me/5493447552378?text=Hola%20Jess,%20me%20interesa%20un%20diseño%20personalizado"
+            href={WHATSAPP_URL}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             target="_blank"
@@ -147,6 +166,12 @@ const Products = () => {
           onSuccess={handlePaymentSuccess}
         />
       )}
+
+      <Toast 
+        message={toastMessage} 
+        show={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
     </section>
   );
 };

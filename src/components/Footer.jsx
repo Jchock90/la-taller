@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion';
 import { FiInstagram, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { NAV_ITEMS, CONTACT_INFO } from '../data/constants';
 
 const Footer = ({ setCurrentSection }) => {
-  const navItems = [
-    { name: 'Home', id: 'home' },
-    { name: 'Quien soy', id: 'quien-soy' },
-    { name: 'Que hago', id: 'que-hago' },
-    { name: 'Que vendo', id: 'que-vendo' }
-  ];
 
   return (
     <footer className="bg-black text-white">
@@ -30,7 +25,7 @@ const Footer = ({ setCurrentSection }) => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://www.instagram.com/lataller__laboratoriodeoficios/"
+                href={CONTACT_INFO.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-2xl text-white hover:text-purple-300 transition-colors"
@@ -48,7 +43,7 @@ const Footer = ({ setCurrentSection }) => {
           >
             <h3 className="text-xl font-semibold">Navegación</h3>
             <ul className="space-y-2">
-              {navItems.map((item, index) => (
+              {NAV_ITEMS.map((item, index) => (
                 <motion.li
                   key={item.id}
                   whileHover={{ x: 5 }}
@@ -75,14 +70,14 @@ const Footer = ({ setCurrentSection }) => {
             <h3 className="text-xl font-semibold">Contacto</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
-                <a href="mailto:latallerlaboratoriodeoficios@gmail.com" className="flex items-center text-purple-100 hover:text-white transition-colors">
+                <a href={`mailto:${CONTACT_INFO.email}`} className="flex items-center text-purple-100 hover:text-white transition-colors">
                   <FiMail className="text-purple-300 mt-1 mr-3 text-xl" />
-                  <span className="underline">latallerlaboratoriodeoficios@gmail.com</span>
+                  <span className="underline">{CONTACT_INFO.email}</span>
                 </a>
               </li>
               <li className="flex items-start">
                 <FiPhone className="text-purple-300 mt-1 mr-3" />
-                <span>+54 9 3447 55-2378</span>
+                <span>{CONTACT_INFO.phone}</span>
               </li>
               {/* <li className="flex items-start">
                 <FiMapPin className="text-purple-300 mt-1 mr-3" />

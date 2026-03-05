@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const SimpleCarousel = ({ images, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,12 +15,12 @@ const SimpleCarousel = ({ images, onImageClick }) => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  useState(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images.length, currentIndex]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -51,7 +51,7 @@ const SimpleCarousel = ({ images, onImageClick }) => {
               setDirection(index > currentIndex ? 'right' : 'left');
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-6' : 'bg-white bg-opacity-50'}`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-6' : 'bg-white/50'}`}
             aria-label={`Ir a slide ${index + 1}`}
           />
         ))}
@@ -231,7 +231,7 @@ const galleries = [
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-90 z-50 flex flex-col items-center justify-center p-4"
+              className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center p-4"
               onClick={closeGallery}
             >
               <div 

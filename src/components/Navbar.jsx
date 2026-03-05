@@ -1,15 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { useState } from 'react';
+import { NAV_ITEMS } from '../data/constants';
 
 const Navbar = ({ setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const navItems = [
-    { name: 'Home', id: 'home' },
-    { name: 'Quien soy', id: 'quien-soy' },
-    { name: 'Que hago', id: 'que-hago' },
-    { name: 'Que vendo', id: 'que-vendo' }
-  ];
 
   const handleNavClick = (id) => {
     setCurrentSection(id);
@@ -34,7 +29,7 @@ const Navbar = ({ setCurrentSection }) => {
         </div>
 
         <div className="hidden md:flex space-x-8">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <motion.a
               key={item.id}
               onClick={() => handleNavClick(item.id)}
@@ -64,7 +59,7 @@ const Navbar = ({ setCurrentSection }) => {
             className="relative z-40 bg-white shadow-lg md:hidden"
           >
             <div className="flex flex-col p-4 space-y-4">
-              {navItems.map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <motion.a
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}

@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { FaWhatsapp } from 'react-icons/fa';
+import { WHATSAPP_URL } from '../data/constants';
 
 const WhatsAppContact = ({ button = false }) => {
-  const url = "https://wa.me/5493447552378?text=Hola%20Jess,%20me%20interesa%20un%20diseño%20personalizado";
   if (button) {
     return (
       <motion.a
-        href={url}
+        href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.05 }}
@@ -25,7 +25,7 @@ const WhatsAppContact = ({ button = false }) => {
       className="fixed left-6 bottom-6 z-50"
     >
       <a
-        href={url}
+        href={WHATSAPP_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center bg-green-500 text-white px-2 py-2 rounded-full shadow-lg hover:bg-green-600 transition-colors"

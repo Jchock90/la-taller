@@ -96,16 +96,16 @@ export const COLLECTIONS = [
     name: "Colección Atemporal",
     description: "Piezas clásicas diseñadas para trascender temporadas",
     items: [
-      { id: 1, name: "Blazer Oversize", price: "$5", imageKey: 'blazer' },
-      { id: 2, name: "Vestido Midaxi", price: "$18.500", imageKey: 'vestido' },
-      { id: 3, name: "Pantalón Wide Leg", price: "$1", imageKey: 'pantalon' }
+      { id: 1, name: "Blazer Oversize", price: "$1", imageKey: 'blazer' },
+      { id: 2, name: "Vestido Midaxi", price: "$5", imageKey: 'vestido' },
+      { id: 3, name: "Pantalón Wide Leg", price: "$5", imageKey: 'pantalon' }
     ]
   },
   {
     name: "Colección Experimental",
     description: "Diseños vanguardistas que desafían convenciones",
     items: [
-      { id: 4, name: "Top Asimétrico", price: "$5", imageKey: 'top' },
+      { id: 4, name: "Top Asimétrico", price: "$12.800", imageKey: 'top' },
       { id: 5, name: "Chaleco Escultural", price: "$21.300", imageKey: 'chaleco' },
       { id: 6, name: "Falda Capas", price: "$16.700", imageKey: 'falda' }
     ]

@@ -43,7 +43,8 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
         unit_price: parsePrice(c.price),
         quantity: c.quantity,
       }));
-      const response = await fetch("http://localhost:3000/create_preference", {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const response = await fetch(`${apiUrl}/create_preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items, ...formData }),

@@ -50,7 +50,7 @@ const Carousel = ({ images }) => {
               setDirection(index > currentIndex ? 'right' : 'left');
               setCurrentIndex(index);
             }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-6' : 'bg-white bg-opacity-50'}`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-6' : 'bg-white/50'}`}
             aria-label={`Ir a slide ${index + 1}`}
           />
         ))}
