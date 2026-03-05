@@ -1,8 +1,9 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiShoppingCart, FiPlus, FiMinus, FiTrash2, FiX } from 'react-icons/fi';
+import { FiShoppingCart, FiPlus, FiMinus, FiTrash2, FiX, FiEye } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import Carousel from '../components/Carousel';
 
 const PRODUCT_IMAGES = {
   blazer: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80',
@@ -11,6 +12,90 @@ const PRODUCT_IMAGES = {
   top: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80',
   chaleco: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80',
   falda: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'
+};
+
+const PRODUCT_GALLERY = {
+  blazer: [
+    PRODUCT_IMAGES.blazer,
+    'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?auto=format&fit=crop&w=1200&q=80',
+  ],
+  vestido: [
+    PRODUCT_IMAGES.vestido,
+    'https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1200&q=80',
+  ],
+  pantalon: [
+    PRODUCT_IMAGES.pantalon,
+    'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?auto=format&fit=crop&w=1200&q=80',
+  ],
+  top: [
+    PRODUCT_IMAGES.top,
+    'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=1200&q=80',
+  ],
+  chaleco: [
+    PRODUCT_IMAGES.chaleco,
+    'https://images.unsplash.com/photo-1558171813-4c088753af8f?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1608234808654-2a8875faa7fd?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=1200&q=80',
+  ],
+  falda: [
+    PRODUCT_IMAGES.falda,
+    'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1592301933927-35b597393c0a?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1590548784585-643d2b9f2925?auto=format&fit=crop&w=1200&q=80',
+  ],
+};
+
+const PRODUCT_DETAILS = {
+  1: {
+    talles: ['S', 'M', 'L', 'XL'],
+    colores: ['Negro', 'Gris Oxford', 'Beige'],
+    composicion: '70% Lana merino, 30% Poliéster reciclado',
+    fabricacion: 'Confección artesanal en taller propio con corte italiano. Forro interior de satén. Terminaciones a mano con hilo de seda. Botones de nácar natural.',
+    cuidados: 'Lavado en seco. No usar secadora. Planchar a temperatura media.',
+  },
+  2: {
+    talles: ['XS', 'S', 'M', 'L'],
+    colores: ['Negro', 'Borgoña', 'Verde bosque'],
+    composicion: '85% Viscosa ecológica, 15% Elastano',
+    fabricacion: 'Corte y confección artesanal. Costura francesa en todas las uniones. Ruedo invisible hecho a mano. Tela importada con certificación OEKO-TEX.',
+    cuidados: 'Lavar a mano con agua fría. Secar a la sombra. Planchar del revés.',
+  },
+  3: {
+    talles: ['S', 'M', 'L', 'XL', 'XXL'],
+    colores: ['Crudo', 'Negro', 'Camel'],
+    composicion: '100% Algodón orgánico de alto gramaje',
+    fabricacion: 'Pierna wide leg con pinzas delanteras. Cintura alta con pretina forrada. Cierre YKK invisible lateral. Dobladillo con puntada ciega artesanal.',
+    cuidados: 'Lavado a máquina en frío. No usar blanqueador. Secar colgado.',
+  },
+  4: {
+    talles: ['XS', 'S', 'M', 'L'],
+    colores: ['Blanco roto', 'Negro', 'Terracota'],
+    composicion: '60% Algodón pima, 40% Modal',
+    fabricacion: 'Diseño asimétrico con corte al bies. Costuras planas para mayor comodidad. Tejido con acabado enzimático para suavidad extra. Etiqueta impresa (sin costuras molestas).',
+    cuidados: 'Lavar a máquina en ciclo delicado. No retorcer. Secar en horizontal.',
+  },
+  5: {
+    talles: ['S', 'M', 'L'],
+    colores: ['Negro', 'Blanco hueso', 'Gris perla'],
+    composicion: '55% Lana virgen, 35% Poliamida, 10% Cashmere',
+    fabricacion: 'Estructura escultural con entretela termoadhesiva. Forrado en jacquard de seda. Ojales abiertos a mano. Cada pieza lleva 12 horas de confección artesanal.',
+    cuidados: 'Solo lavado en seco. Guardar en percha acolchada. Vaporizar para arrugas.',
+  },
+  6: {
+    talles: ['XS', 'S', 'M', 'L', 'XL'],
+    colores: ['Negro', 'Nude', 'Azul noche'],
+    composicion: '80% Poliéster reciclado, 20% Viscosa',
+    fabricacion: 'Sistema de capas superpuestas con corte láser en los bordes. Cintura elástica oculta con grip de silicona. Largo midi asimétrico. Telas teñidas con pigmentos naturales.',
+    cuidados: 'Lavar a máquina en frío con bolsa de red. No usar suavizante. Secar colgado.',
+  },
 };
 
 const parsePrice = (price) => Number(price.replace(/[^\d]/g, ""));
@@ -25,6 +110,7 @@ const Products = () => {
   const [showCart, setShowCart] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [formData, setFormData] = useState({
     nombre: '', apellido: '', codigoPostal: '', ciudad: '', provincia: '', email: '', telefono: '',
   });
@@ -184,7 +270,7 @@ const Products = () => {
                   whileHover={{ y: -5 }}
                   className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-100"
                 >
-                  <div className="h-64 overflow-hidden">
+                  <div className="h-64 overflow-hidden relative group">
                     <motion.img
                       src={PRODUCT_IMAGES[item.imageKey]}
                       alt={item.name}
@@ -192,6 +278,13 @@ const Products = () => {
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     />
+                    <button
+                      onClick={() => setSelectedProduct(item)}
+                      className="absolute bottom-3 right-3 flex items-center gap-1 bg-white/80 backdrop-blur-sm text-gray-700 text-xs px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
+                    >
+                      <FiEye size={14} />
+                      Ver más
+                    </button>
                   </div>
                   <div className="p-6">
                     <h4 className="text-xl font-medium text-gray-900 mb-2">{item.name}</h4>
@@ -319,6 +412,82 @@ const Products = () => {
           </div>
           )}
         </AnimatePresence>,
+        document.body
+      )}
+
+      {/* Modal de detalle del producto */}
+      {selectedProduct && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setSelectedProduct(null)}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Carousel */}
+            <div className="w-full md:w-1/2 h-72 md:h-auto md:min-h-[500px] relative">
+              <Carousel images={PRODUCT_GALLERY[selectedProduct.imageKey]} />
+            </div>
+
+            {/* Info */}
+            <div className="w-full md:w-1/2 p-6 md:p-8 overflow-y-auto">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedProduct.name}</h2>
+                  <p className="text-xl text-purple-600 font-semibold mt-1">{selectedProduct.price}</p>
+                </div>
+                <button onClick={() => setSelectedProduct(null)} className="text-gray-400 hover:text-black"><FiX size={24} /></button>
+              </div>
+
+              {PRODUCT_DETAILS[selectedProduct.id] && (
+                <div className="space-y-5 text-sm">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Talles disponibles</h3>
+                    <div className="flex gap-2 flex-wrap">
+                      {PRODUCT_DETAILS[selectedProduct.id].talles.map(t => (
+                        <span key={t} className="border border-gray-300 rounded px-3 py-1 text-gray-700">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Colores</h3>
+                    <div className="flex gap-2 flex-wrap">
+                      {PRODUCT_DETAILS[selectedProduct.id].colores.map(c => (
+                        <span key={c} className="bg-gray-100 rounded-full px-3 py-1 text-gray-700">{c}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Composición</h3>
+                    <p className="text-gray-600">{PRODUCT_DETAILS[selectedProduct.id].composicion}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Fabricación</h3>
+                    <p className="text-gray-600">{PRODUCT_DETAILS[selectedProduct.id].fabricacion}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Cuidados</h3>
+                    <p className="text-gray-600">{PRODUCT_DETAILS[selectedProduct.id].cuidados}</p>
+                  </div>
+                </div>
+              )}
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="mt-6 flex items-center justify-center w-full bg-black text-white py-3 px-4 rounded-md"
+                onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }}
+              >
+                <FiShoppingCart className="mr-2" />
+                Agregar al carrito
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>,
         document.body
       )}
 
