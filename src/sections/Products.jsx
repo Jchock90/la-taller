@@ -1,9 +1,8 @@
 
-import { motion } from 'framer-motion';
-import { FiShoppingCart } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiShoppingCart, FiPlus, FiMinus, FiTrash2, FiX } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import WhatsAppContact from '../components/WhatsAppContact';
 
 const PRODUCT_IMAGES = {
   blazer: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80',
@@ -14,22 +13,29 @@ const PRODUCT_IMAGES = {
   falda: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'
 };
 
+const parsePrice = (price) => Number(price.replace(/[^\d]/g, ""));
+
 const Products = () => {
-  const [loadingId, setLoadingId] = useState(null);
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem('la-taller-cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
+  const [showCart, setShowCart] = useState(false);
   const [showForm, setShowForm] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    codigoPostal: '',
-    ciudad: '',
-    provincia: '',
-    email: '',
-    telefono: '',
+    nombre: '', apellido: '', codigoPostal: '', ciudad: '', provincia: '', email: '', telefono: '',
   });
   const [provincias, setProvincias] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [loadingCiudades, setLoadingCiudades] = useState(false);
+
+  // Persistir carrito en localStorage
+  useEffect(() => {
+    localStorage.setItem('la-taller-cart', JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     fetch('https://apis.datos.gob.ar/georef/api/provincias')
@@ -49,60 +55,74 @@ const Products = () => {
     }
   }, [formData.provincia]);
 
-  const initialFormData = {
-    nombre: '',
-    apellido: '',
-    codigoPostal: '',
-    ciudad: '',
-    provincia: '',
-    email: '',
-    telefono: '',
+  const initialFormData = { nombre: '', apellido: '', codigoPostal: '', ciudad: '', provincia: '', email: '', telefono: '' };
+
+  // Carrito: agregar producto
+  const addToCart = (item) => {
+    setCart(prev => {
+      const existing = prev.find(c => c.id === item.id);
+      if (existing) {
+        return prev.map(c => c.id === item.id ? { ...c, quantity: c.quantity + 1 } : c);
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
   };
 
-  const handleBuy = (item) => {
-    setSelectedItem(item);
+  // Carrito: cambiar cantidad
+  const updateQuantity = (id, delta) => {
+    setCart(prev => prev.map(c => c.id === id ? { ...c, quantity: Math.max(1, c.quantity + delta) } : c));
+  };
+
+  // Carrito: eliminar producto
+  const removeFromCart = (id) => {
+    setCart(prev => prev.filter(c => c.id !== id));
+  };
+
+  // Total del carrito
+  const cartTotal = cart.reduce((sum, c) => sum + parsePrice(c.price) * c.quantity, 0);
+  const cartCount = cart.reduce((sum, c) => sum + c.quantity, 0);
+
+  // Abrir formulario de checkout
+  const handleCheckout = () => {
+    setShowCart(false);
     setFormData(initialFormData);
     setShowForm(true);
-    setLoadingId(null); 
   };
 
+  // Enviar compra al servidor
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoadingId(selectedItem.id);
+    setLoading(true);
     try {
-      const unit_price = Number(selectedItem.price.replace(/[^\d]/g, ""));
+      const items = cart.map(c => ({
+        title: c.name,
+        unit_price: parsePrice(c.price),
+        quantity: c.quantity,
+      }));
       const response = await fetch("http://localhost:3000/create_preference", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: selectedItem.name,
-          unit_price,
-          quantity: 1,
-          ...formData,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items, ...formData }),
       });
       const data = await response.json();
       if (data && data.init_point) {
-        setShowForm(false); 
-        setTimeout(() => {
-          window.location.href = data.init_point;
-        }, 300);
+        setShowForm(false);
+        localStorage.removeItem('la-taller-cart');
+        setCart([]);
+        setTimeout(() => { window.location.href = data.init_point; }, 300);
       } else {
         alert("Error al iniciar el pago. Intenta de nuevo.");
       }
-    } catch (error) {
+    } catch {
       alert("Error de conexión con el servidor.");
     } finally {
-      setLoadingId(null);
-      setSelectedItem(null);
+      setLoading(false);
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const collections = [
@@ -110,16 +130,16 @@ const Products = () => {
       name: "Colección Atemporal",
       description: "Piezas clásicas diseñadas para trascender temporadas",
       items: [
-        { id: 1, name: "Blazer Oversize", price: "$50", imageKey: 'blazer' },
+        { id: 1, name: "Blazer Oversize", price: "$5", imageKey: 'blazer' },
         { id: 2, name: "Vestido Midaxi", price: "$18.500", imageKey: 'vestido' },
-        { id: 3, name: "Pantalón Wide Leg", price: "$15.200", imageKey: 'pantalon' }
+        { id: 3, name: "Pantalón Wide Leg", price: "$2", imageKey: 'pantalon' }
       ]
     },
     {
       name: "Colección Experimental",
       description: "Diseños vanguardistas que desafían convenciones",
       items: [
-        { id: 4, name: "Top Asimétrico", price: "$12.800", imageKey: 'top' },
+        { id: 4, name: "Top Asimétrico", price: "$5", imageKey: 'top' },
         { id: 5, name: "Chaleco Escultural", price: "$21.300", imageKey: 'chaleco' },
         { id: 6, name: "Falda Capas", price: "$16.700", imageKey: 'falda' }
       ]
@@ -177,59 +197,14 @@ const Products = () => {
                     <h4 className="text-xl font-medium text-gray-900 mb-2">{item.name}</h4>
                     <p className="text-purple-600 font-semibold mb-4">{item.price}</p>
                     <motion.button
-                      whileHover={{ scale: 1.05, backgroundColor: "purple-300" }}
+                      whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center justify-center w-full bg-black text-white py-2 px-4 rounded-md disabled:opacity-60"
-                      onClick={() => handleBuy(item)}
-                      disabled={loadingId === item.id}
+                      className="flex items-center justify-center w-full bg-black text-white py-2 px-4 rounded-md"
+                      onClick={() => addToCart(item)}
                     >
                       <FiShoppingCart className="mr-2" />
-                      {loadingId === item.id ? 'Redirigiendo...' : 'Comprar ahora'}
+                      Agregar al carrito
                     </motion.button>
-                        {showForm && createPortal(
-                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                            <form onSubmit={handleFormSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
-                              <button type="button" onClick={() => { setShowForm(false); setSelectedItem(null); setFormData(initialFormData); setLoadingId(null); }} className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl">&times;</button>
-                              <h2 className="text-xl font-bold mb-4">Datos para la compra</h2>
-                              <div className="grid grid-cols-1 gap-4">
-                                <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder="Nombre" className="border p-2 rounded" />
-                                <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder="Apellido" className="border p-2 rounded" />
-                                <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder="Código Postal" className="border p-2 rounded" />
-                                <select
-                                  name="provincia"
-                                  value={formData.provincia}
-                                  onChange={handleInputChange}
-                                  required
-                                  className="border p-2 rounded"
-                                >
-                                  <option value="">Selecciona una provincia</option>
-                                  {provincias.map((prov) => (
-                                    <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>
-                                  ))}
-                                </select>
-                                <select
-                                  name="ciudad"
-                                  value={formData.ciudad}
-                                  onChange={handleInputChange}
-                                  required
-                                  className="border p-2 rounded"
-                                  disabled={!formData.provincia || loadingCiudades}
-                                >
-                                  <option value="">{loadingCiudades ? 'Cargando ciudades...' : 'Selecciona una ciudad'}</option>
-                                  {ciudades.map((ciudad) => (
-                                    <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>
-                                  ))}
-                                </select>
-                                <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className="border p-2 rounded" />
-                                <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder="Teléfono" className="border p-2 rounded" />
-                              </div>
-                              <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded hover:bg-purple-700 transition-colors" disabled={loadingId === (selectedItem && selectedItem.id)}>
-                                {loadingId === (selectedItem && selectedItem.id) ? 'Procesando...' : 'Ir a pagar'}
-                              </button>
-                            </form>
-                          </div>,
-                          document.body
-                        )}
                   </div>
                 </motion.div>
               ))}
@@ -259,6 +234,138 @@ const Products = () => {
           </motion.a>
         </motion.div>
       </div>
+
+      {/* Botón flotante del carrito */}
+      <motion.button
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setShowCart(true)}
+        className="fixed right-6 bottom-6 z-40 bg-black text-white p-4 rounded-full shadow-lg"
+      >
+        <FiShoppingCart size={24} />
+        {cartCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            {cartCount}
+          </span>
+        )}
+      </motion.button>
+
+      {/* Panel lateral del carrito */}
+      {createPortal(
+        <AnimatePresence>
+          {showCart && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setShowCart(false)}
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="relative w-full max-w-md bg-white h-full shadow-xl flex flex-col"
+            >
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="text-xl font-bold">Tu carrito ({cartCount})</h2>
+                <button onClick={() => setShowCart(false)} className="text-gray-500 hover:text-black"><FiX size={24} /></button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {cart.length === 0 ? (
+                  <p className="text-gray-500 text-center mt-10">Tu carrito está vacío</p>
+                ) : (
+                  cart.map(item => (
+                    <div key={item.id} className="flex items-center gap-4 border-b pb-4">
+                      <img src={PRODUCT_IMAGES[item.imageKey]} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                      <div className="flex-1">
+                        <h4 className="font-medium text-sm">{item.name}</h4>
+                        <p className="text-purple-600 text-sm font-semibold">{item.price}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <button onClick={() => updateQuantity(item.id, -1)} className="p-1 border rounded hover:bg-gray-100"><FiMinus size={14} /></button>
+                          <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, 1)} className="p-1 border rounded hover:bg-gray-100"><FiPlus size={14} /></button>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-semibold">${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</p>
+                        <button onClick={() => removeFromCart(item.id)} className="text-red-500 hover:text-red-700 mt-1"><FiTrash2 size={16} /></button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {cart.length > 0 && (
+                <div className="border-t p-4">
+                  <div className="flex justify-between text-lg font-bold mb-4">
+                    <span>Total:</span>
+                    <span>${cartTotal.toLocaleString('es-AR')}</span>
+                  </div>
+                  <button
+                    onClick={handleCheckout}
+                    className="w-full bg-black text-white py-3 rounded-md font-medium hover:bg-purple-700 transition-colors"
+                  >
+                    Finalizar compra
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+
+      {/* Modal de formulario de checkout */}
+      {showForm && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <form onSubmit={handleFormSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+            <button type="button" onClick={() => { setShowForm(false); setFormData(initialFormData); }} className="absolute top-2 right-2 text-gray-500 hover:text-black text-2xl">&times;</button>
+            <h2 className="text-xl font-bold mb-4">Resumen de compra</h2>
+
+            {/* Resumen de items */}
+            <div className="mb-6 border rounded p-3 bg-gray-50">
+              {cart.map(item => (
+                <div key={item.id} className="flex justify-between text-sm py-1">
+                  <span>{item.name} x{item.quantity}</span>
+                  <span className="font-medium">${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</span>
+                </div>
+              ))}
+              <div className="flex justify-between font-bold text-base mt-2 pt-2 border-t">
+                <span>Total:</span>
+                <span>${cartTotal.toLocaleString('es-AR')}</span>
+              </div>
+            </div>
+
+            <h3 className="text-lg font-semibold mb-3">Datos de envío</h3>
+            <div className="grid grid-cols-1 gap-4">
+              <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder="Nombre" className="border p-2 rounded" />
+              <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder="Apellido" className="border p-2 rounded" />
+              <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder="Código Postal" className="border p-2 rounded" />
+              <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className="border p-2 rounded">
+                <option value="">Selecciona una provincia</option>
+                {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
+              </select>
+              <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className="border p-2 rounded" disabled={!formData.provincia || loadingCiudades}>
+                <option value="">{loadingCiudades ? 'Cargando ciudades...' : 'Selecciona una ciudad'}</option>
+                {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
+              </select>
+              <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className="border p-2 rounded" />
+              <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder="Teléfono" className="border p-2 rounded" />
+            </div>
+            <button type="submit" className="mt-6 w-full bg-black text-white py-2 rounded hover:bg-purple-700 transition-colors" disabled={loading}>
+              {loading ? 'Procesando...' : 'Ir a pagar'}
+            </button>
+          </form>
+        </div>,
+        document.body
+      )}
     </section>
   );
 };
