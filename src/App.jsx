@@ -12,7 +12,6 @@ function App() {
   const [currentSection, setCurrentSection] = useState('home');
 
   useEffect(() => {
-    // Detectar rutas de MercadoPago
     const path = window.location.pathname;
     if (path === '/success') {
       setCurrentSection('success');

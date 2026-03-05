@@ -96,9 +96,9 @@ export const COLLECTIONS = [
     name: "Colección Atemporal",
     description: "Piezas clásicas diseñadas para trascender temporadas",
     items: [
-      { id: 1, name: "Blazer Oversize", price: "$1", imageKey: 'blazer' },
-      { id: 2, name: "Vestido Midaxi", price: "$5", imageKey: 'vestido' },
-      { id: 3, name: "Pantalón Wide Leg", price: "$5", imageKey: 'pantalon' }
+      { id: 1, name: "Blazer Oversize", price: "$45.200", imageKey: 'blazer' },
+      { id: 2, name: "Vestido Midaxi", price: "$15.200", imageKey: 'vestido' },
+      { id: 3, name: "Pantalón Wide Leg", price: "$12.800", imageKey: 'pantalon' }
     ]
   },
   {

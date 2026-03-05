@@ -43,8 +43,7 @@ const Products = () => {
       }
       return [...prev, { ...item, quantity: 1, selectedSize, selectedColor }];
     });
-    
-    // Mostrar toast de confirmación
+
     const sizeText = selectedSize ? ` (${selectedSize})` : '';
     const colorText = selectedColor ? ` - ${selectedColor}` : '';
     setToastMessage(`${item.name}${sizeText}${colorText} agregado al carrito`);

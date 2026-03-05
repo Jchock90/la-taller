@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FiInstagram, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FiInstagram, FiMail, FiPhone } from 'react-icons/fi';
 import { NAV_ITEMS, CONTACT_INFO } from '../data/constants';
 
 const Footer = ({ setCurrentSection }) => {
@@ -79,10 +79,6 @@ const Footer = ({ setCurrentSection }) => {
                 <FiPhone className="text-purple-300 mt-1 mr-3" />
                 <span>{CONTACT_INFO.phone}</span>
               </li>
-              {/* <li className="flex items-start">
-                <FiMapPin className="text-purple-300 mt-1 mr-3" />
-                <span>Taller ubicado en San José, Entre Ríos, Argentina</span>
-              </li> */}
             </ul>
           </motion.div>
         </div>
