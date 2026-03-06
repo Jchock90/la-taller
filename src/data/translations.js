@@ -1,0 +1,96 @@
+export const translations = {
+  es: {
+    nav: {
+      home: 'Inicio',
+      quiensoy: 'Quién soy',
+      quehago: 'Qué hago',
+      quevendo: 'Qué vendo',
+    },
+    home: {
+      buttonText: 'Conocé más',
+    },
+    about: {
+      originTitle: 'El origen',
+      ownThreadTitle: 'El Hilo Propio',
+      familyQuote: '"La modistería es una extensión de mi cuerpo-memoria, que crece..."',
+      originText1: 'Vengo de un linaje de mujeres que hilvanaban saberes en círculo, en las tardes de Entre Ríos, entre mate, telas y bordados. Sentadas en círculo, se transmitían los saberes como si fueran plegarias: bordar, coser, tomar medidas, cortar a mano alzada, leer un cuerpo para transformarlo en molde.',
+      originText2: 'Mi madre aprendió de sus tías y su abuela, con ese tesón de quien sabe que el conocimiento se conquista. Se profesionalizó en el Instituto Moderno Universal "La Victoria", viajando mensualmente a rendir exámenes con su maniquí a cuestas hasta graduarse en 1977.',
+      craftQuote: '"El oficio no muere con quien lo lleva, se transforma, se cuela en las manos de quien sigue"',
+      threadText1: 'Crecí entre retazos y pruebas de calce, dibujando mundos con tizas en el reverso de las mesas del taller. El taller de mamá era mi casa, mi patio de juegos, mi primera escuela. Mis muñecas vestían trajes hechos por mis manos pequeñas, con la misma admiración por el oficio que hasta hoy me acompaña.',
+      threadText2: 'En mi adolescencia descubrí que vestirme era identificarme. No necesitaba comprar, necesitaba inventar. Empecé a desarmar, a reconstruir, a probar. Cualquier hilo servía, el que quedaba en la máquina, sin importar el color.',
+      closingQuote: '"Llegó la hora de abrir el círculo, de hacer lugar para quien quiera entrar. Porque el oficio no es solo un oficio, es una manera de habitar el mundo."',
+    },
+    services: {
+      title: 'Qué hago',
+      servicesList: [
+        { title: 'Confección a medida', description: 'Prendas realizadas especialmente para ti, con tus medidas exactas y tus preferencias de diseño' },
+        { title: 'Arreglos y modificaciones', description: 'Adaptamos cualquier prenda a tu cuerpo, desde bajadas de ruedo hasta rediseños completos' },
+        { title: 'Reparación de prendas', description: 'Restauramos tus piezas favoritas con cuidado artesanal' },
+      ],
+    },
+    products: {
+      title: 'Colecciones disponibles',
+      cart: 'Carrito',
+      emptyCart: 'Tu carrito está vacío',
+      selectSize: 'Selecciona un talle',
+      selectColor: 'Selecciona un color',
+      addToCart: 'Agregar al carrito',
+      checkout: 'Finalizar compra',
+      quantity: 'Cantidad',
+      subtotal: 'Subtotal',
+      total: 'Total',
+    },
+    components: {
+      addedToCart: 'Agregado al carrito',
+      removedFromCart: 'Removido del carrito',
+      selectVariants: 'Por favor selecciona talle y color',
+    },
+  },
+  en: {
+    nav: {
+      home: 'Home',
+      quiensoy: 'About me',
+      quehago: 'What I do',
+      quevendo: 'What I sell',
+    },
+    home: {
+      buttonText: 'Learn more',
+    },
+    about: {
+      originTitle: 'The Origin',
+      ownThreadTitle: 'My Own Thread',
+      familyQuote: '"Dressmaking is an extension of my body-memory, that grows..."',
+      originText1: 'I come from a lineage of women who wove knowledge in circles, in the afternoons of Entre Ríos, among mate, fabrics and embroidery. Sitting in circles, they transmitted knowledge as if they were prayers: embroidery, sewing, taking measurements, cutting freehand, reading a body to transform it into a pattern.',
+      originText2: 'My mother learned from her aunts and grandmother, with the determination of someone who knows that knowledge must be conquered. She became a professional at the Instituto Moderno Universal "La Victoria", traveling monthly to take exams with her mannequin in tow until she graduated in 1977.',
+      craftQuote: '"The craft does not die with whoever carries it, it transforms, it seeps into the hands of those who follow"',
+      threadText1: 'I grew up among scraps and fitting tests, drawing worlds with chalk on the back of workshop tables. My mother\'s workshop was my home, my playground, my first school. My dolls wore clothes made by my little hands, with the same admiration for the craft that accompanies me to this day.',
+      threadText2: 'In my adolescence I discovered that dressing was identifying myself. I didn\'t need to buy, I needed to invent. I started to disassemble, to rebuild, to try. Any thread served, the one left in the machine, regardless of color.',
+      closingQuote: '"The time has come to open the circle, to make room for whoever wants to enter. Because the craft is not just a craft, it is a way of inhabiting the world."',
+    },
+    services: {
+      title: 'What I do',
+      servicesList: [
+        { title: 'Custom tailoring', description: 'Garments made especially for you, with your exact measurements and design preferences' },
+        { title: 'Alterations and modifications', description: 'We adapt any garment to your body, from hemming to complete redesigns' },
+        { title: 'Garment repair', description: 'We restore your favorite pieces with artisanal care' },
+      ],
+    },
+    products: {
+      title: 'Available collections',
+      cart: 'Cart',
+      emptyCart: 'Your cart is empty',
+      selectSize: 'Select a size',
+      selectColor: 'Select a color',
+      addToCart: 'Add to cart',
+      checkout: 'Checkout',
+      quantity: 'Quantity',
+      subtotal: 'Subtotal',
+      total: 'Total',
+    },
+    components: {
+      addedToCart: 'Added to cart',
+      removedFromCart: 'Removed from cart',
+      selectVariants: 'Please select size and color',
+    },
+  },
+};

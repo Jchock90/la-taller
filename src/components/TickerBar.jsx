@@ -1,8 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import "./TickerBar.css";
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
+import { useTheme } from '../context/ThemeContext';
 
 const TickerBar = () => {
+  const { isDark } = useTheme();
   const text = "Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo💘";
+  const { translatedText } = useAutoTranslate(text);
   const tickerRef = useRef(null);
 
   useEffect(() => {
@@ -22,9 +26,11 @@ const TickerBar = () => {
       <div className="relative w-full">
         <span
           ref={tickerRef}
-          className="block text-purple-200 whitespace-nowrap text-sm md:text-base font-medium ticker-text animate-ticker leading-tight"
+          className={`block whitespace-nowrap text-sm md:text-base font-medium ticker-text animate-ticker leading-tight ${
+            isDark ? 'text-gray-400' : 'text-purple-200'
+          }`}
         >
-          {text}
+          {translatedText}
         </span>
       </div>
     </div>

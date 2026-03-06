@@ -2,8 +2,12 @@ import { motion } from 'framer-motion';
 import Carousel from '../components/Carousel';
 import SpotifyPlayer from '../components/SpotifyPlayer';
 import WhatsAppContact from '../components/WhatsAppContact';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Home = ({ setCurrentSection }) => {
+  const { t } = useLanguage();
+  const { isDark } = useTheme();
   const carouselImages = [
     'https://res.cloudinary.com/dtnkj0wdx/image/upload/t_resize/v1744216296/taller2_myzau9.jpg',
     'https://res.cloudinary.com/dtnkj0wdx/image/upload/t_resize/v1744216296/taller4_bbctcv.jpg',
@@ -21,7 +25,7 @@ const Home = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      <div className="w-full bg-white py-8">
+      <div className={`w-full ${isDark ? 'bg-gray-950' : 'bg-white'} py-8`}>
         <div className="px-8 sm:px-16 lg:px-24 xl:px-32">
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
             <motion.div
@@ -40,9 +44,11 @@ const Home = ({ setCurrentSection }) => {
               <div className="mt-4 text-center">
                 <button
                   onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
-                  className="bg-black hover:bg-black-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                  className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    isDark ? 'bg-white text-black' : 'bg-black text-white'
+                  }`}
                 >
-                  Conocé más
+                  {t('home.buttonText')}
                 </button>
               </div>
             </motion.div>

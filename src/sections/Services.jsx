@@ -1,5 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const SimpleCarousel = ({ images, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,10 +66,25 @@ const SimpleCarousel = ({ images, onImageClick }) => {
 const Services = () => {
   const [selectedGallery, setSelectedGallery] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { t } = useLanguage();
+  const { isDark } = useTheme();
+  
+  const { translatedText: intro } = useAutoTranslate('Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo.');
+  const { translatedText: para1 } = useAutoTranslate('Soy guía, docente e intérprete en el universo de la indumentaria. Enseño a hacer tu ropa desde cero: elegir la tela, imaginar el diseño, trazar el molde, cortar, coser, ajustar, estampar, bordar, revelar… hasta que la prenda toma forma, y con ella, la identidad de quien la viste.');
+  const { translatedText: para2 } = useAutoTranslate('No solo comparto un saber técnico, comparto un oficio, un lenguaje sensible, una forma de pensar el cuerpo, el deseo y la vida cotidiana.');
+  const { translatedText: para3 } = useAutoTranslate('Mi trabajo tiene raíces profundas en un linaje de mujeres que transmitían el hacer con las manos, en ronda, en confianza, en comunidad.');
+  const { translatedText: para4 } = useAutoTranslate('He creado un espacio de aprendizaje sin estructuras rígidas, donde cualquiera puede llegar sin saber nada y salir con una prenda hecha por sus propias manos… y con una parte nueva de sí descubierta.');
+  const { translatedText: para5 } = useAutoTranslate('No enseño a coser ropa: enseño a habitarla.');
+  const { translatedText: conclusion } = useAutoTranslate('Ofrezco un servicio que es un refugio textil donde cada persona puede explorar a su ritmo, sin juicios ni exigencias. Donde la prenda que nace de tus manos también te enseña algo de vos.');
+  
+  const { translatedText: gallery1Title } = useAutoTranslate('La taller');
+  const { translatedText: gallery2Title } = useAutoTranslate('Taller de bombachas');
+  const { translatedText: gallery3Title } = useAutoTranslate('Taller de cianotipia');
+  const { translatedText: gallery4Title } = useAutoTranslate('Taller de infancias');
 
 const galleries = [
   {
-    title: "La taller",
+    title: gallery1Title,
     images: [
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191478/1_r92hkz.jpg",
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749191481/2_zdjmle.jpg",
@@ -79,7 +97,7 @@ const galleries = [
     ]
   },
   {
-    title: "Taller de bombachas",
+    title: gallery2Title,
     images: [
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190204/1_n5pw9p.jpg",
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190222/2_qvqrsy.jpg",
@@ -91,7 +109,7 @@ const galleries = [
     ]
   },
   {
-    title: "Taller de cianotipia",
+    title: gallery3Title,
     images: [
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190922/3_cq9mgi.jpg",
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1749190907/5_x8qsrk.jpg",
@@ -109,7 +127,7 @@ const galleries = [
     ]
   },
   {
-    title: "Taller de infancias",
+    title: gallery4Title,
     images: [
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679983/IMG_20250715_155506_pa6s9o.jpg",
       "https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_800,q_auto,f_auto/v1753679980/IMG_20250211_185913_a8yr0f.jpg",
@@ -155,7 +173,7 @@ const galleries = [
   };
 
   return (
-    <section id="que-hago" className="py-20 pt-10 bg-white">
+    <section id="que-hago" className={`py-20 pt-10 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -163,35 +181,35 @@ const galleries = [
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-8">Qué hago</h2>
+          <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8`}>{t('services.title')}</h2>
           
           <div className="max-w-4xl mx-auto text-left space-y-6 mb-12">
-            <p className="text-lg text-black leading-relaxed">
-              <strong>Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo.</strong>
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
+              <strong>{intro}</strong>
             </p>
             
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Soy guía, docente e intérprete en el universo de la indumentaria. Enseño a hacer tu ropa desde cero: elegir la tela, imaginar el diseño, trazar el molde, cortar, coser, ajustar, estampar, bordar, revelar… hasta que la prenda toma forma, y con ella, la identidad de quien la viste.
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              {para1}
             </p>
             
-            <p className="text-lg text-gray-700 leading-relaxed">
-              No solo comparto un saber técnico, comparto un oficio, un lenguaje sensible, una forma de pensar el cuerpo, el deseo y la vida cotidiana.
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              {para2}
             </p>
             
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Mi trabajo tiene raíces profundas en un linaje de mujeres que transmitían el hacer con las manos, en ronda, en confianza, en comunidad.
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              {para3}
             </p>
             
-            <p className="text-lg text-gray-700 leading-relaxed">
-              He creado un espacio de aprendizaje sin estructuras rígidas, donde cualquiera puede llegar sin saber nada y salir con una prenda hecha por sus propias manos… y con una parte nueva de sí descubierta.
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              {para4}
             </p>
             
-            <p className="text-lg text-gray-700 leading-relaxed">
-              No enseño a coser ropa: enseño a habitarla.
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              {para5}
             </p>
             
-            <p className="text-lg text-black leading-relaxed">
-              <strong>Ofrezco un servicio que es un refugio textil donde cada persona puede explorar a su ritmo, sin juicios ni exigencias. Donde la prenda que nace de tus manos también te enseña algo de vos.</strong>
+            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
+              <strong>{conclusion}</strong>
             </p>
           </div>
         </motion.div>
@@ -203,9 +221,9 @@ const galleries = [
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: galleryIndex * 0.2, duration: 0.5 }}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+              className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow`}
             >
-              <h3 className="text-xl font-semibold text-black mb-6 text-center">
+              <h3 className={`text-xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center`}>
                 {gallery.title}
               </h3>
               
@@ -231,7 +249,7 @@ const galleries = [
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center p-4"
+              className={`fixed inset-0 ${isDark ? 'bg-black/95' : 'bg-black/90'} z-50 flex flex-col items-center justify-center p-4`}
               onClick={closeGallery}
             >
               <div 
@@ -240,7 +258,9 @@ const galleries = [
               >
                 <button 
                   onClick={closeGallery}
-                  className="absolute top-4 right-4 text-white text-4xl z-50 hover:text-indigo-300 transition-colors"
+                  className={`absolute top-4 right-4 text-white text-4xl z-50 transition-colors ${
+                    isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
+                  }`}
                   aria-label="Cerrar galería"
                 >
                   &times;
@@ -251,7 +271,9 @@ const galleries = [
                     e.stopPropagation();
                     prevImage();
                   }}
-                  className="absolute left-4 text-white text-4xl z-50 hover:text-indigo-300 transition-colors"
+                  className={`absolute left-4 text-white text-4xl z-50 transition-colors ${
+                    isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
+                  }`}
                   aria-label="Imagen anterior"
                 >
                   &#10094;
@@ -273,7 +295,9 @@ const galleries = [
                     e.stopPropagation();
                     nextImage();
                   }}
-                  className="absolute right-4 text-white text-4xl z-50 hover:text-indigo-300 transition-colors"
+                  className={`absolute right-4 text-white text-4xl z-50 transition-colors ${
+                    isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
+                  }`}
                   aria-label="Siguiente imagen"
                 >
                   &#10095;

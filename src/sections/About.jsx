@@ -1,9 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
 
 const About = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { t } = useLanguage();
+  const { isDark } = useTheme();
 
   const galleries = {
   origen: [
@@ -39,14 +43,14 @@ const About = () => {
   };
 
   return (
-    <section id="quien-soy" className="pt-10 pb-16 px-6 bg-white">
+    <section id="quien-soy" className={`pt-10 pb-16 px-6 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-3xl md:text-4xl font-bold text-black mb-8 text-center font-italic"
+        className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8 text-center font-italic`}
       >
-        El origen
+        {t('about.originTitle')}
       </motion.h2>
 
       <div className="max-w-5xl mx-auto">
@@ -56,8 +60,8 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h3 className="text-2xl font-semibold text-black mb-6 text-center pb-2">
-            "La modistería es una extensión de mi cuerpo-memoria, que crece..."
+          <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center pb-2`}>
+            {t('about.familyQuote')}
           </h3>
 
           <div className="flex flex-col md:flex-row gap-8 items-center">
@@ -72,17 +76,17 @@ const About = () => {
               />
             </div>
 
-            <div className="md:w-1/2 space-y-4 text-gray-700">
+            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <p className="text-lg leading-relaxed">
-                Vengo de un linaje de mujeres que hilvanaban saberes en círculo, en las tardes de Entre Ríos, entre mate, telas y bordados. Sentadas en círculo, se transmitían los saberes como si fueran plegarias: bordar, coser, tomar medidas, cortar a mano alzada, leer un cuerpo para transformarlo en molde.
+                {t('about.originText1')}
               </p>
 
               <p className="text-lg leading-relaxed">
-                Mi madre aprendió de sus tías y su abuela, con ese tesón de quien sabe que el conocimiento se conquista. Se profesionalizó en el Instituto Moderno Universal "La Victoria", viajando mensualmente a rendir exámenes con su maniquí a cuestas hasta graduarse en 1977.
+                {t('about.originText2')}
               </p>
 
-              <blockquote className="italic border-l-4 border-black pl-4 py-2 text-black">
-                "El oficio no muere con quien lo lleva, se transforma, se cuela en las manos de quien sigue"
+              <blockquote className={`italic border-l-4 ${isDark ? 'border-gray-500 text-gray-300' : 'border-black text-black'} pl-4 py-2`}>
+                {t('about.craftQuote')}
               </blockquote>
             </div>
           </div>
@@ -94,8 +98,8 @@ const About = () => {
           transition={{ duration: 0.8 }}
           className="mb-16"
         >
-          <h3 className="text-3xl md:text-4xl font-bold text-black mb-12 text-center font-italic">
-            El Hilo Propio
+          <h3 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-12 text-center font-italic`}>
+            {t('about.ownThreadTitle')}
           </h3>
 
           <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
@@ -110,13 +114,13 @@ const About = () => {
               />
             </div>
 
-            <div className="md:w-1/2 space-y-4 text-gray-700">
+            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <p className="text-lg leading-relaxed">
-                Crecí entre retazos y pruebas de calce, dibujando mundos con tizas en el reverso de las mesas del taller. El taller de mamá era mi casa, mi patio de juegos, mi primera escuela. Mis muñecas vestían trajes hechos por mis manos pequeñas, con la misma admiración por el oficio que hasta hoy me acompaña.
+                {t('about.threadText1')}
               </p>
 
               <p className="text-lg leading-relaxed">
-                En mi adolescencia descubrí que vestirme era identificarme. No necesitaba comprar, necesitaba inventar. Empecé a desarmar, a reconstruir, a probar. Cualquier hilo servía, el que quedaba en la máquina, sin importar el color.
+                {t('about.threadText2')}
               </p>
             </div>
           </div>
@@ -128,8 +132,8 @@ const About = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="text-center max-w-3xl mx-auto mt-12"
         >
-          <blockquote className="text-xl italic text-black">
-            "Llegó la hora de abrir el círculo, de hacer lugar para quien quiera entrar. Porque el oficio no es solo un oficio, es una manera de habitar el mundo."
+          <blockquote className={`text-xl italic ${isDark ? 'text-gray-300' : 'text-black'}`}>
+            {t('about.closingQuote')}
           </blockquote>
         </motion.div>
 
@@ -139,7 +143,7 @@ const About = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/90 z-50 flex flex-col items-center justify-center p-4"
+              className={`fixed inset-0 ${isDark ? 'bg-black/95' : 'bg-black/90'} z-50 flex flex-col items-center justify-center p-4`}
               onClick={closeImage}
             >
               <div 
@@ -148,7 +152,9 @@ const About = () => {
               >
                 <button 
                   onClick={closeImage}
-                  className="absolute top-4 right-4 text-white text-4xl z-50 hover:text-purple-300 transition-colors"
+                  className={`absolute top-4 right-4 text-white text-4xl z-50 transition-colors ${
+                    isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                  }`}
                   aria-label="Cerrar imagen"
                 >
                   &times;
@@ -161,7 +167,9 @@ const About = () => {
                         e.stopPropagation();
                         prevImage();
                       }}
-                      className="absolute left-4 text-white text-4xl z-50 hover:text-purple-300 transition-colors"
+                      className={`absolute left-4 text-white text-4xl z-50 transition-colors ${
+                        isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                      }`}
                       aria-label="Imagen anterior"
                     >
                       &#10094;
@@ -172,7 +180,9 @@ const About = () => {
                         e.stopPropagation();
                         nextImage();
                       }}
-                      className="absolute right-4 text-white text-4xl z-50 hover:text-purple-300 transition-colors"
+                      className={`absolute right-4 text-white text-4xl z-50 transition-colors ${
+                        isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                      }`}
                       aria-label="Siguiente imagen"
                     >
                       &#10095;

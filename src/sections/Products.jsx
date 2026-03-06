@@ -8,8 +8,30 @@ import { CartPanel, CartButton } from '../components/CartPanel';
 import ProductDetailModal from '../components/ProductDetailModal';
 import CheckoutForm from '../components/CheckoutForm';
 import Toast from '../components/Toast';
+import { useLanguage } from '../context/LanguageContext';
+import { useTheme } from '../context/ThemeContext';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const Products = () => {
+  const { t } = useLanguage();
+  const { isDark } = useTheme();
+  
+  const { translatedText: titleText } = useAutoTranslate('Tesoro');
+  const { translatedText: subtitleText } = useAutoTranslate('Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle');
+  const { translatedText: customTitle } = useAutoTranslate('¿Buscas algo personalizado?');
+  const { translatedText: customDesc } = useAutoTranslate('Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.');
+  const { translatedText: customButton } = useAutoTranslate('Solicitar diseño personalizado');
+  
+  const { translatedText: collection1Name } = useAutoTranslate('Colección Atemporal');
+  const { translatedText: collection1Desc } = useAutoTranslate('Piezas clásicas diseñadas para trascender temporadas');
+  const { translatedText: collection2Name } = useAutoTranslate('Colección Experimental');
+  const { translatedText: collection2Desc } = useAutoTranslate('Diseños vanguardistas que desafían convenciones');
+  
+  const collectionTranslations = {
+    'Colección Atemporal': { name: collection1Name, description: collection1Desc },
+    'Colección Experimental': { name: collection2Name, description: collection2Desc }
+  };
+  
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem('la-taller-cart');
@@ -74,7 +96,7 @@ const Products = () => {
   };
 
   return (
-    <section id="que-vendo" className="py-20 pt-10 bg-white">
+    <section id="que-vendo" className={`py-20 pt-10 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -82,9 +104,9 @@ const Products = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">Tesoro</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle
+          <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{titleText}</h2>
+          <p className={`text-lg ${isDark ? 'text-gray-500' : 'text-gray-600'} max-w-2xl mx-auto`}>
+            {subtitleText}
           </p>
         </motion.div>
 
@@ -97,8 +119,12 @@ const Products = () => {
             className="mb-20"
           >
             <div className="mb-8">
-              <h3 className="text-2xl font-semibold text-black">{collection.name}</h3>
-              <p className="text-gray-600">{collection.description}</p>
+              <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'}`}>
+                {collectionTranslations[collection.name]?.name || collection.name}
+              </h3>
+              <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>
+                {collectionTranslations[collection.name]?.description || collection.description}
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -119,11 +145,11 @@ const Products = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="bg-purple-50 p-8 rounded-lg text-center"
+          className={`${isDark ? 'bg-black' : 'bg-white'} p-8 rounded-lg text-center`}
         >
-          <h3 className="text-2xl font-semibold text-black mb-4">¿Buscas algo personalizado?</h3>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.
+          <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{customTitle}</h3>
+          <p className={`${isDark ? 'text-gray-400' : 'text-gray-700'} mb-6 max-w-2xl mx-auto`}>
+            {customDesc}
           </p>
           <motion.a
             href={WHATSAPP_URL}
@@ -131,9 +157,11 @@ const Products = () => {
             whileTap={{ scale: 0.95 }}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-black text-white px-8 py-3 rounded-full font-medium shadow-lg hover:bg-black transition-colors"
+            className={`inline-block px-8 py-3 rounded-full font-medium shadow-lg transition-colors ${
+              isDark ? 'bg-white text-black' : 'bg-black text-white'
+            }`}
           >
-            Solicitar diseño personalizado
+            {customButton}
           </motion.a>
         </motion.div>
       </div>

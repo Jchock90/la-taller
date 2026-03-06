@@ -85,7 +85,9 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setCurrentSection('que-vendo')}
-              className="bg-purple-600 text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:bg-purple-700 transition-colors"
+              className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors text-white ${
+                isDark ? 'bg-gray-700 hover:bg-gray-800' : 'bg-purple-600 hover:bg-purple-700'
+              }`}
             >
               Ver productos
             </motion.button>
