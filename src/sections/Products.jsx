@@ -145,7 +145,7 @@ const Products = () => {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className={`${isDark ? 'bg-black' : 'bg-white'} p-8 rounded-lg text-center`}
+          className={`${isDark ? 'bg-black border border-gray-800' : 'bg-white'} p-8 rounded-lg text-center`}
         >
           <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{customTitle}</h3>
           <p className={`${isDark ? 'text-gray-400' : 'text-gray-700'} mb-6 max-w-2xl mx-auto`}>

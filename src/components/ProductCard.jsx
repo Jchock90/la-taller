@@ -15,7 +15,7 @@ const ProductCard = ({ item, index, onAddToCart, onViewDetail }) => {
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1, duration: 0.5 }}
     whileHover={{ y: -5 }}
-    className={`${isDark ? 'bg-black border-purple-300' : 'bg-white border-gray-100'} rounded-lg overflow-hidden shadow-md border`}
+    className={`${isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-100'} rounded-lg overflow-hidden shadow-md border`}
   >
     <div className="h-64 overflow-hidden relative group">
       <motion.img
