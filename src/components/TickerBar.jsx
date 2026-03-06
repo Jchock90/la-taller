@@ -22,12 +22,12 @@ const TickerBar = () => {
   }, []);
 
   return (
-    <div className="w-full bg-black py-1 flex items-center overflow-hidden" style={{ minHeight: 0 }}>
+    <div className={`w-full py-1 flex items-center overflow-hidden ${isDark ? 'bg-purple-300' : 'bg-black'}`} style={{ minHeight: 0 }}>
       <div className="relative w-full">
         <span
           ref={tickerRef}
           className={`block whitespace-nowrap text-sm md:text-base font-medium ticker-text animate-ticker leading-tight ${
-            isDark ? 'text-gray-400' : 'text-purple-200'
+            isDark ? 'text-black' : 'text-purple-200'
           }`}
         >
           {translatedText}

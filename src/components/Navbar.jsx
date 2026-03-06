@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+import { FaSpotify } from 'react-icons/fa';
 import { useState } from 'react';
 import { NAV_ITEMS } from '../data/constants';
 import { useLanguage } from '../context/LanguageContext';
@@ -7,6 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 
 const Navbar = ({ setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [spotifyOpen, setSpotifyOpen] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
 
@@ -21,7 +23,7 @@ const Navbar = ({ setCurrentSection }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md ${isDark ? 'bg-gray-300' : 'bg-purple-300'}`}
+        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md bg-gradient-to-r ${isDark ? 'from-gray-300 to-zinc-100' : 'from-purple-300 to-zinc-200'}`}
       >
         <div className="flex items-center">
           <img 
@@ -37,7 +39,7 @@ const Navbar = ({ setCurrentSection }) => {
             <motion.a
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              whileHover={{ scale: 1.05, color: 'white' }}
+              whileHover={{ scale: 1.05, color: isDark ? '#c084fc' : 'white' }}
               className="text-black text-lg font-medium cursor-pointer"
             >
               {t(`nav.${item.id.replace(/-/g, '')}`)}
@@ -47,10 +49,20 @@ const Navbar = ({ setCurrentSection }) => {
 
         <div className="flex items-center space-x-2 md:space-x-4">
           <motion.button
+            onClick={() => setSpotifyOpen((prev) => !prev)}
+            whileHover={{ scale: 1.1 }}
+            className={`p-2 rounded-lg text-black transition-colors ${
+              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
+            }`}
+            aria-label="Toggle Spotify player"
+          >
+            <FaSpotify size={18} />
+          </motion.button>
+          <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
             className={`p-2 rounded-lg text-black transition-colors ${
-              isDark ? 'bg-gray-300 hover:bg-gray-400' : 'bg-purple-200 hover:bg-purple-400'
+              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
             }`}
             aria-label="Toggle theme"
           >
@@ -60,7 +72,7 @@ const Navbar = ({ setCurrentSection }) => {
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
             className={`p-2 rounded-lg text-black transition-colors font-semibold text-sm ${
-              isDark ? 'bg-gray-300 hover:bg-gray-400' : 'bg-purple-200 hover:bg-purple-400'
+              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
             }`}
           >
             {language === 'es' ? 'EN' : 'ES'}
@@ -72,6 +84,30 @@ const Navbar = ({ setCurrentSection }) => {
             {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
         </div>
+
+        <motion.div
+          initial={false}
+          animate={{
+            opacity: spotifyOpen ? 1 : 0,
+            y: spotifyOpen ? 0 : -8,
+            pointerEvents: spotifyOpen ? 'auto' : 'none'
+          }}
+          transition={{ duration: 0.2 }}
+          className={`absolute right-4 top-[calc(100%+32px)] z-[60] w-[320px] max-w-[90vw] rounded-xl shadow-xl border overflow-hidden ${
+            isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-200'
+          }`}
+          style={{ visibility: spotifyOpen ? 'visible' : 'hidden' }}
+        >
+          <iframe
+            src="https://open.spotify.com/embed/playlist/41DWUFcZTx1GbNDIydf6AZ?utm_source=generator&theme=0"
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify Mini Player"
+          ></iframe>
+        </motion.div>
       </motion.nav>
 
       <AnimatePresence>
