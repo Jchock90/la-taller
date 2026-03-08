@@ -1,4 +1,4 @@
-const CACHE_KEY = 'translation_cache';
+const CACHE_KEY = 'translation_cache_v2';
 const API_URL = 'https://api.mymemory.translated.net/get';
 
 const getCache = () => {

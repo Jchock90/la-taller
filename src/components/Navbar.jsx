@@ -23,7 +23,7 @@ const Navbar = ({ setCurrentSection }) => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md bg-gradient-to-r ${isDark ? 'from-gray-300 to-zinc-100' : 'from-purple-300 to-zinc-200'}`}
+        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md ${isDark ? 'bg-gray-300' : 'bg-purple-300'}`}
       >
         <div className="flex items-center">
           <img 
@@ -51,9 +51,7 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={() => setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg text-black transition-colors ${
-              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
-            }`}
+            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors"
             aria-label="Toggle Spotify player"
           >
             <FaSpotify size={18} />
@@ -61,9 +59,7 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg text-black transition-colors ${
-              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
-            }`}
+            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors"
             aria-label="Toggle theme"
           >
             {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
@@ -71,9 +67,8 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg text-black transition-colors font-semibold text-sm ${
-              isDark ? 'bg-gray-300 hover:bg-purple-300' : 'bg-purple-200 hover:bg-purple-300'
-            }`}
+            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors font-semibold text-sm"
+            aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
@@ -108,6 +103,7 @@ const Navbar = ({ setCurrentSection }) => {
             title="Spotify Mini Player"
           ></iframe>
         </motion.div>
+
       </motion.nav>
 
       <AnimatePresence>
@@ -117,15 +113,19 @@ const Navbar = ({ setCurrentSection }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="relative z-40 bg-white shadow-lg md:hidden"
+            className={`relative z-40 shadow-lg md:hidden ${
+              isDark ? 'bg-black' : 'bg-white'
+            }`}
           >
             <div className="flex flex-col p-4 space-y-4">
               {NAV_ITEMS.map((item) => (
                 <motion.a
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  whileHover={{ scale: 1.05, color: 'black' }}
-                  className="text-black text-md cursor-pointer py-2 px-4"
+                  whileHover={{ scale: 1.05, color: isDark ? '#c084fc' : '#000' }}
+                  className={`text-md cursor-pointer py-2 px-4 ${
+                    isDark ? 'text-gray-100' : 'text-black'
+                  }`}
                 >
                   {t(`nav.${item.id.replace(/-/g, '')}`)}
                 </motion.a>

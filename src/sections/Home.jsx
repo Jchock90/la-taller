@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Carousel from '../components/Carousel';
-import SpotifyPlayer from '../components/SpotifyPlayer';
 import WhatsAppContact from '../components/WhatsAppContact';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
@@ -191,42 +190,31 @@ const Home = ({ setCurrentSection }) => {
       </div>
 
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-8`}>
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative group"
-            >
-              <div className="relative rounded-lg overflow-hidden">
-                <img
-                  src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
-                  alt="Productos disponibles"
-                  className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="mt-4 text-center">
-                <button
-                  onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
-                  className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    isDark ? 'bg-white text-black' : 'bg-black text-white'
-                  }`}
-                >
-                  {t('home.buttonText')}
-                </button>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-center"
-            >
-              <SpotifyPlayer />
-            </motion.div>
-          </div>
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative group"
+          >
+            <div className="relative rounded-lg overflow-hidden">
+              <img
+                src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
+                alt="Productos disponibles"
+                className="w-full h-[32rem] md:h-[38rem] object-cover object-center transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <button
+                onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
+                className={`px-8 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  isDark ? 'bg-white text-black' : 'bg-black text-white'
+                }`}
+              >
+                {t('home.buttonText')}
+              </button>
+            </div>
+          </motion.div>
         </div>
       </div>
 

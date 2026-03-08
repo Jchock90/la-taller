@@ -141,6 +141,10 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                 <FiShoppingCart className="mr-2" />
                 {addToCartText}
               </motion.button>
+              <div className="flex items-center justify-center gap-2 mt-4 mb-2">
+                <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
+                <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· Pago seguro</span>
+              </div>
             </div>
           </motion.div>
         </motion.div>

@@ -12,15 +12,29 @@ export const LanguageProvider = ({ children }) => {
     localStorage.setItem('language', language);
   }, [language]);
 
-  const t = (key) => {
+  const getTranslationValue = (lang, key) => {
     const keys = key.split('.');
-    let value = translations[language];
-    
+    let value = translations[lang];
+
     for (const k of keys) {
       value = value?.[k];
     }
-    
-    return value || key;
+
+    return value;
+  };
+
+  const t = (key) => {
+    const selectedValue = getTranslationValue(language, key);
+    if (selectedValue !== undefined) {
+      return selectedValue;
+    }
+
+    const fallbackValue = getTranslationValue('es', key);
+    if (fallbackValue !== undefined) {
+      return fallbackValue;
+    }
+
+    return key;
   };
 
   const toggleLanguage = () => {

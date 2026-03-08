@@ -78,6 +78,10 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                 >
                   {checkoutText}
                 </button>
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
+                  <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· Pago seguro</span>
+                </div>
               </div>
             )}
           </motion.div>
