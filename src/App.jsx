@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { useTheme } from './context/ThemeContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import TickerBar from './components/TickerBar';
 import Home from './sections/Home';
@@ -10,9 +11,20 @@ import Services from './sections/Services';
 import Products from './sections/Products';
 import Footer from './components/Footer';
 import PaymentStatus from './components/PaymentStatus';
+import AdminLogin from './components/AdminLogin';
+import AdminPanel from './components/AdminPanel';
 
 function AppContent({ currentSection, setCurrentSection, renderSection }) {
   const { isDark } = useTheme();
+  const { isAuthenticated } = useAuth();
+
+  // Admin section
+  if (currentSection === 'admin') {
+    if (!isAuthenticated) {
+      return <AdminLogin />;
+    }
+    return <AdminPanel setCurrentSection={setCurrentSection} />;
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
@@ -32,18 +44,45 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   );
 }
 
+const SECTION_PATHS = {
+  'home': '/',
+  'quien-soy': '/quien-soy',
+  'que-hago': '/que-hago',
+  'que-vendo': '/que-vendo',
+  'admin': '/admin',
+  'success': '/success',
+  'failure': '/failure',
+  'pending': '/pending',
+};
+
+const PATH_TO_SECTION = Object.fromEntries(
+  Object.entries(SECTION_PATHS).map(([k, v]) => [v, k])
+);
+
+function pathToSection(path) {
+  return PATH_TO_SECTION[path] || 'home';
+}
+
 function App() {
-  const [currentSection, setCurrentSection] = useState('home');
+  const [currentSection, setCurrentSectionState] = useState(() => {
+    return pathToSection(window.location.pathname);
+  });
+
+  const setCurrentSection = (section) => {
+    setCurrentSectionState(section);
+    const targetPath = SECTION_PATHS[section] || '/';
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ section }, '', targetPath);
+    }
+  };
 
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path === '/success') {
-      setCurrentSection('success');
-    } else if (path === '/failure') {
-      setCurrentSection('failure');
-    } else if (path === '/pending') {
-      setCurrentSection('pending');
-    }
+    const handlePopState = (e) => {
+      const section = e.state?.section || pathToSection(window.location.pathname);
+      setCurrentSectionState(section);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   useEffect(() => {
@@ -74,7 +113,9 @@ function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <AppContent currentSection={currentSection} setCurrentSection={setCurrentSection} renderSection={renderSection} />
+        <AuthProvider>
+          <AppContent currentSection={currentSection} setCurrentSection={setCurrentSection} renderSection={renderSection} />
+        </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

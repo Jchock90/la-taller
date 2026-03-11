@@ -1,7 +1,8 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { COLLECTIONS, parsePrice } from '../data/products';
+import { parsePrice } from '../data/products';
+import { productsApi } from '../services/api';
 import { WHATSAPP_URL } from '../data/constants';
 import ProductCard from '../components/ProductCard';
 import { CartPanel, CartButton } from '../components/CartPanel';
@@ -22,15 +23,15 @@ const Products = () => {
   const { translatedText: customDesc } = useAutoTranslate('Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.');
   const { translatedText: customButton } = useAutoTranslate('Solicitar diseño personalizado');
   
-  const { translatedText: collection1Name } = useAutoTranslate('Colección Atemporal');
-  const { translatedText: collection1Desc } = useAutoTranslate('Piezas clásicas diseñadas para trascender temporadas');
-  const { translatedText: collection2Name } = useAutoTranslate('Colección Experimental');
-  const { translatedText: collection2Desc } = useAutoTranslate('Diseños vanguardistas que desafían convenciones');
-  
-  const collectionTranslations = {
-    'Colección Atemporal': { name: collection1Name, description: collection1Desc },
-    'Colección Experimental': { name: collection2Name, description: collection2Desc }
-  };
+  const [collections, setCollections] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    productsApi.getCollections()
+      .then(data => setCollections(data))
+      .catch(err => console.error('Error cargando productos:', err))
+      .finally(() => setLoadingProducts(false));
+  }, []);
   
   const [cart, setCart] = useState(() => {
     try {
@@ -50,15 +51,14 @@ const Products = () => {
 
   const addToCart = (item, selectedSize, selectedColor) => {
     setCart(prev => {
-      const itemKey = `${item.id}-${selectedSize || ''}-${selectedColor || ''}`;
       const existing = prev.find(c => 
-        c.id === item.id && 
+        c._id === item._id && 
         c.selectedSize === selectedSize && 
         c.selectedColor === selectedColor
       );
       if (existing) {
         return prev.map(c => 
-          c.id === item.id && c.selectedSize === selectedSize && c.selectedColor === selectedColor
+          c._id === item._id && c.selectedSize === selectedSize && c.selectedColor === selectedColor
             ? { ...c, quantity: c.quantity + 1 }
             : c
         );
@@ -110,7 +110,9 @@ const Products = () => {
           </p>
         </motion.div>
 
-        {COLLECTIONS.map((collection, colIndex) => (
+        {loadingProducts ? (
+          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Cargando productos...</div>
+        ) : collections.map((collection, colIndex) => (
           <motion.div
             key={colIndex}
             initial={{ opacity: 0 }}
@@ -120,17 +122,17 @@ const Products = () => {
           >
             <div className="mb-8">
               <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'}`}>
-                {collectionTranslations[collection.name]?.name || collection.name}
+                {collection.name}
               </h3>
               <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>
-                {collectionTranslations[collection.name]?.description || collection.description}
+                {collection.description}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {collection.items.map((item, itemIndex) => (
                 <ProductCard
-                  key={item.id}
+                  key={item._id}
                   item={item}
                   index={itemIndex}
                   onAddToCart={addToCart}

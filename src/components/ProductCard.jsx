@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { FiShoppingCart, FiEye } from 'react-icons/fi';
-import { PRODUCT_IMAGES } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
@@ -19,7 +18,7 @@ const ProductCard = ({ item, index, onAddToCart, onViewDetail }) => {
   >
     <div className="h-64 overflow-hidden relative group">
       <motion.img
-        src={PRODUCT_IMAGES[item.imageKey]}
+        src={item.imageUrl}
         alt={item.name}
         className="w-full h-full object-cover"
         whileHover={{ scale: 1.05 }}

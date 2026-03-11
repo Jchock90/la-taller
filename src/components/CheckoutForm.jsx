@@ -72,7 +72,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
 
         <div className={`mb-6 border rounded p-3 ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50'}`}>
           {cart.map(item => (
-            <div key={item.id} className={`flex justify-between text-sm py-1 ${isDark ? 'text-gray-400' : ''}`}>
+            <div key={item._id} className={`flex justify-between text-sm py-1 ${isDark ? 'text-gray-400' : ''}`}>
               <span>{item.name} x{item.quantity}</span>
               <span className="font-medium">${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</span>
             </div>

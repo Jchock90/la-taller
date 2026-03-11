@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiShoppingCart, FiPlus, FiMinus, FiTrash2, FiX } from 'react-icons/fi';
 import { createPortal } from 'react-dom';
-import { PRODUCT_IMAGES, parsePrice } from '../data/products';
+import { parsePrice } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
@@ -42,8 +42,8 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                 <p className={`${isDark ? 'text-gray-500' : 'text-gray-500'} text-center mt-10`}>{emptyCartText}</p>
               ) : (
                 cart.map((item, idx) => (
-                  <div key={`${item.id}-${idx}`} className={`flex items-center gap-4 pb-4 ${isDark ? 'border-gray-800' : 'border-gray-200'} border-b`}>
-                    <img src={PRODUCT_IMAGES[item.imageKey]} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                  <div key={`${item._id}-${idx}`} className={`flex items-center gap-4 pb-4 ${isDark ? 'border-gray-800' : 'border-gray-200'} border-b`}>
+                    <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded" />
                     <div className="flex-1">
                       <h4 className={`font-medium text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{item.name}</h4>
                       {item.selectedSize && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{sizeText} {item.selectedSize}</p>}

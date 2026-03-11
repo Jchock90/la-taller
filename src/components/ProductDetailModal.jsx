@@ -3,7 +3,6 @@ import { FiShoppingCart, FiX } from 'react-icons/fi';
 import { createPortal } from 'react-dom';
 import { useState } from 'react';
 import Carousel from './Carousel';
-import { PRODUCT_GALLERY, PRODUCT_DETAILS } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
@@ -23,7 +22,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   
   if (!product) return null;
 
-  const details = PRODUCT_DETAILS[product.id];
+  const details = product;
 
   const handleAddToCart = () => {
     if (details && details.talles.length > 0 && !selectedSize) {
@@ -57,7 +56,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full md:w-1/2 h-72 md:h-auto md:min-h-[500px] relative">
-              <Carousel images={PRODUCT_GALLERY[product.imageKey]} />
+              <Carousel images={product.gallery || [product.imageUrl]} />
             </div>
 
             <div className={`w-full md:w-1/2 p-6 md:p-8 overflow-y-auto ${isDark ? 'bg-gray-950' : ''}`}>
