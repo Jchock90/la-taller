@@ -13,7 +13,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ delay: index * 0.1, duration: 0.5 }}
     whileHover={{ y: -5 }}
-    className={`${isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-100'} rounded-lg overflow-hidden shadow-md border`}
+    className={`${isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-100'} rounded-lg overflow-hidden shadow-md border h-full flex flex-col`}
   >
     <div className="h-64 overflow-hidden relative group">
       <motion.img
@@ -25,7 +25,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
       />
     </div>
     <div className="p-6">
-      <h4 className={`text-xl font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{item.name}</h4>
+      <h4 className={`text-xl leading-7 font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2 line-clamp-2 min-h-[3.5rem]`} title={item.name}>{item.name}</h4>
       <p className="text-purple-600 font-semibold mb-4">{item.price}</p>
       <motion.button
         whileHover={{ scale: 1.05 }}

@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
-import { FiSearch, FiRefreshCw, FiChevronLeft, FiChevronRight, FiMessageSquare, FiX, FiTrendingUp, FiDollarSign, FiShoppingBag, FiBarChart2 } from 'react-icons/fi';
+import { FiSearch, FiRefreshCw, FiChevronLeft, FiChevronRight, FiMessageSquare, FiX, FiTrendingUp, FiDollarSign, FiShoppingBag, FiBarChart2, FiTrash2 } from 'react-icons/fi';
 import { adminApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const STATUS_LABELS = {
+  pending: 'Pendiente',
+  in_process: 'En revisión',
   approved: 'Aprobada',
+  rejected: 'Rechazada',
   refunded: 'Reembolsada',
 };
 
 const STATUS_COLORS = {
+  pending: 'bg-yellow-900/50 text-yellow-400',
+  in_process: 'bg-blue-900/50 text-blue-400',
   approved: 'bg-green-900/50 text-green-400',
+  rejected: 'bg-red-900/50 text-red-400',
   refunded: 'bg-orange-900/50 text-orange-400',
 };
 
@@ -30,6 +36,7 @@ const SalesPanel = () => {
   const [editingNotes, setEditingNotes] = useState(null);
   const [notesText, setNotesText] = useState('');
   const [view, setView] = useState('list'); // 'list' | 'stats'
+  const [confirmModal, setConfirmModal] = useState(null);
 
   const fetchSales = async (p = page) => {
     setLoading(true);
@@ -106,6 +113,25 @@ const SalesPanel = () => {
     }
   };
 
+  const handleDeleteSale = (sale) => {
+    setConfirmModal({
+      title: 'Eliminar venta',
+      message: `¿Eliminar la venta de ${sale.nombre} ${sale.apellido} por ${formatMoney(sale.total)}? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      confirmColor: 'bg-red-600 hover:bg-red-700',
+      onConfirm: async () => {
+        setConfirmModal(null);
+        try {
+          await adminApi.deleteSale(token, sale._id);
+          fetchSales();
+          fetchStats();
+        } catch (err) {
+          setError(err.message);
+        }
+      },
+    });
+  };
+
   const formatDate = (d) => {
     return new Date(d).toLocaleDateString('es-AR', {
       day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -118,6 +144,29 @@ const SalesPanel = () => {
 
   return (
     <div>
+      {/* Confirm Modal */}
+      {confirmModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-xl p-6 w-96 shadow-2xl border border-gray-700">
+            <h3 className="text-white text-lg font-semibold mb-2">{confirmModal.title}</h3>
+            <p className="text-gray-400 text-sm mb-6">{confirmModal.message}</p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setConfirmModal(null)}
+                className="bg-gray-700 text-gray-300 px-4 py-2 rounded font-medium hover:bg-gray-600 transition-colors text-sm"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmModal.onConfirm}
+                className={`px-4 py-2 rounded font-medium transition-colors text-sm text-white ${confirmModal.confirmColor}`}
+              >
+                {confirmModal.confirmText}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -183,7 +232,10 @@ const SalesPanel = () => {
           </div>
           <select className={inputClass} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
             <option value="">Todos los estados</option>
+            <option value="pending">Pendientes</option>
+            <option value="in_process">En revisión</option>
             <option value="approved">Aprobadas</option>
+            <option value="rejected">Rechazadas</option>
             <option value="refunded">Reembolsadas</option>
           </select>
           <input type="date" className={inputClass} value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
@@ -385,6 +437,13 @@ const SalesPanel = () => {
                             Volver a aprobada
                           </button>
                         )}
+                        <button
+                          onClick={() => handleDeleteSale(sale)}
+                          className="ml-auto bg-red-900/30 text-red-400 px-3 py-1.5 rounded text-xs hover:bg-red-900/50 flex items-center gap-1"
+                        >
+                          <FiTrash2 size={12} />
+                          Eliminar
+                        </button>
                       </div>
                     </div>
                   )}

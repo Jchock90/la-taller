@@ -144,4 +144,59 @@ export const adminApi = {
     if (!res.ok) throw new Error('Error al actualizar estado');
     return res.json();
   },
+
+  async deleteSale(token, id) {
+    const res = await fetch(`${API_URL}/api/admin/sales/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al eliminar venta');
+    return res.json();
+  },
+
+  // Subir imagen con progreso
+  async uploadImage(token, file, oldUrl, onProgress) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('image', file);
+      if (oldUrl) formData.append('oldUrl', oldUrl);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${API_URL}/api/admin/upload`);
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable && onProgress) {
+          onProgress(Math.round((e.loaded / e.total) * 100));
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(JSON.parse(xhr.responseText));
+        } else {
+          try {
+            const data = JSON.parse(xhr.responseText);
+            reject(new Error(data.error || 'Error al subir imagen'));
+          } catch {
+            reject(new Error('Error al subir imagen'));
+          }
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Error de red al subir imagen'));
+      xhr.send(formData);
+    });
+  },
+
+  // Borrar imagen de Cloudinary
+  async deleteImage(token, imageUrl) {
+    const res = await fetch(`${API_URL}/api/admin/delete-image`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ imageUrl }),
+    });
+    if (!res.ok) throw new Error('Error al borrar imagen');
+    return res.json();
+  },
 };

@@ -11,3 +11,7 @@
 body {
   font-family: 'Overpass Mono', monospace;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

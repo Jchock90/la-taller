@@ -1,6 +1,7 @@
 
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { FiChevronLeft, FiChevronRight, FiFilter, FiX } from 'react-icons/fi';
 import { parsePrice } from '../data/products';
 import { productsApi } from '../services/api';
 import { WHATSAPP_URL } from '../data/constants';
@@ -12,6 +13,103 @@ import Toast from '../components/Toast';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
+
+const GAP = 24; // gap-6 = 24px
+
+const CollectionCarousel = ({ items, onViewDetail }) => {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(4);
+
+  const updateVisibleCount = () => {
+    const w = window.innerWidth;
+    if (w < 640) setVisibleCount(1);
+    else if (w < 1024) setVisibleCount(2);
+    else setVisibleCount(4);
+  };
+
+  const checkScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 2);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 2);
+  };
+
+  useEffect(() => {
+    updateVisibleCount();
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener('scroll', checkScroll, { passive: true });
+    const onResize = () => { updateVisibleCount(); checkScroll(); };
+    window.addEventListener('resize', onResize);
+    return () => {
+      el.removeEventListener('scroll', checkScroll);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [items]);
+
+  const scroll = (direction) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const containerWidth = el.clientWidth;
+    el.scrollBy({ left: direction * containerWidth, behavior: 'smooth' });
+  };
+
+  const cardWidth = `calc((100% - ${GAP * (visibleCount - 1)}px) / ${visibleCount})`;
+
+  return (
+    <div className="flex items-center gap-3">
+      {/* Left arrow — outside */}
+      <button
+        onClick={() => scroll(-1)}
+        disabled={!canScrollLeft}
+        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
+          canScrollLeft
+            ? 'bg-black/70 hover:bg-black/90 text-white cursor-pointer'
+            : 'bg-gray-300/30 text-gray-500 cursor-default opacity-0 pointer-events-none'
+        }`}
+      >
+        <FiChevronLeft size={22} />
+      </button>
+
+      {/* Scrollable area */}
+      <div
+        ref={scrollRef}
+        className="flex-1 flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {items.map((item, itemIndex) => (
+          <div
+            key={item._id}
+            className="flex-shrink-0 snap-start"
+            style={{ width: cardWidth }}
+          >
+            <ProductCard
+              item={item}
+              index={itemIndex}
+              onViewDetail={onViewDetail}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Right arrow — outside */}
+      <button
+        onClick={() => scroll(1)}
+        disabled={!canScrollRight}
+        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
+          canScrollRight
+            ? 'bg-black/70 hover:bg-black/90 text-white cursor-pointer'
+            : 'bg-gray-300/30 text-gray-500 cursor-default opacity-0 pointer-events-none'
+        }`}
+      >
+        <FiChevronRight size={22} />
+      </button>
+    </div>
+  );
+};
 
 const Products = () => {
   const { t } = useLanguage();
@@ -25,6 +123,8 @@ const Products = () => {
   
   const [collections, setCollections] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [filters, setFilters] = useState({ categoria: '', coleccion: '', talle: '', color: '' });
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     productsApi.getCollections()
@@ -32,6 +132,30 @@ const Products = () => {
       .catch(err => console.error('Error cargando productos:', err))
       .finally(() => setLoadingProducts(false));
   }, []);
+
+  // Extract all products flat + derive filter options
+  const allProducts = useMemo(() => collections.flatMap(c => c.items.map(i => ({ ...i, collectionName: c.name }))), [collections]);
+  const filterOptions = useMemo(() => ({
+    categorias: [...new Set(allProducts.map(p => p.categoria).filter(Boolean))].sort(),
+    colecciones: collections.map(c => c.name),
+    talles: [...new Set(allProducts.flatMap(p => p.talles || []))],
+    colores: [...new Set(allProducts.flatMap(p => p.colores || []))].sort(),
+  }), [allProducts, collections]);
+
+  const hasActiveFilter = Object.values(filters).some(v => v !== '');
+
+  const filteredProducts = useMemo(() => {
+    if (!hasActiveFilter) return [];
+    return allProducts.filter(p => {
+      if (filters.categoria && (p.categoria || '') !== filters.categoria) return false;
+      if (filters.coleccion && p.collectionName !== filters.coleccion) return false;
+      if (filters.talle && !(p.talles || []).includes(filters.talle)) return false;
+      if (filters.color && !(p.colores || []).includes(filters.color)) return false;
+      return true;
+    });
+  }, [allProducts, filters, hasActiveFilter]);
+
+  const clearFilters = () => setFilters({ categoria: '', coleccion: '', talle: '', color: '' });
   
   const [cart, setCart] = useState(() => {
     try {
@@ -112,7 +236,114 @@ const Products = () => {
 
         {loadingProducts ? (
           <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Cargando productos...</div>
-        ) : collections.map((collection, colIndex) => (
+        ) : (
+        <>
+        {/* Filter bar */}
+        <div className={`mb-10 rounded-xl p-4 ${isDark ? 'bg-gray-900/50 border border-gray-800' : 'bg-gray-50 border border-gray-200'}`}>
+          <div className="flex items-center justify-between mb-3">
+            <button
+              onClick={() => setShowFilters(f => !f)}
+              className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
+            >
+              <FiFilter size={16} />
+              Filtrar productos
+            </button>
+            {hasActiveFilter && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center gap-1 text-sm text-purple-500 hover:text-purple-400"
+              >
+                <FiX size={14} /> Limpiar filtros
+              </button>
+            )}
+          </div>
+
+          {showFilters && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <select
+                value={filters.categoria}
+                onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
+                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              >
+                <option value="">Todas las categorías</option>
+                {filterOptions.categorias.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+              <select
+                value={filters.coleccion}
+                onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
+                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              >
+                <option value="">Todas las colecciones</option>
+                {filterOptions.colecciones.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+              <select
+                value={filters.talle}
+                onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
+                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              >
+                <option value="">Todos los talles</option>
+                {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <select
+                value={filters.color}
+                onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
+                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              >
+                <option value="">Todos los colores</option>
+                {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+          )}
+
+          {hasActiveFilter && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {filters.categoria && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
+                  {filters.categoria}
+                  <button onClick={() => setFilters(f => ({ ...f, categoria: '' }))}><FiX size={12} /></button>
+                </span>
+              )}
+              {filters.coleccion && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
+                  {filters.coleccion}
+                  <button onClick={() => setFilters(f => ({ ...f, coleccion: '' }))}><FiX size={12} /></button>
+                </span>
+              )}
+              {filters.talle && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
+                  Talle: {filters.talle}
+                  <button onClick={() => setFilters(f => ({ ...f, talle: '' }))}><FiX size={12} /></button>
+                </span>
+              )}
+              {filters.color && (
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
+                  {filters.color}
+                  <button onClick={() => setFilters(f => ({ ...f, color: '' }))}><FiX size={12} /></button>
+                </span>
+              )}
+              <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'} self-center`}>
+                {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Filtered grid view */}
+        {hasActiveFilter ? (
+          filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+              {filteredProducts.map((item, i) => (
+                <ProductCard key={item._id} item={item} index={i} onViewDetail={setSelectedProduct} />
+              ))}
+            </div>
+          ) : (
+            <div className={`text-center py-16 mb-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+              No se encontraron productos con los filtros seleccionados
+            </div>
+          )
+        ) : (
+        /* Collection carousels */
+        collections.map((collection, colIndex) => (
           <motion.div
             key={colIndex}
             initial={{ opacity: 0 }}
@@ -129,18 +360,15 @@ const Products = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {collection.items.map((item, itemIndex) => (
-                <ProductCard
-                  key={item._id}
-                  item={item}
-                  index={itemIndex}
-                  onViewDetail={setSelectedProduct}
-                />
-              ))}
-            </div>
+            <CollectionCarousel
+              items={collection.items}
+              onViewDetail={setSelectedProduct}
+            />
           </motion.div>
-        ))}
+        ))
+        )}
+        </>
+        )}
 
         <motion.div
           initial={{ opacity: 0 }}
