@@ -104,4 +104,44 @@ export const adminApi = {
     if (!res.ok) throw new Error('Error al eliminar producto');
     return res.json();
   },
+
+  // --- Ventas ---
+
+  async getSales(token, params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const res = await fetch(`${API_URL}/api/admin/sales?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al cargar ventas');
+    return res.json();
+  },
+
+  async getSalesStats(token, params = {}) {
+    const query = new URLSearchParams(params).toString();
+    const res = await fetch(`${API_URL}/api/admin/sales/stats?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al cargar estadísticas');
+    return res.json();
+  },
+
+  async updateSaleNotes(token, id, notes) {
+    const res = await fetch(`${API_URL}/api/admin/sales/${encodeURIComponent(id)}/notes`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ notes }),
+    });
+    if (!res.ok) throw new Error('Error al actualizar notas');
+    return res.json();
+  },
+
+  async updateSaleStatus(token, id, status) {
+    const res = await fetch(`${API_URL}/api/admin/sales/${encodeURIComponent(id)}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ status }),
+    });
+    if (!res.ok) throw new Error('Error al actualizar estado');
+    return res.json();
+  },
 };

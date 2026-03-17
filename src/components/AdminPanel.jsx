@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff, FiPackage, FiShoppingCart } from 'react-icons/fi';
 import { adminApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import SalesPanel from './SalesPanel';
 
 const EMPTY_PRODUCT = {
   name: '',
@@ -220,6 +221,7 @@ const ProductForm = ({ product, onSave, onCancel, loading }) => {
 
 const AdminPanel = ({ setCurrentSection }) => {
   const { token, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState('products');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -316,7 +318,21 @@ const AdminPanel = ({ setCurrentSection }) => {
               <FiArrowLeft size={18} />
               <span className="text-sm">Volver al sitio</span>
             </button>
-            <h1 className="text-xl font-bold">Admin Panel — Productos</h1>
+            <h1 className="text-xl font-bold">Admin Panel</h1>
+          </div>
+          <div className="flex gap-1 bg-gray-800 rounded-lg p-1">
+            <button
+              onClick={() => setActiveTab('products')}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'products' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              <FiPackage size={14} /> Productos
+            </button>
+            <button
+              onClick={() => setActiveTab('sales')}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'sales' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              <FiShoppingCart size={14} /> Ventas
+            </button>
           </div>
           <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 flex items-center gap-1 text-sm">
             <FiLogOut size={16} />
@@ -339,6 +355,10 @@ const AdminPanel = ({ setCurrentSection }) => {
           </div>
         )}
 
+        {activeTab === 'sales' ? (
+          <SalesPanel />
+        ) : (
+        <>
         {/* Form view */}
         {editingProduct !== null ? (
           <div className="bg-gray-900 rounded-xl p-6 border border-gray-800">
@@ -438,6 +458,8 @@ const AdminPanel = ({ setCurrentSection }) => {
               </div>
             )}
           </>
+        )}
+        </>
         )}
       </div>
     </div>

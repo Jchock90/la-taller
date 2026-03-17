@@ -135,7 +135,6 @@ const Products = () => {
                   key={item._id}
                   item={item}
                   index={itemIndex}
-                  onAddToCart={addToCart}
                   onViewDetail={setSelectedProduct}
                 />
               ))}

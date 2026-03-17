@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
-import { FiShoppingCart, FiEye } from 'react-icons/fi';
+import { FiEye } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
-const ProductCard = ({ item, index, onAddToCart, onViewDetail }) => {
+const ProductCard = ({ item, index, onViewDetail }) => {
   const { isDark } = useTheme();
-  const { translatedText: addToCartText } = useAutoTranslate('Agregar al carrito');
   const { translatedText: viewMoreText } = useAutoTranslate('Ver más');
   
   return (
@@ -24,13 +23,6 @@ const ProductCard = ({ item, index, onAddToCart, onViewDetail }) => {
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       />
-      <button
-        onClick={() => onViewDetail(item)}
-        className={`absolute bottom-3 right-3 flex items-center gap-1 ${isDark ? 'bg-gray-700/80 text-gray-100' : 'bg-white/80 text-gray-700'} backdrop-blur-sm text-xs px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-      >
-        <FiEye size={14} />
-        {viewMoreText}
-      </button>
     </div>
     <div className="p-6">
       <h4 className={`text-xl font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{item.name}</h4>
@@ -41,10 +33,10 @@ const ProductCard = ({ item, index, onAddToCart, onViewDetail }) => {
         className={`flex items-center justify-center w-full py-2 px-4 rounded-md font-medium transition-colors ${
           isDark ? 'bg-white text-black' : 'bg-black text-white'
         }`}
-        onClick={() => onAddToCart(item)}
+        onClick={() => onViewDetail(item)}
       >
-        <FiShoppingCart className="mr-2" />
-        {addToCartText}
+        <FiEye className="mr-2" />
+        {viewMoreText}
       </motion.button>
     </div>
   </motion.div>
