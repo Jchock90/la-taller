@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiSearch, FiRefreshCw, FiChevronLeft, FiChevronRight, FiMessageSquare, FiX, FiTrendingUp, FiDollarSign, FiShoppingBag, FiBarChart2, FiTrash2 } from 'react-icons/fi';
+import { FiSearch, FiRefreshCw, FiChevronLeft, FiChevronRight, FiMessageSquare, FiX, FiTrendingUp, FiDollarSign, FiShoppingBag, FiBarChart2, FiTrash2, FiTruck, FiSend, FiExternalLink } from 'react-icons/fi';
 import { adminApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,6 +9,7 @@ const STATUS_LABELS = {
   approved: 'Aprobada',
   rejected: 'Rechazada',
   refunded: 'Reembolsada',
+  shipped: 'Despachada',
 };
 
 const STATUS_COLORS = {
@@ -17,6 +18,7 @@ const STATUS_COLORS = {
   approved: 'bg-green-900/50 text-green-400',
   rejected: 'bg-red-900/50 text-red-400',
   refunded: 'bg-orange-900/50 text-orange-400',
+  shipped: 'bg-cyan-900/50 text-cyan-400',
 };
 
 const SalesPanel = () => {
@@ -37,6 +39,9 @@ const SalesPanel = () => {
   const [notesText, setNotesText] = useState('');
   const [view, setView] = useState('list'); // 'list' | 'stats'
   const [confirmModal, setConfirmModal] = useState(null);
+  const [editingTracking, setEditingTracking] = useState(null);
+  const [trackingUrl, setTrackingUrl] = useState('');
+  const [sendingTracking, setSendingTracking] = useState(false);
 
   const fetchSales = async (p = page) => {
     setLoading(true);
@@ -130,6 +135,21 @@ const SalesPanel = () => {
         }
       },
     });
+  };
+
+  const handleSendTracking = async (saleId) => {
+    if (!trackingUrl.trim()) return;
+    setSendingTracking(true);
+    try {
+      await adminApi.sendTracking(token, saleId, trackingUrl.trim());
+      setEditingTracking(null);
+      setTrackingUrl('');
+      fetchSales();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSendingTracking(false);
+    }
   };
 
   const formatDate = (d) => {
@@ -345,6 +365,7 @@ const SalesPanel = () => {
                         <span className={`text-xs px-2 py-0.5 rounded ${STATUS_COLORS[sale.status]}`}>
                           {STATUS_LABELS[sale.status]}
                         </span>
+                        {sale.trackingUrl && <FiTruck className="text-cyan-400" size={14} title="Despachado con seguimiento" />}
                       </div>
                       <div className="flex gap-4 text-xs text-gray-500">
                         <span>{sale.email}</span>
@@ -367,6 +388,7 @@ const SalesPanel = () => {
                             <p><span className="text-gray-500">Nombre:</span> {sale.nombre} {sale.apellido}</p>
                             <p><span className="text-gray-500">Email:</span> {sale.email}</p>
                             <p><span className="text-gray-500">Teléfono:</span> {sale.telefono}</p>
+                            <p><span className="text-gray-500">Dirección:</span> {sale.direccion || '—'}{sale.pisoDepto ? ` (${sale.pisoDepto})` : ''}</p>
                             <p><span className="text-gray-500">Ubicación:</span> {sale.ciudad}, {sale.provincia} (CP: {sale.codigoPostal})</p>
                             <p><span className="text-gray-500">Orden:</span> <span className="font-mono text-xs">{sale.orderId}</span></p>
                           </div>
@@ -419,14 +441,71 @@ const SalesPanel = () => {
                         )}
                       </div>
 
+                      {/* Tracking / Despacho */}
+                      <div className="mb-4">
+                        <h4 className="text-xs text-gray-500 uppercase mb-2">Seguimiento de envío</h4>
+                        {sale.status === 'shipped' && sale.trackingUrl ? (
+                          <div className="flex items-center gap-2 bg-cyan-900/20 border border-cyan-800/30 rounded-lg p-3">
+                            <FiTruck className="text-cyan-400 shrink-0" size={16} />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs text-cyan-400 font-medium">Despachado {sale.shippedAt ? `el ${new Date(sale.shippedAt).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}` : ''}</p>
+                              <a href={sale.trackingUrl.startsWith('http') ? sale.trackingUrl : `https://${sale.trackingUrl}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-300 hover:text-cyan-100 underline flex items-center gap-1 truncate">
+                                <FiExternalLink size={10} />
+                                {sale.trackingUrl}
+                              </a>
+                            </div>
+                          </div>
+                        ) : editingTracking === sale._id ? (
+                          <div className="flex gap-2">
+                            <input
+                              type="url"
+                              className="flex-1 bg-gray-800 border border-gray-700 text-gray-100 rounded px-3 py-2 text-sm focus:outline-none focus:border-cyan-500"
+                              value={trackingUrl}
+                              onChange={e => setTrackingUrl(e.target.value)}
+                              placeholder="https://tracking.correoargentino.com.ar/..."
+                            />
+                            <button
+                              onClick={() => handleSendTracking(sale._id)}
+                              disabled={sendingTracking || !trackingUrl.trim()}
+                              className="bg-cyan-600 text-white px-3 py-1 rounded text-xs hover:bg-cyan-500 disabled:opacity-50 flex items-center gap-1"
+                            >
+                              <FiSend size={12} />
+                              {sendingTracking ? 'Enviando...' : 'Enviar'}
+                            </button>
+                            <button
+                              onClick={() => { setEditingTracking(null); setTrackingUrl(''); }}
+                              className="bg-gray-700 text-gray-300 px-3 py-1 rounded text-xs hover:bg-gray-600"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => { setEditingTracking(sale._id); setTrackingUrl(sale.trackingUrl || ''); }}
+                            className="text-sm text-gray-400 hover:text-cyan-400 flex items-center gap-1.5 transition-colors"
+                          >
+                            <FiTruck size={13} />
+                            {sale.status === 'approved' ? 'Enviar link de seguimiento y despachar' : 'Agregar seguimiento'}
+                          </button>
+                        )}
+                      </div>
+
                       {/* Actions */}
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-wrap">
                         {sale.status === 'approved' && (
                           <button
                             onClick={() => handleStatusChange(sale, 'refunded')}
                             className="bg-orange-900/30 text-orange-400 px-3 py-1.5 rounded text-xs hover:bg-orange-900/50"
                           >
                             Marcar reembolsada
+                          </button>
+                        )}
+                        {sale.status === 'shipped' && (
+                          <button
+                            onClick={() => handleStatusChange(sale, 'approved')}
+                            className="bg-green-900/30 text-green-400 px-3 py-1.5 rounded text-xs hover:bg-green-900/50"
+                          >
+                            Volver a aprobada
                           </button>
                         )}
                         {sale.status === 'refunded' && (

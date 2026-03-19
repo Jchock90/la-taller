@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { parsePrice } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
+import { useUserAuth } from '../context/UserAuthContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
-const INITIAL_FORM = { nombre: '', apellido: '', codigoPostal: '', ciudad: '', provincia: '', email: '', telefono: '' };
+const INITIAL_FORM = { nombre: '', apellido: '', email: '', telefono: '', direccion: '', pisoDepto: '', codigoPostal: '', provincia: '', ciudad: '' };
 
 const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   const { isDark } = useTheme();
+  const { user, userToken } = useUserAuth();
   const { translatedText: orderSummaryText } = useAutoTranslate('Resumen de compra');
   const { translatedText: totalLabel } = useAutoTranslate('Total:');
   const { translatedText: shippingText } = useAutoTranslate('Datos de envío');
@@ -18,11 +20,18 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   const { translatedText: loadingCitiesText } = useAutoTranslate('Cargando ciudades...');
   const { translatedText: selectCityText } = useAutoTranslate('Selecciona una ciudad');
   const { translatedText: phoneText } = useAutoTranslate('Teléfono');
+  const { translatedText: addressText } = useAutoTranslate('Dirección (calle y número)');
+  const { translatedText: floorText } = useAutoTranslate('Piso / Depto (opcional)');
   const { translatedText: errorPaymentText } = useAutoTranslate('Error al iniciar el pago. Intenta de nuevo.');
   const { translatedText: errorConnectionText } = useAutoTranslate('Error de conexión con el servidor.');
   const { translatedText: processingText } = useAutoTranslate('Procesando...');
   const { translatedText: goToPayText } = useAutoTranslate('Ir a pagar');
-  const [formData, setFormData] = useState(INITIAL_FORM);
+  const [formData, setFormData] = useState(() => {
+    if (user) {
+      return { ...INITIAL_FORM, nombre: user.nombre || '', apellido: user.apellido || '', email: user.email || '', direccion: user.direccion || '', pisoDepto: user.pisoDepto || '' };
+    }
+    return INITIAL_FORM;
+  });
   const [provincias, setProvincias] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [loadingCiudades, setLoadingCiudades] = useState(false);
@@ -66,7 +75,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
       const response = await fetch(`${apiUrl}/create_preference`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, ...formData }),
+        body: JSON.stringify({ items, ...formData, ...(userToken ? { userToken } : {}) }),
       });
       const data = await response.json();
       if (data && data.init_point) {
@@ -102,19 +111,29 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
 
         <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-gray-100' : ''}`}>{shippingText}</h3>
         <div className="grid grid-cols-1 gap-4">
-          <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
-            <option value="">{selectProvinceText}</option>
-            {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
-          </select>
-          <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
-            <option value="">{loadingCiudades ? loadingCitiesText : selectCityText}</option>
-            {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
-          </select>
-          <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          <div className="grid grid-cols-2 gap-4">
+            <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <input name="direccion" value={formData.direccion} onChange={handleInputChange} required placeholder={addressText} className={`col-span-2 border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="pisoDepto" value={formData.pisoDepto} onChange={handleInputChange} placeholder={floorText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
+              <option value="">{selectProvinceText}</option>
+              {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
+            </select>
+            <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
+              <option value="">{loadingCiudades ? loadingCitiesText : selectCityText}</option>
+              {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
+            </select>
+          </div>
         </div>
         {errorMsg && (
           <div className={`mt-4 flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${

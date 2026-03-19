@@ -101,6 +101,8 @@ const localTranslations = {
   'Cargando ciudades...': 'Loading cities...',
   'Selecciona una ciudad': 'Select a city',
   'Teléfono': 'Phone',
+  'Dirección (calle y número)': 'Address (street and number)',
+  'Piso / Depto (opcional)': 'Floor / Apt (optional)',
   'Error al iniciar el pago. Intenta de nuevo.': 'Error starting payment. Please try again.',
   'Error de conexión con el servidor.': 'Server connection error.',
   'Procesando...': 'Processing...',
@@ -142,6 +144,53 @@ const localTranslations = {
 
   // Navbar
   'Spotify deshabilitado (cookies de terceros rechazadas)': 'Spotify disabled (third-party cookies rejected)',
+
+  // UserAuth
+  'Iniciar sesión': 'Sign in',
+  'Crear cuenta': 'Create account',
+  'Email': 'Email',
+  'Contraseña': 'Password',
+  'Confirmar contraseña': 'Confirm password',
+  'o': 'or',
+  'Continuar con Google': 'Continue with Google',
+  '¿No tenés cuenta?': "Don't have an account?",
+  '¿Ya tenés cuenta?': 'Already have an account?',
+  'Ventajas de registrarte': 'Benefits of signing up',
+  'Seguí el estado de tus compras en tiempo real': 'Track your purchases status in real time',
+  'Historial completo de todas tus compras': 'Complete history of all your purchases',
+  'Proceso de compra más rápido': 'Faster checkout process',
+  'Las contraseñas no coinciden': 'Passwords do not match',
+  'Verifica tu email': 'Verify your email',
+  'Te enviamos un enlace de verificación a': 'We sent a verification link to',
+  'Reenviar enlace': 'Resend link',
+  'Enlace reenviado': 'Link resent',
+
+  // EmailVerification
+  'Verificando tu email...': 'Verifying your email...',
+  '¡Email verificado!': 'Email verified!',
+  'Tu cuenta ha sido verificada correctamente. Ya podés empezar a comprar.': 'Your account has been verified successfully. You can now start shopping.',
+  'Error de verificación': 'Verification error',
+  'Ir a la tienda': 'Go to store',
+
+  // UserDashboard
+  'Mi cuenta': 'My account',
+  'Mis compras': 'My purchases',
+  'Aún no tenés compras realizadas': 'You have no purchases yet',
+  'Explorar productos': 'Explore products',
+  'Cerrar sesión': 'Sign out',
+  'Total': 'Total',
+  'Pendiente': 'Pending',
+  'En proceso': 'In process',
+  'Aprobado': 'Approved',
+  'Rechazado': 'Rejected',
+  'Reembolsado': 'Refunded',
+  'Despachado': 'Shipped',
+  'Seguir mi envío': 'Track my shipment',
+  'Estado': 'Status',
+  'Fecha': 'Date',
+  'Ver detalles': 'View details',
+  'Cargando...': 'Loading...',
+  'Envío a': 'Shipping to',
 };
 
 

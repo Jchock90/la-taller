@@ -102,9 +102,10 @@ const CartButton = ({ cartCount, onClick }) => {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
-      className={`fixed right-6 bottom-6 z-40 p-4 rounded-full shadow-lg ${
+      className={`fixed right-6 z-40 w-14 h-14 rounded-full shadow-lg flex items-center justify-center ${
         isDark ? 'bg-purple-600 text-white' : 'bg-black text-white'
       }`}
+      style={{ bottom: 'var(--fab-bottom, 24px)', transition: 'bottom 0.15s ease-out' }}
     >
       <FiShoppingCart size={24} />
       {cartCount > 0 && (

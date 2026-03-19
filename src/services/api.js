@@ -145,6 +145,16 @@ export const adminApi = {
     return res.json();
   },
 
+  async sendTracking(token, id, trackingUrl) {
+    const res = await fetch(`${API_URL}/api/admin/sales/${encodeURIComponent(id)}/tracking`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ trackingUrl }),
+    });
+    if (!res.ok) throw new Error('Error al enviar seguimiento');
+    return res.json();
+  },
+
   async deleteSale(token, id) {
     const res = await fetch(`${API_URL}/api/admin/sales/${encodeURIComponent(id)}`, {
       method: 'DELETE',

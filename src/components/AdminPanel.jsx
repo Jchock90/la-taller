@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff, FiPackage, FiShoppingCart, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff, FiPackage, FiShoppingCart, FiUpload, FiUsers } from 'react-icons/fi';
 import { adminApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import SalesPanel from './SalesPanel';
+import UsersPanel from './UsersPanel';
 
 const EMPTY_PRODUCT = {
   name: '',
@@ -597,6 +598,12 @@ const AdminPanel = ({ setCurrentSection }) => {
             >
               <FiShoppingCart size={14} /> Ventas
             </button>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'users' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+            >
+              <FiUsers size={14} /> Usuarios
+            </button>
           </div>
           <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 flex items-center gap-1 text-sm">
             <FiLogOut size={16} />
@@ -621,6 +628,8 @@ const AdminPanel = ({ setCurrentSection }) => {
 
         {activeTab === 'sales' ? (
           <SalesPanel />
+        ) : activeTab === 'users' ? (
+          <UsersPanel />
         ) : (
         <>
         {/* Form view */}

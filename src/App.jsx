@@ -3,6 +3,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { useTheme } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { UserAuthProvider } from './context/UserAuthContext';
 import Navbar from './components/Navbar';
 import TickerBar from './components/TickerBar';
 import Home from './sections/Home';
@@ -13,6 +14,7 @@ import Footer from './components/Footer';
 import PaymentStatus from './components/PaymentStatus';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
+import EmailVerification from './components/EmailVerification';
 import CookieConsent from './components/CookieConsent';
 
 function AppContent({ currentSection, setCurrentSection, renderSection }) {
@@ -30,14 +32,14 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className={`${isDark ? 'bg-gray-950' : 'bg-white'}`}>
-        {!['success', 'failure', 'pending'].includes(currentSection) && (
+        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
           <>
             <Navbar setCurrentSection={setCurrentSection} />
             {currentSection === 'home' && <TickerBar />}
           </>
         )}
         {renderSection()}
-        {!['success', 'failure', 'pending'].includes(currentSection) && (
+        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
           <Footer setCurrentSection={setCurrentSection} />
         )}
         <CookieConsent />
@@ -55,6 +57,7 @@ const SECTION_PATHS = {
   'success': '/success',
   'failure': '/failure',
   'pending': '/pending',
+  'verificar-email': '/verificar-email',
 };
 
 const PATH_TO_SECTION = Object.fromEntries(
@@ -107,6 +110,8 @@ function App() {
         return <PaymentStatus status="failure" setCurrentSection={setCurrentSection} />;
       case 'pending':
         return <PaymentStatus status="pending" setCurrentSection={setCurrentSection} />;
+      case 'verificar-email':
+        return <EmailVerification setCurrentSection={setCurrentSection} />;
       default:
         return <Home setCurrentSection={setCurrentSection} />;
     }
@@ -116,7 +121,9 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <AuthProvider>
-          <AppContent currentSection={currentSection} setCurrentSection={setCurrentSection} renderSection={renderSection} />
+          <UserAuthProvider>
+            <AppContent currentSection={currentSection} setCurrentSection={setCurrentSection} renderSection={renderSection} />
+          </UserAuthProvider>
         </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
