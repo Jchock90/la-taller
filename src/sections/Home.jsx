@@ -154,10 +154,10 @@ const Home = ({ setCurrentSection }) => {
                 transition={{ delay: idx * 0.1, duration: 0.5 }}
                 className={`text-center p-6 rounded-lg ${isDark ? 'bg-black border border-gray-800' : 'bg-gray-100'}`}
               >
-                <div className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-purple-400' : 'text-purple-600'} mb-2`}>
+                <div className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-2`}>
                   {counters[Object.keys(counters)[idx]]}+
                 </div>
-                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-700'}`}>{stat.label}</p>
+                <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -190,7 +190,7 @@ const Home = ({ setCurrentSection }) => {
       </div>
 
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-8`}>
-        <div className="max-w-5xl mx-auto px-6">
+        <div className="max-w-md mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ const Home = ({ setCurrentSection }) => {
               <img
                 src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
                 alt="Productos disponibles"
-                className="w-full h-[32rem] md:h-[38rem] object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-[20rem] md:h-[24rem] object-cover object-center transition-transform duration-300 group-hover:scale-105"
               />
             </div>
             <div className="mt-4 text-center">

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createElement } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { translateText } from '../services/translationService';
 
 const localTranslations = {
   // TickerBar
@@ -51,6 +52,17 @@ const localTranslations = {
   'Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.':
     'Each piece can be adapted to your measurements and preferences. Contact me to create something unique for you.',
   'Solicitar diseño personalizado': 'Request custom design',
+  'Cargando productos...': 'Loading products...',
+  'Filtrar productos': 'Filter products',
+  'Limpiar filtros': 'Clear filters',
+  'Todas las categorías': 'All categories',
+  'Todas las colecciones': 'All collections',
+  'Todos los talles': 'All sizes',
+  'Todos los colores': 'All colors',
+  'No se encontraron productos con los filtros seleccionados': 'No products found with the selected filters',
+  'agregado al carrito': 'added to cart',
+  'producto': 'product',
+  'productos': 'products',
   'Colección Atemporal': 'Timeless Collection',
   'Piezas clásicas diseñadas para trascender temporadas':
     'Classic pieces designed to transcend seasons',
@@ -79,12 +91,59 @@ const localTranslations = {
   'Total:': 'Total:',
   'Finalizar compra': 'Checkout',
 
+  // CheckoutForm
+  'Resumen de compra': 'Order summary',
+  'Datos de envío': 'Shipping details',
+  'Nombre': 'First name',
+  'Apellido': 'Last name',
+  'Código Postal': 'Zip code',
+  'Selecciona una provincia': 'Select a province',
+  'Cargando ciudades...': 'Loading cities...',
+  'Selecciona una ciudad': 'Select a city',
+  'Teléfono': 'Phone',
+  'Error al iniciar el pago. Intenta de nuevo.': 'Error starting payment. Please try again.',
+  'Error de conexión con el servidor.': 'Server connection error.',
+  'Procesando...': 'Processing...',
+  'Ir a pagar': 'Proceed to pay',
+
+  // PaymentStatus
+  '¡Compra exitosa!': 'Purchase successful!',
+  'Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.':
+    'Your payment was processed successfully. You will soon receive an email with your purchase details and shipping tracking.',
+  'Gracias por confiar en La Taller. Nos pondremos en contacto contigo muy pronto.':
+    'Thank you for trusting La Taller. We will contact you very soon.',
+  'Error en el pago': 'Payment error',
+  'Hubo un problema al procesar tu pago. No se realizó ningún cargo.':
+    'There was a problem processing your payment. No charges were made.',
+  'Por favor, intenta nuevamente o contáctanos si el problema persiste.':
+    'Please try again or contact us if the problem persists.',
+  'Pago pendiente': 'Payment pending',
+  'Tu pago está siendo procesado. Te notificaremos por email cuando se confirme.':
+    'Your payment is being processed. We will notify you by email when confirmed.',
+  'Esto puede tardar unos minutos. No es necesario que permanezcas en esta página.':
+    'This may take a few minutes. You don\'t need to stay on this page.',
+  'Volver al inicio': 'Back to home',
+  'Ver productos': 'View products',
+  'Contactar por WhatsApp': 'Contact via WhatsApp',
+
+  // CookieConsent
+  '¿Aceptás nuestras cookies?': 'Do you accept our cookies?',
+  'No, gracias': 'No, thanks',
+  'Sí, dale': 'Yes, accept',
+
   // Footer
   'Diseño de indumentaria artesanal por Jess': 'Artisanal clothing design by Jess',
   'Navegación': 'Navigation',
   'Contacto': 'Contact',
   'Todos los derechos reservados.': 'All rights reserved.',
+
+  // ProductDetailModal
+  'Pago seguro': 'Secure payment',
+
+  // Navbar
+  'Spotify deshabilitado (cookies de terceros rechazadas)': 'Spotify disabled (third-party cookies rejected)',
 };
+
 
 export const useAutoTranslate = (text, sourceLang = 'es') => {
   const { language } = useLanguage();
@@ -98,21 +157,48 @@ export const useAutoTranslate = (text, sourceLang = 'es') => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (language === sourceLang) {
-      setTranslatedText(text);
-      setIsLoading(false);
-      return;
-    }
+    let cancelled = false;
+    async function doTranslate() {
+      if (language === sourceLang) {
+        setTranslatedText(text);
+        setIsLoading(false);
+        return;
+      }
 
-    if (language === 'en' && sourceLang === 'es' && localTranslations[text]) {
-      setTranslatedText(localTranslations[text]);
-      setIsLoading(false);
-      return;
-    }
+      // Check local dictionary first
+      if (language === 'en' && sourceLang === 'es' && localTranslations[text]) {
+        setTranslatedText(localTranslations[text]);
+        setIsLoading(false);
+        return;
+      }
 
-    setTranslatedText(text);
-    setIsLoading(false);
+      // Fall back to MyMemory translation API
+      setIsLoading(true);
+      try {
+        const result = await translateText(text, language, sourceLang);
+        if (!cancelled) {
+          setTranslatedText(result);
+        }
+      } catch {
+        if (!cancelled) setTranslatedText(text);
+      }
+      if (!cancelled) setIsLoading(false);
+    }
+    doTranslate();
+    return () => { cancelled = true; };
   }, [text, language, sourceLang]);
 
   return { translatedText, isLoading };
+};
+
+// Component for translating dynamic content (product names, collections, etc.)
+export const TranslatedText = ({ text, sourceLang = 'es' }) => {
+  const { translatedText } = useAutoTranslate(text, sourceLang);
+  return translatedText;
+};
+
+// Component for translating <option> elements
+export const TranslatedOption = ({ value, text, sourceLang = 'es', ...props }) => {
+  const { translatedText } = useAutoTranslate(text || value, sourceLang);
+  return createElement('option', { value, ...props }, translatedText);
 };

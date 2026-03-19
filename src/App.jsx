@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import PaymentStatus from './components/PaymentStatus';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
+import CookieConsent from './components/CookieConsent';
 
 function AppContent({ currentSection, setCurrentSection, renderSection }) {
   const { isDark } = useTheme();
@@ -39,6 +40,7 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
         {!['success', 'failure', 'pending'].includes(currentSection) && (
           <Footer setCurrentSection={setCurrentSection} />
         )}
+        <CookieConsent />
       </div>
     </div>
   );

@@ -5,12 +5,17 @@ import { useState } from 'react';
 import { NAV_ITEMS } from '../data/constants';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
+import { getConsent } from './CookieConsent';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const Navbar = ({ setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [spotifyOpen, setSpotifyOpen] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
+  const consent = getConsent();
+  const spotifyAllowed = consent?.thirdParty !== false;
+  const { translatedText: spotifyDisabledText } = useAutoTranslate('Spotify deshabilitado (cookies de terceros rechazadas)');
 
   const handleNavClick = (id) => {
     setCurrentSection(id);
@@ -49,10 +54,11 @@ const Navbar = ({ setCurrentSection }) => {
 
         <div className="flex items-center space-x-2 md:space-x-4">
           <motion.button
-            onClick={() => setSpotifyOpen((prev) => !prev)}
+            onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors"
+            className={`p-2 rounded-lg transition-colors ${spotifyAllowed ? 'text-black hover:bg-black/10' : 'text-black/30 cursor-not-allowed'}`}
             aria-label="Toggle Spotify player"
+            title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
             <FaSpotify size={18} />
           </motion.button>

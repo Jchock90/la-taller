@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import { translations } from '../data/translations';
+import { getConsent } from '../components/CookieConsent';
 
 const LanguageContext = createContext();
 
@@ -9,7 +10,10 @@ export const LanguageProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('language', language);
+    const consent = getConsent();
+    if (!consent || consent.preferences) {
+      localStorage.setItem('language', language);
+    }
   }, [language]);
 
   const getTranslationValue = (lang, key) => {

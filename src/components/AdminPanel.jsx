@@ -30,6 +30,13 @@ const CATEGORIAS_OPTIONS = [
   'Monos', 'Accesorios',
 ];
 
+const formatPrice = (raw) => {
+  const digits = raw.replace(/[^\d]/g, '');
+  if (!digits) return '';
+  const num = parseInt(digits, 10);
+  return '$' + num.toLocaleString('es-AR');
+};
+
 const ConfirmModal = ({ title, message, confirmText, confirmColor, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
     <div className="bg-gray-800 rounded-xl p-6 w-96 shadow-2xl border border-gray-700">
@@ -53,11 +60,32 @@ const ConfirmModal = ({ title, message, confirmText, confirmColor, onConfirm, on
   </div>
 );
 
-const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCollections, existingCategories }) => {
-  const [form, setForm] = useState({ ...EMPTY_PRODUCT, ...product });
+const FORM_STORAGE_KEY = 'admin-form-draft';
+
+const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCollections, existingCategories, collectionDescriptions, nextOrder }) => {
+  const [form, setForm] = useState(() => {
+    // Intentar restaurar borrador guardado
+    try {
+      const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed;
+      }
+    } catch {}
+    const base = { ...EMPTY_PRODUCT, ...product };
+    if (base.price) base.price = formatPrice(base.price);
+    if (!product && nextOrder != null) base.order = nextOrder;
+    return base;
+  });
+
+  // Guardar borrador en cada cambio
+  useEffect(() => {
+    sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form));
+  }, [form]);
   const [newColor, setNewColor] = useState('');
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState('');
   const { token } = useAuth();
 
   const handleChange = (field, value) => {
@@ -66,8 +94,13 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
 
   const handleImageUpload = async (file, target, index) => {
     if (!file) return;
+    if (!file.type.includes('jpeg') && !file.type.includes('jpg')) {
+      setUploadError('Solo se aceptan imágenes en formato JPG/JPEG.');
+      return;
+    }
     setUploading(true);
     setUploadProgress(0);
+    setUploadError('');
     try {
       const oldUrl = target === 'main' ? form.imageUrl : form.gallery[index];
       const { url } = await adminApi.uploadImage(token, file, oldUrl, (progress) => {
@@ -83,7 +116,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         });
       }
     } catch (err) {
-      alert('Error al subir imagen: ' + err.message);
+      setUploadError('Error al subir imagen: ' + err.message);
     } finally {
       setUploading(false);
     }
@@ -127,7 +160,8 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
   };
 
   const addColor = () => {
-    const color = newColor.trim();
+    const raw = newColor.trim();
+    const color = raw.charAt(0).toUpperCase() + raw.slice(1).toLowerCase();
     if (color && !form.colores.includes(color)) {
       setForm(prev => ({ ...prev, colores: [...prev.colores, color] }));
       setNewColor('');
@@ -144,11 +178,15 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
   const handleSubmit = (e) => {
     e.preventDefault();
     const cleanGallery = form.gallery.filter(url => url.trim() !== '');
-    onSave({ ...form, gallery: cleanGallery });
+    const normalizedPrice = formatPrice(form.price);
+    sessionStorage.removeItem(FORM_STORAGE_KEY);
+    onSave({ ...form, price: normalizedPrice, gallery: cleanGallery });
   };
 
   const inputClass = 'w-full bg-gray-800 border border-gray-700 text-gray-100 rounded px-3 py-2 focus:outline-none focus:border-purple-500 text-sm';
   const labelClass = 'block text-gray-400 text-sm mb-1 font-medium';
+
+  const isExistingCollection = existingCollections.includes(form.collectionName);
 
   return (
     <>
@@ -166,15 +204,32 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         </div>
       </div>
     )}
+    {uploadError && (
+      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div className="bg-gray-800 rounded-xl p-6 w-96 shadow-2xl border border-red-800/50">
+          <div className="flex items-center gap-3 mb-3">
+            <svg className="w-6 h-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-red-300 font-medium">{uploadError}</p>
+          </div>
+          <button onClick={() => setUploadError('')} className="w-full mt-2 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg text-sm transition-colors">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    )}
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className={labelClass}>Nombre *</label>
-          <input className={inputClass} value={form.name} onChange={e => handleChange('name', e.target.value)} required />
+          <label className={labelClass}>Nombre * <span className="text-gray-600 font-normal">({form.name.length}/60)</span></label>
+          <input className={inputClass} value={form.name} onChange={e => handleChange('name', e.target.value)} required maxLength={60} />
         </div>
         <div>
           <label className={labelClass}>Precio *</label>
-          <input className={inputClass} value={form.price} onChange={e => handleChange('price', e.target.value)} required placeholder="$45.200" />
+          <input className={inputClass} value={form.price}
+            onChange={e => handleChange('price', formatPrice(e.target.value))}
+            required placeholder="$45.200" />
         </div>
         <div>
           <label className={labelClass}>Colección *</label>
@@ -185,7 +240,9 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
               onChange={e => {
                 if (e.target.value) {
                   handleChange('collectionName', e.target.value);
-                  // Auto-fill description from first product of that collection
+                  if (collectionDescriptions[e.target.value]) {
+                    handleChange('collectionDescription', collectionDescriptions[e.target.value]);
+                  }
                 }
               }}
             >
@@ -204,8 +261,14 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
           </div>
         </div>
         <div>
-          <label className={labelClass}>Descripción de colección</label>
-          <input className={inputClass} value={form.collectionDescription} onChange={e => handleChange('collectionDescription', e.target.value)} />
+          <label className={labelClass}>Descripción de colección <span className="text-gray-600 font-normal">({form.collectionDescription.length}/100)</span></label>
+          <input className={`${inputClass} ${isExistingCollection ? 'opacity-50 cursor-not-allowed' : ''}`}
+            value={form.collectionDescription}
+            onChange={e => handleChange('collectionDescription', e.target.value)}
+            maxLength={100}
+            disabled={isExistingCollection}
+            placeholder={isExistingCollection ? 'Se usa la descripción existente' : 'Descripción de la nueva colección'}
+          />
         </div>
         <div>
           <label className={labelClass}>Categoría (tipo de prenda)</label>
@@ -248,11 +311,11 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       <div>
         <label className={labelClass}>Imagen principal *</label>
         <div className="flex gap-2 mb-2">
-          <input className={inputClass} value={form.imageUrl} onChange={e => handleChange('imageUrl', e.target.value)} required placeholder="URL o subí una foto" />
+          <input className={inputClass} value={form.imageUrl} onChange={e => handleChange('imageUrl', e.target.value)} required placeholder="URL o subí una foto (solo JPG)" />
           <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-gray-600 text-gray-400' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
             <FiUpload size={14} />
             {uploading ? '...' : 'Subir'}
-            <input type="file" accept="image/*" className="hidden" disabled={uploading}
+            <input type="file" accept="image/jpeg" className="hidden" disabled={uploading}
               onChange={e => handleImageUpload(e.target.files[0], 'main')} />
           </label>
         </div>
@@ -264,11 +327,12 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       <div>
         <label className={labelClass}>Galería de imágenes</label>
         {form.gallery.map((url, i) => (
-          <div key={i} className="flex gap-2 mb-2">
+          <div key={i} className="flex gap-2 mb-2 items-center">
+            {url && <img src={url} alt={`Gallery ${i + 1}`} className="w-10 h-10 object-cover rounded border border-gray-700 flex-shrink-0" />}
             <input className={inputClass} value={url} onChange={e => handleGalleryChange(i, e.target.value)} placeholder={`Imagen ${i + 1}`} />
             <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-gray-600 text-gray-400' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
               <FiUpload size={14} />
-              <input type="file" accept="image/*" className="hidden" disabled={uploading}
+              <input type="file" accept="image/jpeg" className="hidden" disabled={uploading}
                 onChange={e => handleImageUpload(e.target.files[0], 'gallery', i)} />
             </label>
             <button type="button" onClick={() => removeGallerySlot(i)} className="text-red-400 hover:text-red-300 p-2">
@@ -328,18 +392,18 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       </div>
 
       <div>
-        <label className={labelClass}>Composición</label>
-        <input className={inputClass} value={form.composicion} onChange={e => handleChange('composicion', e.target.value)} />
+        <label className={labelClass}>Composición <span className="text-gray-600 font-normal">({form.composicion.length}/120)</span></label>
+        <input className={inputClass} value={form.composicion} onChange={e => handleChange('composicion', e.target.value)} maxLength={120} />
       </div>
 
       <div>
-        <label className={labelClass}>Fabricación</label>
-        <textarea className={`${inputClass} h-20 resize-none`} value={form.fabricacion} onChange={e => handleChange('fabricacion', e.target.value)} />
+        <label className={labelClass}>Fabricación <span className="text-gray-600 font-normal">({form.fabricacion.length}/300)</span></label>
+        <textarea className={`${inputClass} h-20 resize-none`} value={form.fabricacion} onChange={e => handleChange('fabricacion', e.target.value)} maxLength={300} />
       </div>
 
       <div>
-        <label className={labelClass}>Cuidados</label>
-        <textarea className={`${inputClass} h-20 resize-none`} value={form.cuidados} onChange={e => handleChange('cuidados', e.target.value)} />
+        <label className={labelClass}>Cuidados <span className="text-gray-600 font-normal">({form.cuidados.length}/200)</span></label>
+        <textarea className={`${inputClass} h-20 resize-none`} value={form.cuidados} onChange={e => handleChange('cuidados', e.target.value)} maxLength={200} />
       </div>
 
       <div className="flex gap-3 pt-2">
@@ -376,11 +440,32 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
 
 const AdminPanel = ({ setCurrentSection }) => {
   const { token, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('products');
+  const [activeTab, setActiveTabState] = useState(() => {
+    return sessionStorage.getItem('admin-tab') || 'products';
+  });
+  const setActiveTab = (tab) => {
+    setActiveTabState(tab);
+    sessionStorage.setItem('admin-tab', tab);
+  };
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(null); // null = lista, 'new' = crear, product = editar
+  const [editingProduct, setEditingProductState] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem('admin-editing');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return null;
+  });
+  const setEditingProduct = (value) => {
+    setEditingProductState(value);
+    if (value) {
+      sessionStorage.setItem('admin-editing', JSON.stringify(value));
+    } else {
+      sessionStorage.removeItem('admin-editing');
+      sessionStorage.removeItem(FORM_STORAGE_KEY);
+    }
+  };
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [confirmModal, setConfirmModal] = useState(null);
@@ -547,11 +632,21 @@ const AdminPanel = ({ setCurrentSection }) => {
             <ProductForm
               product={editingProduct === 'new' ? null : editingProduct}
               onSave={handleSave}
-              onCancel={() => setEditingProduct(null)}
+              onCancel={() => {
+                sessionStorage.removeItem(FORM_STORAGE_KEY);
+                setEditingProduct(null);
+              }}
               onDelete={editingProduct !== 'new' ? () => handlePermanentDelete(editingProduct) : null}
               loading={saving}
               existingCollections={[...new Set(products.map(p => p.collectionName).filter(Boolean))]}
               existingCategories={[...new Set(products.map(p => p.categoria).filter(Boolean))]}
+              collectionDescriptions={Object.fromEntries(
+                [...new Set(products.map(p => p.collectionName).filter(Boolean))].map(name => [
+                  name,
+                  products.find(p => p.collectionName === name && p.collectionDescription)?.collectionDescription || ''
+                ])
+              )}
+              nextOrder={Math.max(0, ...products.map(p => p.order || 0)) + 1}
             />
           </div>
         ) : (

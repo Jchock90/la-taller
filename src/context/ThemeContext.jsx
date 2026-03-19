@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
+import { getConsent } from '../components/CookieConsent';
 
 const ThemeContext = createContext();
 
@@ -8,7 +9,10 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const consent = getConsent();
+    if (!consent || consent.preferences) {
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
     if (isDark) {
       document.documentElement.classList.add('dark');
     } else {

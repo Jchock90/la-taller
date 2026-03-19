@@ -2,16 +2,32 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { parsePrice } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const INITIAL_FORM = { nombre: '', apellido: '', codigoPostal: '', ciudad: '', provincia: '', email: '', telefono: '' };
 
 const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   const { isDark } = useTheme();
+  const { translatedText: orderSummaryText } = useAutoTranslate('Resumen de compra');
+  const { translatedText: totalLabel } = useAutoTranslate('Total:');
+  const { translatedText: shippingText } = useAutoTranslate('Datos de envío');
+  const { translatedText: nameText } = useAutoTranslate('Nombre');
+  const { translatedText: lastNameText } = useAutoTranslate('Apellido');
+  const { translatedText: zipText } = useAutoTranslate('Código Postal');
+  const { translatedText: selectProvinceText } = useAutoTranslate('Selecciona una provincia');
+  const { translatedText: loadingCitiesText } = useAutoTranslate('Cargando ciudades...');
+  const { translatedText: selectCityText } = useAutoTranslate('Selecciona una ciudad');
+  const { translatedText: phoneText } = useAutoTranslate('Teléfono');
+  const { translatedText: errorPaymentText } = useAutoTranslate('Error al iniciar el pago. Intenta de nuevo.');
+  const { translatedText: errorConnectionText } = useAutoTranslate('Error de conexión con el servidor.');
+  const { translatedText: processingText } = useAutoTranslate('Procesando...');
+  const { translatedText: goToPayText } = useAutoTranslate('Ir a pagar');
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [provincias, setProvincias] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [loadingCiudades, setLoadingCiudades] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     fetch('https://apis.datos.gob.ar/georef/api/provincias')
@@ -39,6 +55,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg('');
     try {
       const items = cart.map(c => ({
         title: c.name,
@@ -55,10 +72,10 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
       if (data && data.init_point) {
         onSuccess(data.init_point);
       } else {
-        alert("Error al iniciar el pago. Intenta de nuevo.");
+        setErrorMsg(errorPaymentText);
       }
     } catch {
-      alert("Error de conexión con el servidor.");
+      setErrorMsg(errorConnectionText);
     } finally {
       setLoading(false);
     }
@@ -68,7 +85,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
     <div className={`fixed inset-0 z-50 flex items-center justify-center ${isDark ? 'bg-black/50' : 'bg-black/50'}`}>
       <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-8 rounded-lg shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto`}>
         <button type="button" onClick={onClose} className={`absolute top-2 right-2 ${isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-500 hover:text-black'} text-2xl`}>&times;</button>
-        <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>Resumen de compra</h2>
+        <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>{orderSummaryText}</h2>
 
         <div className={`mb-6 border rounded p-3 ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50'}`}>
           {cart.map(item => (
@@ -78,31 +95,41 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
             </div>
           ))}
           <div className={`flex justify-between font-bold text-base mt-2 pt-2 ${isDark ? 'border-gray-800 text-gray-100' : 'border-gray-200'} border-t`}>
-            <span>Total:</span>
+            <span>{totalLabel}</span>
             <span>${cartTotal.toLocaleString('es-AR')}</span>
           </div>
         </div>
 
-        <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-gray-100' : ''}`}>Datos de envío</h3>
+        <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-gray-100' : ''}`}>{shippingText}</h3>
         <div className="grid grid-cols-1 gap-4">
-          <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder="Nombre" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder="Apellido" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder="Código Postal" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
           <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
-            <option value="">Selecciona una provincia</option>
+            <option value="">{selectProvinceText}</option>
             {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
           </select>
           <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
-            <option value="">{loadingCiudades ? 'Cargando ciudades...' : 'Selecciona una ciudad'}</option>
+            <option value="">{loadingCiudades ? loadingCitiesText : selectCityText}</option>
             {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
           </select>
           <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-          <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder="Teléfono" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+          <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
         </div>
+        {errorMsg && (
+          <div className={`mt-4 flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
+            isDark ? 'bg-red-900/40 text-red-300 border border-red-800/50' : 'bg-red-50 text-red-600 border border-red-200'
+          }`}>
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {errorMsg}
+          </div>
+        )}
         <button type="submit" className={`mt-6 w-full py-2 rounded font-medium transition-colors ${
           isDark ? 'bg-white text-black' : 'bg-black text-white'
         }`} disabled={loading}>
-          {loading ? 'Procesando...' : 'Ir a pagar'}
+          {loading ? processingText : goToPayText}
         </button>
       </form>
     </div>,

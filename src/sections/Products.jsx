@@ -12,7 +12,7 @@ import CheckoutForm from '../components/CheckoutForm';
 import Toast from '../components/Toast';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import { useAutoTranslate } from '../hooks/useAutoTranslate';
+import { useAutoTranslate, TranslatedText, TranslatedOption } from '../hooks/useAutoTranslate';
 
 const GAP = 24; // gap-6 = 24px
 
@@ -120,11 +120,22 @@ const Products = () => {
   const { translatedText: customTitle } = useAutoTranslate('¿Buscas algo personalizado?');
   const { translatedText: customDesc } = useAutoTranslate('Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.');
   const { translatedText: customButton } = useAutoTranslate('Solicitar diseño personalizado');
+  const { translatedText: loadingText } = useAutoTranslate('Cargando productos...');
+  const { translatedText: filterLabel } = useAutoTranslate('Filtrar productos');
+  const { translatedText: clearLabel } = useAutoTranslate('Limpiar filtros');
+  const { translatedText: allCategories } = useAutoTranslate('Todas las categorías');
+  const { translatedText: allCollections } = useAutoTranslate('Todas las colecciones');
+  const { translatedText: allSizes } = useAutoTranslate('Todos los talles');
+  const { translatedText: allColors } = useAutoTranslate('Todos los colores');
+  const { translatedText: noResultsText } = useAutoTranslate('No se encontraron productos con los filtros seleccionados');
+  const { translatedText: addedToCartText } = useAutoTranslate('agregado al carrito');
+  const { translatedText: sizeLabel } = useAutoTranslate('Talle:');
+  const { translatedText: productText } = useAutoTranslate('producto');
+  const { translatedText: productsText } = useAutoTranslate('productos');
   
   const [collections, setCollections] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [filters, setFilters] = useState({ categoria: '', coleccion: '', talle: '', color: '' });
-  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     productsApi.getCollections()
@@ -192,7 +203,7 @@ const Products = () => {
 
     const sizeText = selectedSize ? ` (${selectedSize})` : '';
     const colorText = selectedColor ? ` - ${selectedColor}` : '';
-    setToastMessage(`${item.name}${sizeText}${colorText} agregado al carrito`);
+    setToastMessage(`${item.name}${sizeText}${colorText} ${addedToCartText}`);
     setShowToast(true);
   };
 
@@ -235,94 +246,89 @@ const Products = () => {
         </motion.div>
 
         {loadingProducts ? (
-          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>Cargando productos...</div>
+          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{loadingText}</div>
         ) : (
         <>
         {/* Filter bar */}
         <div className={`mb-10 rounded-xl p-4 ${isDark ? 'bg-gray-900/50 border border-gray-800' : 'bg-gray-50 border border-gray-200'}`}>
           <div className="flex items-center justify-between mb-3">
-            <button
-              onClick={() => setShowFilters(f => !f)}
-              className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}
-            >
+            <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <FiFilter size={16} />
-              Filtrar productos
-            </button>
+              {filterLabel}
+            </span>
             {hasActiveFilter && (
               <button
                 onClick={clearFilters}
                 className="flex items-center gap-1 text-sm text-purple-500 hover:text-purple-400"
               >
-                <FiX size={14} /> Limpiar filtros
+                <FiX size={14} /> {clearLabel}
               </button>
             )}
           </div>
 
-          {showFilters && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <select
-                value={filters.categoria}
-                onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
-                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
-              >
-                <option value="">Todas las categorías</option>
-                {filterOptions.categorias.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-              <select
-                value={filters.coleccion}
-                onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
-                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
-              >
-                <option value="">Todas las colecciones</option>
-                {filterOptions.colecciones.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-              <select
-                value={filters.talle}
-                onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
-                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
-              >
-                <option value="">Todos los talles</option>
-                {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
-              </select>
-              <select
-                value={filters.color}
-                onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
-                className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
-              >
-                <option value="">Todos los colores</option>
-                {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
-              </select>
-            </div>
-          )}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <select
+              value={filters.categoria}
+              onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
+              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+            >
+              <option value="">{allCategories}</option>
+              {filterOptions.categorias.map(c => <TranslatedOption key={c} value={c} />)}
+            </select>
+            <select
+              value={filters.coleccion}
+              onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
+              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+            >
+              <option value="">{allCollections}</option>
+              {filterOptions.colecciones.map(c => <TranslatedOption key={c} value={c} />)}
+            </select>
+            <select
+              value={filters.talle}
+              onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
+              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+            >
+              <option value="">{allSizes}</option>
+              {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <select
+              value={filters.color}
+              onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
+              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-gray-800 text-gray-200 border-gray-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+            >
+              <option value="">{allColors}</option>
+              {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
 
           {hasActiveFilter && (
             <div className="flex flex-wrap gap-2 mt-3">
               {filters.categoria && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
-                  {filters.categoria}
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-black text-xs">
+                  <TranslatedText text={filters.categoria} />
                   <button onClick={() => setFilters(f => ({ ...f, categoria: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.coleccion && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
-                  {filters.coleccion}
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-black text-xs">
+                  <TranslatedText text={filters.coleccion} />
                   <button onClick={() => setFilters(f => ({ ...f, coleccion: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.talle && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
-                  Talle: {filters.talle}
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-black text-xs">
+                  {sizeLabel} {filters.talle}
                   <button onClick={() => setFilters(f => ({ ...f, talle: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.color && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-purple-400 text-xs">
-                  {filters.color}
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600/20 text-black text-xs">
+                  <TranslatedText text={filters.color} />
                   <button onClick={() => setFilters(f => ({ ...f, color: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'} self-center`}>
-                {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+                {filteredProducts.length} {filteredProducts.length !== 1 ? productsText : productText}
               </span>
             </div>
           )}
@@ -338,7 +344,7 @@ const Products = () => {
             </div>
           ) : (
             <div className={`text-center py-16 mb-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
-              No se encontraron productos con los filtros seleccionados
+              {noResultsText}
             </div>
           )
         ) : (
@@ -353,10 +359,10 @@ const Products = () => {
           >
             <div className="mb-8">
               <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'}`}>
-                {collection.name}
+                <TranslatedText text={collection.name} />
               </h3>
               <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>
-                {collection.description}
+                <TranslatedText text={collection.description} />
               </p>
             </div>
 

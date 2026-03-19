@@ -1,15 +1,23 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiShoppingCart, FiX } from 'react-icons/fi';
 import { createPortal } from 'react-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import { useTheme } from '../context/ThemeContext';
-import { useAutoTranslate } from '../hooks/useAutoTranslate';
+import { useAutoTranslate, TranslatedText } from '../hooks/useAutoTranslate';
 
 const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+  const [validationMsg, setValidationMsg] = useState('');
   const { isDark } = useTheme();
+
+  // Resetear selección al cambiar de producto
+  useEffect(() => {
+    setSelectedSize('');
+    setSelectedColor('');
+    setValidationMsg('');
+  }, [product?._id]);
   
   const { translatedText: selectSizeText } = useAutoTranslate('Por favor selecciona un talle');
   const { translatedText: selectColorText } = useAutoTranslate('Por favor selecciona un color');
@@ -19,6 +27,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const { translatedText: fabricationText } = useAutoTranslate('Fabricación');
   const { translatedText: careText } = useAutoTranslate('Cuidados');
   const { translatedText: addToCartText } = useAutoTranslate('Agregar al carrito');
+  const { translatedText: safePayText } = useAutoTranslate('Pago seguro');
   
   if (!product) return null;
 
@@ -26,13 +35,14 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
 
   const handleAddToCart = () => {
     if (details && details.talles.length > 0 && !selectedSize) {
-      alert(selectSizeText);
+      setValidationMsg(selectSizeText);
       return;
     }
     if (details && details.colores.length > 0 && !selectedColor) {
-      alert(selectColorText);
+      setValidationMsg(selectColorText);
       return;
     }
+    setValidationMsg('');
     onAddToCart(product, selectedSize, selectedColor);
     onClose();
   };
@@ -77,7 +87,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                         {details.talles.map(t => (
                           <button
                             key={t}
-                            onClick={() => setSelectedSize(t)}
+                            onClick={() => { setSelectedSize(prev => prev === t ? '' : t); setValidationMsg(''); }}
                             className={`border rounded px-3 py-1 transition-colors ${
                               selectedSize === t 
                                 ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
@@ -98,7 +108,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                         {details.colores.map(c => (
                           <button
                             key={c}
-                            onClick={() => setSelectedColor(c)}
+                            onClick={() => { setSelectedColor(prev => prev === c ? '' : c); setValidationMsg(''); }}
                             className={`rounded-full px-3 py-1 transition-colors ${
                               selectedColor === c 
                                 ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
@@ -114,19 +124,34 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
 
                   <div>
                     <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{compositionText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>{details.composicion}</p>
+                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.composicion} /></p>
                   </div>
 
                   <div>
                     <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{fabricationText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>{details.fabricacion}</p>
+                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.fabricacion} /></p>
                   </div>
 
                   <div>
                     <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{careText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>{details.cuidados}</p>
+                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.cuidados} /></p>
                   </div>
                 </div>
+              )}
+
+              {validationMsg && (
+                <motion.div
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`mt-4 flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
+                    isDark ? 'bg-red-900/40 text-red-300 border border-red-800/50' : 'bg-red-50 text-red-600 border border-red-200'
+                  }`}
+                >
+                  <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {validationMsg}
+                </motion.div>
               )}
 
               <motion.button
@@ -142,7 +167,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               </motion.button>
               <div className="flex items-center justify-center gap-2 mt-4 mb-2">
                 <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
-                <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· Pago seguro</span>
+                <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· {safePayText}</span>
               </div>
             </div>
           </motion.div>

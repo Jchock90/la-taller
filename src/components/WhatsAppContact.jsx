@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { FaWhatsapp } from 'react-icons/fa';
 import { WHATSAPP_URL } from '../data/constants';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const WhatsAppContact = ({ button = false }) => {
+  const { translatedText: customDesignText } = useAutoTranslate('Solicitar diseño personalizado');
   if (button) {
     return (
       <motion.a
@@ -13,7 +15,7 @@ const WhatsAppContact = ({ button = false }) => {
         whileTap={{ scale: 0.95 }}
         className="inline-block bg-green-500 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:bg-green-600 transition-colors flex items-center"
       >
-        <FaWhatsapp className="mr-2" /> Solicitar diseño personalizado
+        <FaWhatsapp className="mr-2" /> {customDesignText}
       </motion.a>
     );
   }

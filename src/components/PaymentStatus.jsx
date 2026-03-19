@@ -2,8 +2,24 @@ import { motion } from 'framer-motion';
 import { FiCheckCircle, FiXCircle, FiClock } from 'react-icons/fi';
 import { useEffect } from 'react';
 import { WHATSAPP_CONTACT_URL } from '../data/constants';
+import { useTheme } from '../context/ThemeContext';
+import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const PaymentStatus = ({ status, setCurrentSection }) => {
+  const { isDark } = useTheme();
+  const { translatedText: successTitle } = useAutoTranslate('¡Compra exitosa!');
+  const { translatedText: successMsg } = useAutoTranslate('Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.');
+  const { translatedText: successSub } = useAutoTranslate('Gracias por confiar en La Taller. Nos pondremos en contacto contigo muy pronto.');
+  const { translatedText: failTitle } = useAutoTranslate('Error en el pago');
+  const { translatedText: failMsg } = useAutoTranslate('Hubo un problema al procesar tu pago. No se realizó ningún cargo.');
+  const { translatedText: failSub } = useAutoTranslate('Por favor, intenta nuevamente o contáctanos si el problema persiste.');
+  const { translatedText: pendingTitle } = useAutoTranslate('Pago pendiente');
+  const { translatedText: pendingMsg } = useAutoTranslate('Tu pago está siendo procesado. Te notificaremos por email cuando se confirme.');
+  const { translatedText: pendingSub } = useAutoTranslate('Esto puede tardar unos minutos. No es necesario que permanezcas en esta página.');
+  const { translatedText: backHomeText } = useAutoTranslate('Volver al inicio');
+  const { translatedText: viewProductsText } = useAutoTranslate('Ver productos');
+  const { translatedText: contactWhatsAppText } = useAutoTranslate('Contactar por WhatsApp');
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -14,27 +30,27 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
       iconColor: 'text-green-500',
       bgColor: 'bg-green-50',
       borderColor: 'border-green-200',
-      title: '¡Compra exitosa!',
-      message: 'Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.',
-      submessage: 'Gracias por confiar en La Taller. Nos pondremos en contacto contigo muy pronto.',
+      title: successTitle,
+      message: successMsg,
+      submessage: successSub,
     },
     failure: {
       icon: FiXCircle,
       iconColor: 'text-red-500',
       bgColor: 'bg-red-50',
       borderColor: 'border-red-200',
-      title: 'Error en el pago',
-      message: 'Hubo un problema al procesar tu pago. No se realizó ningún cargo.',
-      submessage: 'Por favor, intenta nuevamente o contáctanos si el problema persiste.',
+      title: failTitle,
+      message: failMsg,
+      submessage: failSub,
     },
     pending: {
       icon: FiClock,
       iconColor: 'text-yellow-500',
       bgColor: 'bg-yellow-50',
       borderColor: 'border-yellow-200',
-      title: 'Pago pendiente',
-      message: 'Tu pago está siendo procesado. Te notificaremos por email cuando se confirme.',
-      submessage: 'Esto puede tardar unos minutos. No es necesario que permanezcas en esta página.',
+      title: pendingTitle,
+      message: pendingMsg,
+      submessage: pendingSub,
     },
   };
 
@@ -77,7 +93,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
             onClick={() => setCurrentSection('home')}
             className="bg-black text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:bg-gray-800 transition-colors"
           >
-            Volver al inicio
+            {backHomeText}
           </motion.button>
 
           {status === 'failure' && (
@@ -89,7 +105,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
                 isDark ? 'bg-gray-700 hover:bg-gray-800' : 'bg-purple-600 hover:bg-purple-700'
               }`}
             >
-              Ver productos
+              {viewProductsText}
             </motion.button>
           )}
 
@@ -101,7 +117,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
             whileTap={{ scale: 0.95 }}
             className="bg-green-500 text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:bg-green-600 transition-colors inline-block"
           >
-            Contactar por WhatsApp
+            {contactWhatsAppText}
           </motion.a>
         </div>
       </motion.div>
