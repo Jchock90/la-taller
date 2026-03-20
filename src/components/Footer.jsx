@@ -53,7 +53,7 @@ const Footer = ({ setCurrentSection }) => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-semibold">{navTitle}</h3>
+            <h3 className="text-base font-semibold">{navTitle}</h3>
             <ul className="space-y-2">
               {NAV_ITEMS.map((item, index) => (
                 <motion.li
@@ -79,13 +79,13 @@ const Footer = ({ setCurrentSection }) => {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="space-y-4"
           >
-            <h3 className="text-xl font-semibold">{contactTitle}</h3>
+            <h3 className="text-base font-semibold">{contactTitle}</h3>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <a href={`mailto:${CONTACT_INFO.email}`} className={`flex items-center transition-colors ${
                   isDark ? 'text-gray-400 hover:text-white' : 'text-purple-100 hover:text-white'
                 }`}>
-                  <FiMail className={`mt-1 mr-3 text-xl ${isDark ? 'text-gray-500' : 'text-purple-300'}`} />
+                  <FiMail className={`mt-1 mr-3 text-base ${isDark ? 'text-gray-500' : 'text-purple-300'}`} />
                   <span className="underline">{CONTACT_INFO.email}</span>
                 </a>
               </li>

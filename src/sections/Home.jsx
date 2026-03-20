@@ -105,22 +105,9 @@ const Home = ({ setCurrentSection }) => {
 
   return (
     <section id="home" className="relative">
-      <div className="h-[70vh] w-full pt-10">
-        <Carousel images={carouselImages} />
+      <div className="h-[80vh] w-full">
+        <Carousel images={carouselImages} overlayText={quoteText} />
       </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-16`}
-      >
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className={`text-xl md:text-2xl leading-relaxed font-medium italic ${isDark ? 'text-gray-300' : 'text-gray-800'}`}>
-            "{quoteText}"
-          </p>
-        </div>
-      </motion.div>
 
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-gray-50'} py-16`}>
         <div className="max-w-6xl mx-auto px-6">

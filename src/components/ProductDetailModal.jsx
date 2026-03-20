@@ -62,14 +62,14 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`${isDark ? 'bg-gray-950' : 'bg-white'} rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row`}
+            className={`${isDark ? 'bg-neutral-900' : 'bg-white'} rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full md:w-1/2 h-72 md:h-auto md:min-h-[500px] relative">
               <Carousel images={product.gallery || [product.imageUrl]} />
             </div>
 
-            <div className={`w-full md:w-1/2 p-6 md:p-8 overflow-y-auto ${isDark ? 'bg-gray-950' : ''}`}>
+            <div className={`w-full md:w-1/2 p-6 md:p-8 overflow-y-auto ${isDark ? 'bg-neutral-900' : ''}`}>
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.name}</h2>
@@ -91,7 +91,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                             className={`border rounded px-3 py-1 transition-colors ${
                               selectedSize === t 
                                 ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
-                                : isDark ? 'border-gray-700 text-gray-400 hover:border-gray-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
+                                : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
                             }`}
                           >
                             {t}
@@ -112,7 +112,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                             className={`rounded-full px-3 py-1 transition-colors ${
                               selectedColor === c 
                                 ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
-                                : isDark ? 'bg-gray-800 text-gray-400 hover:bg-gray-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                             }`}
                           >
                             {c}

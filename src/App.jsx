@@ -31,11 +31,11 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
-      <div className={`${isDark ? 'bg-gray-950' : 'bg-white'}`}>
+      <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
         {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
           <>
+            <TickerBar />
             <Navbar setCurrentSection={setCurrentSection} />
-            {currentSection === 'home' && <TickerBar />}
           </>
         )}
         {renderSection()}

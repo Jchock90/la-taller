@@ -44,8 +44,8 @@ const Navbar = ({ setCurrentSection }) => {
             <motion.a
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              whileHover={{ scale: 1.05, color: isDark ? '#c084fc' : 'white' }}
-              className="text-black text-lg font-medium cursor-pointer"
+              whileHover={{ scale: 1.05, color: isDark ? '#a3a3a3' : 'white' }}
+              className={isDark ? 'text-neutral-200 text-sm font-medium cursor-pointer' : 'text-black text-sm font-medium cursor-pointer'}
             >
               {t(`nav.${item.id.replace(/-/g, '')}`)}
             </motion.a>

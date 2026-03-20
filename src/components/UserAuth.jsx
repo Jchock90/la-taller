@@ -131,11 +131,11 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     window.google.accounts.id.prompt();
   };
 
-  const bg = isDark ? 'bg-gray-900' : 'bg-white';
-  const text = isDark ? 'text-gray-100' : 'text-gray-900';
-  const subtext = isDark ? 'text-gray-400' : 'text-gray-500';
-  const inputBg = isDark ? 'bg-gray-800 border-gray-700 text-white' : 'bg-gray-50 border-gray-300 text-gray-900';
-  const cardBg = isDark ? 'bg-gray-800/50' : 'bg-gray-50';
+  const bg = isDark ? 'bg-neutral-900' : 'bg-white';
+  const text = isDark ? 'text-neutral-100' : 'text-gray-900';
+  const subtext = isDark ? 'text-neutral-400' : 'text-gray-500';
+  const inputBg = isDark ? 'bg-neutral-800 border-neutral-700 text-white' : 'bg-gray-50 border-gray-300 text-gray-900';
+  const cardBg = isDark ? 'bg-neutral-800/50' : 'bg-gray-50';
 
   // Verification screen
   if (needsVerification) {
@@ -147,18 +147,18 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
           className={`${bg} rounded-2xl p-8 w-full max-w-md shadow-2xl text-center`}
           onClick={e => e.stopPropagation()}
         >
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-            <FiMail className="w-8 h-8 text-green-600" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-700/30 dark:bg-neutral-900/30 flex items-center justify-center">
+            <FiMail className="w-8 h-8 text-neutral-300" />
           </div>
           <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_verifyTitle}</h2>
           <p className={`${subtext} mb-1`}>{t_verifyMsg}</p>
           <p className={`font-medium mb-6 ${text}`}>{verificationEmail}</p>
-          {successMsg && <p className="text-green-500 text-sm mb-4">{successMsg}</p>}
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {successMsg && <p className="text-neutral-400 text-sm mb-4">{successMsg}</p>}
+          {error && <p className="text-neutral-500 text-sm mb-4">{error}</p>}
           <button
             onClick={handleResendVerification}
             disabled={loading}
-            className="text-sm underline text-blue-500 hover:text-blue-400 disabled:opacity-50"
+            className="text-sm underline text-neutral-400 hover:text-neutral-300 disabled:opacity-50 border-none dark:border-none"
           >
             {loading ? t_processing : t_resend}
           </button>
@@ -176,7 +176,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
         onClick={e => e.stopPropagation()}
       >
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 dark:border-gray-700">
+        <div className="flex border-b border-gray-200 dark:border-neutral-700">
           {['login', 'register'].map(t => (
             <button
               key={t}
@@ -194,7 +194,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
 
         <div className="p-6">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 dark:bg-neutral-800 text-red-600 dark:text-neutral-400 text-sm">
               {error}
             </div>
           )}
@@ -242,7 +242,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className="w-full py-2.5 bg-black dark:bg-neutral-200 text-white dark:text-neutral-900 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   {loading ? t_processing : t_login}
                 </button>
@@ -251,14 +251,14 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 {GOOGLE_CLIENT_ID && (
                   <>
                     <div className="flex items-center gap-3">
-                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                       <span className={`text-xs ${subtext}`}>{t_or}</span>
-                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                     </div>
                     <button
                       type="button"
                       onClick={handleGoogleLogin}
-                      className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
+                      className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
                     >
                       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
                       {t_google}
@@ -290,7 +290,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       { icon: FiHeart, text: t_benefit3 },
                     ].map((b, i) => (
                       <li key={i} className={`flex items-center gap-2 text-xs ${subtext}`}>
-                        <b.icon className="flex-shrink-0 text-green-500" size={14} />
+                        <b.icon className="flex-shrink-0 text-neutral-400" size={14} />
                         {b.text}
                       </li>
                     ))}
@@ -367,7 +367,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       {regPassword2 && regPassword === regPassword2 && (
-                        <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500" size={16} />
+                        <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
                       )}
                     </div>
                   </div>
@@ -383,14 +383,14 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   {GOOGLE_CLIENT_ID && (
                     <>
                       <div className="flex items-center gap-3">
-                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                         <span className={`text-xs ${subtext}`}>{t_or}</span>
-                        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+                        <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                       </div>
                       <button
                         type="button"
                         onClick={handleGoogleLogin}
-                        className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
+                        className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
                       >
                         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
                         {t_google}

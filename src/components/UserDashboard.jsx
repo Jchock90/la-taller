@@ -7,12 +7,12 @@ import { userApi } from '../services/userApi';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const STATUS_CONFIG = {
-  pending: { icon: FiClock, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20' },
-  in_process: { icon: FiAlertCircle, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-  approved: { icon: FiCheckCircle, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-900/20' },
-  rejected: { icon: FiXCircle, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20' },
-  refunded: { icon: FiXCircle, color: 'text-gray-500', bg: 'bg-gray-50 dark:bg-gray-800' },
-  shipped: { icon: FiTruck, color: 'text-cyan-500', bg: 'bg-cyan-50 dark:bg-cyan-900/20' },
+  pending: { icon: FiClock, color: 'text-neutral-400', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
+  in_process: { icon: FiAlertCircle, color: 'text-neutral-400', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
+  approved: { icon: FiCheckCircle, color: 'text-neutral-300', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
+  rejected: { icon: FiXCircle, color: 'text-neutral-500', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
+  refunded: { icon: FiXCircle, color: 'text-neutral-500', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
+  shipped: { icon: FiTruck, color: 'text-neutral-400', bg: 'bg-neutral-100 dark:bg-neutral-900/20' },
 };
 
 export default function UserDashboard({ onClose, setCurrentSection }) {
@@ -64,11 +64,11 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
     onClose?.();
   };
 
-  const bg = isDark ? 'bg-gray-900' : 'bg-white';
-  const text = isDark ? 'text-gray-100' : 'text-gray-900';
-  const subtext = isDark ? 'text-gray-400' : 'text-gray-500';
-  const cardBg = isDark ? 'bg-gray-800' : 'bg-gray-50';
-  const borderColor = isDark ? 'border-gray-700' : 'border-gray-200';
+  const bg = isDark ? 'bg-neutral-900' : 'bg-white';
+  const text = isDark ? 'text-neutral-100' : 'text-gray-900';
+  const subtext = isDark ? 'text-neutral-400' : 'text-gray-500';
+  const cardBg = isDark ? 'bg-neutral-800' : 'bg-gray-50';
+  const borderColor = isDark ? 'border-neutral-700' : 'border-gray-200';
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
@@ -81,7 +81,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
         {/* Header */}
         <div className={`p-5 border-b ${borderColor} flex items-center justify-between`}>
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-full ${isDark ? 'bg-gray-800' : 'bg-gray-100'} flex items-center justify-center`}>
+            <div className={`w-10 h-10 rounded-full ${isDark ? 'bg-neutral-800' : 'bg-gray-100'} flex items-center justify-center`}>
               <FiUser className={text} size={20} />
             </div>
             <div>
@@ -195,7 +195,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                               href={purchase.trackingUrl.startsWith('http') ? purchase.trackingUrl : `https://${purchase.trackingUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className={`mt-2 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isDark ? 'bg-cyan-900/30 text-cyan-400 hover:bg-cyan-900/50' : 'bg-cyan-50 text-cyan-700 hover:bg-cyan-100'}`}
+                              className={`mt-2 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isDark ? 'bg-neutral-900/30 text-neutral-300 hover:bg-neutral-900/50' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
                             >
                               <FiExternalLink size={14} />
                               {t_trackShipment}

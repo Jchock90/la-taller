@@ -48,7 +48,7 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                       <h4 className={`font-medium text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{item.name}</h4>
                       {item.selectedSize && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{sizeText} {item.selectedSize}</p>}
                       {item.selectedColor && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{colorText} {item.selectedColor}</p>}
-                      <p className={`text-sm font-semibold ${isDark ? 'text-gray-400' : 'text-purple-600'}`}>{item.price}</p>
+                      <p className={`text-sm font-semibold ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>{item.price}</p>
                       <div className="flex items-center gap-2 mt-1">
                         <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-1 rounded ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={14} /></button>
                         <span className={`text-sm font-medium w-6 text-center ${isDark ? 'text-gray-100' : ''}`}>{item.quantity}</span>
@@ -103,14 +103,14 @@ const CartButton = ({ cartCount, onClick }) => {
       whileTap={{ scale: 0.9 }}
       onClick={onClick}
       className={`fixed right-6 z-40 w-14 h-14 rounded-full shadow-lg flex items-center justify-center ${
-        isDark ? 'bg-purple-600 text-white' : 'bg-black text-white'
+        isDark ? 'bg-neutral-800 text-neutral-200' : 'bg-black text-white'
       }`}
       style={{ bottom: 'var(--fab-bottom, 24px)', transition: 'bottom 0.15s ease-out' }}
     >
       <FiShoppingCart size={24} />
       {cartCount > 0 && (
         <span className={`absolute -top-1 -right-1 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full ${
-          isDark ? 'bg-gray-700' : 'bg-purple-600'
+          isDark ? 'bg-neutral-700' : 'bg-purple-600'
         }`}>
           {cartCount}
         </span>
