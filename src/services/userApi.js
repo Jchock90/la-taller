@@ -19,7 +19,15 @@ export const userApi = {
       body: JSON.stringify({ email, password }),
     });
     const json = await res.json();
-    if (!res.ok) throw new Error(json.error || 'Error al iniciar sesión');
+    if (!res.ok) {
+      if (json.needsVerification) {
+        const err = new Error(json.error || 'Email no verificado');
+        err.needsVerification = true;
+        err.email = json.email;
+        throw err;
+      }
+      throw new Error(json.error || 'Error al iniciar sesión');
+    }
     return json;
   },
 
@@ -66,5 +74,23 @@ export const userApi = {
     });
     if (!res.ok) throw new Error('Error al eliminar usuario');
     return res.json();
+  },
+
+  async verifyEmail(token) {
+    const res = await fetch(`${API_URL}/api/users/verify-email?token=${encodeURIComponent(token)}`);
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Error al verificar email');
+    return json;
+  },
+
+  async resendVerification(email) {
+    const res = await fetch(`${API_URL}/api/users/resend-verification`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Error al reenviar verificación');
+    return json;
   },
 };

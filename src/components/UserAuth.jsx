@@ -16,6 +16,10 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState('');
+  const [resending, setResending] = useState(false);
+  const [resendOk, setResendOk] = useState(false);
 
   // Close on Escape
   useEffect(() => {
@@ -58,8 +62,12 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { translatedText: t_passNoMatch } = useAutoTranslate('Las contraseñas no coinciden');
   const { translatedText: t_emailNoMatch } = useAutoTranslate('Los emails no coinciden');
   const { translatedText: t_successTitle } = useAutoTranslate('¡Cuenta creada!');
-  const { translatedText: t_successMsg } = useAutoTranslate('Tu cuenta fue creada exitosamente. Ya podés empezar a comprar.');
+  const { translatedText: t_successMsg } = useAutoTranslate('Te enviamos un email para verificar tu cuenta. Revisá tu bandeja de entrada.');
   const { translatedText: t_processing } = useAutoTranslate('Procesando...');
+  const { translatedText: t_verifyTitle } = useAutoTranslate('Verificá tu email');
+  const { translatedText: t_verifyMsg } = useAutoTranslate('Te enviamos un email de verificación. Revisá tu bandeja de entrada y hacé clic en el link para activar tu cuenta.');
+  const { translatedText: t_resend } = useAutoTranslate('Reenviar email');
+  const { translatedText: t_resent } = useAutoTranslate('¡Email reenviado!');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,7 +78,12 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       login(data.token, data.user);
       onSuccess?.();
     } catch (err) {
-      setError(err.message);
+      if (err.needsVerification) {
+        setNeedsVerification(true);
+        setVerificationEmail(err.email || loginEmail);
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -93,13 +106,13 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     }
     setLoading(true);
     try {
-      const data = await userApi.register({
+      await userApi.register({
         nombre: regNombre,
         apellido: regApellido,
         email: regEmail,
         password: regPassword,
       });
-      login(data.token, data.user);
+      setVerificationEmail(regEmail);
       setSuccessMsg(true);
     } catch (err) {
       setError(err.message);
@@ -166,10 +179,60 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const inputBg = isDark ? 'bg-neutral-800 border-neutral-700 text-white' : 'bg-gray-50 border-gray-300 text-gray-900';
   const cardBg = isDark ? 'bg-neutral-800/50' : 'bg-gray-50';
 
+  const handleResend = async () => {
+    setResending(true);
+    setResendOk(false);
+    try {
+      await userApi.resendVerification(verificationEmail);
+      setResendOk(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setResending(false);
+    }
+  };
+
+  // Verification pending screen (from login or register)
+  if (needsVerification) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className={`${bg} p-8 w-full max-w-md shadow-2xl text-center`}
+          onClick={e => e.stopPropagation()}
+        >
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-900/30 flex items-center justify-center">
+            <FiMail className="w-8 h-8 text-yellow-400" />
+          </div>
+          <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_verifyTitle}</h2>
+          <p className={`${subtext} mb-6`}>{t_verifyMsg}</p>
+          {resendOk && <p className="text-green-400 text-sm mb-4">{t_resent}</p>}
+          {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={handleResend}
+              disabled={resending}
+              className={`px-5 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
+            >
+              {resending ? t_processing : t_resend}
+            </button>
+            <button
+              onClick={onClose}
+              className={`px-5 py-2.5 font-semibold text-sm border hover:opacity-80 transition-opacity ${isDark ? 'border-neutral-600 text-neutral-300' : 'border-gray-300 text-gray-700'}`}
+            >
+              OK
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   // Success screen
   if (successMsg) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => { onSuccess?.(); onClose(); }}>
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -181,12 +244,22 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
           </div>
           <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_successTitle}</h2>
           <p className={`${subtext} mb-6`}>{t_successMsg}</p>
-          <button
-            onClick={() => { onSuccess?.(); onClose(); }}
-            className={`px-6 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
-          >
-            OK
-          </button>
+          {resendOk && <p className="text-green-400 text-sm mb-4">{t_resent}</p>}
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={handleResend}
+              disabled={resending}
+              className={`px-5 py-2.5 font-semibold text-sm border hover:opacity-80 transition-opacity disabled:opacity-50 ${isDark ? 'border-neutral-600 text-neutral-300' : 'border-gray-300 text-gray-700'}`}
+            >
+              {resending ? t_processing : t_resend}
+            </button>
+            <button
+              onClick={onClose}
+              className={`px-6 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
+            >
+              OK
+            </button>
+          </div>
         </motion.div>
       </div>
     );

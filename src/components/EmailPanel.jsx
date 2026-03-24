@@ -74,7 +74,7 @@ export default function EmailPanel() {
   };
 
   const allContacts = [
-    ...recipients.users.map(u => ({ ...u, label: `${u.nombre} ${u.apellido}`, type: u.googleId ? 'Google' : 'Registrado' })),
+    ...recipients.users.map(u => ({ ...u, label: `${u.nombre} ${u.apellido}`, type: u.emailVerified ? (u.googleId ? 'Google' : 'Verificado') : 'No verificado' })),
     ...recipients.guests.map(g => ({ ...g, label: `${g.nombre} ${g.apellido}`, type: 'Comprador' })),
   ];
 
@@ -335,7 +335,7 @@ export default function EmailPanel() {
             {tab === 'newsletter' && (
               <div className="bg-neutral-800/20 border border-neutral-700/30 p-3 text-sm text-neutral-300 flex items-start gap-2">
                 <FiUsers className="shrink-0 mt-0.5" size={16} />
-                <span>Se enviará a <strong>{recipients.total}</strong> usuarios registrados.</span>
+                <span>Se enviará a <strong>{recipients.totalVerified || 0}</strong> usuarios verificados.</span>
               </div>
             )}
 
@@ -516,11 +516,13 @@ export default function EmailPanel() {
                           <p className="text-xs text-neutral-500 truncate">{c.email}</p>
                         </div>
                         <span className={`text-[10px] px-1.5 py-0.5 rounded-full shrink-0 ${
-                          c.type === 'Registrado' || c.type === 'Google'
+                          c.type === 'Verificado' || c.type === 'Google'
                             ? 'bg-green-900/40 text-green-400'
                             : c.type === 'Comprador'
                               ? 'bg-cyan-900/40 text-cyan-400'
-                              : 'bg-neutral-700 text-neutral-400'
+                              : c.type === 'No verificado'
+                                ? 'bg-yellow-900/40 text-yellow-400'
+                                : 'bg-neutral-700 text-neutral-400'
                         }`}>
                           {c.type}
                         </span>

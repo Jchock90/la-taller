@@ -122,6 +122,7 @@ export default function UsersPanel() {
                 <th className="text-left px-4 py-3">Usuario</th>
                 <th className="text-left px-4 py-3">Email</th>
                 <th className="text-center px-4 py-3">Método</th>
+                <th className="text-center px-4 py-3">Verificado</th>
                 <th className="text-center px-4 py-3">Compras</th>
                 <th className="text-left px-4 py-3">Fecha</th>
                 <th className="text-right px-4 py-3">Acciones</th>
@@ -148,6 +149,13 @@ export default function UsersPanel() {
                           <span className="text-xs bg-blue-900/30 text-blue-400 px-2 py-0.5 rounded-full">Google</span>
                         ) : (
                           <span className="text-xs bg-neutral-700 text-neutral-400 px-2 py-0.5 rounded-full">Email</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        {user.emailVerified ? (
+                          <span className="text-xs bg-green-900/30 text-green-400 px-2 py-0.5 rounded-full">Sí</span>
+                        ) : (
+                          <span className="text-xs bg-yellow-900/30 text-yellow-400 px-2 py-0.5 rounded-full">No</span>
                         )}
                       </td>
                       <td className="px-4 py-3 text-center">
