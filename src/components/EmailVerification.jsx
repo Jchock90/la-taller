@@ -54,7 +54,7 @@ export default function EmailVerification({ setCurrentSection }) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`${bg} rounded-2xl p-8 w-full max-w-md shadow-xl text-center`}
+        className={`${bg} p-8 w-full max-w-md shadow-xl text-center`}
       >
         {status === 'loading' && (
           <>
@@ -65,14 +65,14 @@ export default function EmailVerification({ setCurrentSection }) {
 
         {status === 'success' && (
           <>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+            <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-green-900/30' : 'bg-green-100'}`}>
               <FiCheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_verified}</h2>
             <p className={`${subtext} mb-6`}>{t_verifiedMsg}</p>
             <button
               onClick={() => setCurrentSection('que-vendo')}
-              className="px-6 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity"
+              className={`px-6 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
             >
               {t_goToStore}
             </button>
@@ -81,14 +81,14 @@ export default function EmailVerification({ setCurrentSection }) {
 
         {status === 'error' && (
           <>
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+            <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isDark ? 'bg-red-900/30' : 'bg-red-100'}`}>
               <FiXCircle className="w-8 h-8 text-red-600" />
             </div>
             <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_errorTitle}</h2>
             <p className={`${subtext} mb-6`}>{error}</p>
             <button
               onClick={() => setCurrentSection('que-vendo')}
-              className="px-6 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity"
+              className={`px-6 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
             >
               {t_goToStore}
             </button>

@@ -8,7 +8,7 @@ import { useTheme } from '../context/ThemeContext';
 import { getConsent } from './CookieConsent';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
-const Navbar = ({ setCurrentSection }) => {
+const Navbar = ({ currentSection, setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [spotifyOpen, setSpotifyOpen] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
@@ -25,30 +25,40 @@ const Navbar = ({ setCurrentSection }) => {
   return (
     <>
       <motion.nav 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md ${isDark ? 'bg-gray-300' : 'bg-purple-300'}`}
+        initial={{ opacity: 0, filter: 'blur(12px)' }}
+        animate={{ opacity: 1, filter: 'blur(0px)' }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md ${isDark ? 'bg-neutral-900' : 'bg-purple-300'}`}
       >
         <div className="flex items-center">
-          <img 
-            src="/img/logo.png" 
+          <motion.img 
+            src={isDark ? '/img/logo-white.png' : '/img/logo.png'} 
             alt="La Taller Logo" 
             className="h-8 cursor-pointer"
             onClick={() => handleNavClick('home')}
+            animate={{ 
+              y: [0, -3, 0],
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           />
         </div>
 
         <div className="hidden md:flex space-x-8">
           {NAV_ITEMS.map((item) => (
-            <motion.a
+            <a
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              whileHover={{ scale: 1.05, color: isDark ? '#a3a3a3' : 'white' }}
-              className={isDark ? 'text-neutral-200 text-sm font-medium cursor-pointer' : 'text-black text-sm font-medium cursor-pointer'}
+              className={`group relative text-sm tracking-wide uppercase font-medium cursor-pointer pb-0.5 ${
+                isDark ? 'text-gray-200' : 'text-black'
+              }`}
             >
               {t(`nav.${item.id.replace(/-/g, '')}`)}
-            </motion.a>
+              <span className={`absolute left-0 bottom-0 h-[1.5px] transition-all duration-300 ${
+                isDark ? 'bg-gray-200' : 'bg-black'
+              } ${
+                currentSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
+              }`} />
+            </a>
           ))}
         </div>
 
@@ -56,7 +66,7 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg transition-colors ${spotifyAllowed ? 'text-black hover:bg-black/10' : 'text-black/30 cursor-not-allowed'}`}
+            className={`p-2 rounded-lg transition-colors ${spotifyAllowed ? (isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
@@ -65,7 +75,7 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors"
+            className={`p-2 rounded-lg transition-colors ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
             aria-label="Toggle theme"
           >
             {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
@@ -73,13 +83,13 @@ const Navbar = ({ setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className="p-2 rounded-lg text-black hover:bg-black/10 transition-colors font-semibold text-sm"
+            className={`p-2 rounded-lg transition-colors font-semibold text-sm ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
           <button 
-            className="md:hidden text-black p-2"
+            className={`md:hidden p-2 ${isDark ? 'text-gray-200' : 'text-black'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -115,26 +125,30 @@ const Navbar = ({ setCurrentSection }) => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
+            transition={{ type: 'spring', stiffness: 100, damping: 16 }}
             className={`relative z-40 shadow-lg md:hidden ${
               isDark ? 'bg-black' : 'bg-white'
             }`}
           >
             <div className="flex flex-col p-4 space-y-4">
               {NAV_ITEMS.map((item) => (
-                <motion.a
+                <a
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  whileHover={{ scale: 1.05, color: isDark ? '#c084fc' : '#000' }}
-                  className={`text-md cursor-pointer py-2 px-4 ${
+                  className={`group relative text-base tracking-wide uppercase cursor-pointer py-2 px-4 inline-block w-fit ${
                     isDark ? 'text-gray-100' : 'text-black'
                   }`}
                 >
                   {t(`nav.${item.id.replace(/-/g, '')}`)}
-                </motion.a>
+                  <span className={`absolute left-4 bottom-1 h-[1.5px] transition-all duration-300 ${
+                    isDark ? 'bg-gray-100' : 'bg-black'
+                  } ${
+                    currentSection === item.id ? 'w-[calc(100%-2rem)]' : 'w-0 group-hover:w-[calc(100%-2rem)]'
+                  }`} />
+                </a>
               ))}
             </div>
           </motion.div>

@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiShoppingCart, FiPlus, FiMinus, FiTrash2, FiX } from 'react-icons/fi';
 import { createPortal } from 'react-dom';
+import { useEffect } from 'react';
 import { parsePrice } from '../data/products';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
@@ -13,6 +14,15 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
   const { translatedText: colorText } = useAutoTranslate('Color:');
   const { translatedText: totalText } = useAutoTranslate('Total:');
   const { translatedText: checkoutText } = useAutoTranslate('Finalizar compra');
+  const { translatedText: safePayText } = useAutoTranslate('Pago seguro');
+
+  // Close on Escape
+  useEffect(() => {
+    if (!showCart) return;
+    const handleEsc = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [showCart, onClose]);
   
   return createPortal(
     <AnimatePresence>
@@ -43,16 +53,16 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
               ) : (
                 cart.map((item, idx) => (
                   <div key={`${item._id}-${idx}`} className={`flex items-center gap-4 pb-4 ${isDark ? 'border-gray-800' : 'border-gray-200'} border-b`}>
-                    <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                    <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover" />
                     <div className="flex-1">
                       <h4 className={`font-medium text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{item.name}</h4>
                       {item.selectedSize && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{sizeText} {item.selectedSize}</p>}
                       {item.selectedColor && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{colorText} {item.selectedColor}</p>}
                       <p className={`text-sm font-semibold ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>{item.price}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-1 rounded ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-1 ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={14} /></button>
                         <span className={`text-sm font-medium w-6 text-center ${isDark ? 'text-gray-100' : ''}`}>{item.quantity}</span>
-                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-1 rounded ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiPlus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-1 ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiPlus size={14} /></button>
                       </div>
                     </div>
                     <div className="text-right">
@@ -72,15 +82,15 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                 </div>
                 <button
                   onClick={onCheckout}
-                  className={`w-full py-3 rounded-md font-medium transition-colors ${
-                    isDark ? 'bg-white text-black' : 'bg-black text-white'
+                  className={`w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 ${
+                    isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
                   }`}
                 >
                   {checkoutText}
                 </button>
                 <div className="flex items-center justify-center gap-2 mt-3">
                   <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
-                  <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· Pago seguro</span>
+                  <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· {safePayText}</span>
                 </div>
               </div>
             )}

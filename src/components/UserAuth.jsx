@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiCheck, FiPackage, FiClock, FiHeart } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
@@ -19,6 +19,13 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [needsVerification, setNeedsVerification] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState('');
 
+  // Close on Escape
+  useEffect(() => {
+    const handleEsc = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
+
   // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -29,6 +36,8 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regPassword2, setRegPassword2] = useState('');
+
+  const { translatedText: t_passWeak } = useAutoTranslate('La contraseña debe tener al menos 8 caracteres, una mayúscula y un número');
 
   // Translations
   const { translatedText: t_login } = useAutoTranslate('Iniciar sesión');
@@ -80,6 +89,10 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       setError(t_passNoMatch);
       return;
     }
+    if (regPassword.length < 8 || !/[A-Z]/.test(regPassword) || !/[0-9]/.test(regPassword)) {
+      setError(t_passWeak);
+      return;
+    }
     setLoading(true);
     try {
       await userApi.register({
@@ -110,26 +123,57 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     }
   };
 
-  const handleGoogleLogin = () => {
-    if (!GOOGLE_CLIENT_ID || !window.google) return;
+  const googleInitialized = useRef(false);
+  const googleBtnRef = useCallback((node) => {
+    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleInitialized.current) return;
+    node.innerHTML = '';
+    window.google.accounts.id.renderButton(node, {
+      type: 'standard',
+      shape: 'rectangular',
+      theme: isDark ? 'filled_black' : 'outline',
+      size: 'large',
+      width: node.offsetWidth || 320,
+      text: 'continue_with',
+      logo_alignment: 'center',
+    });
+  }, [isDark]);
+
+  const googleBtnRegRef = useCallback((node) => {
+    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleInitialized.current) return;
+    node.innerHTML = '';
+    window.google.accounts.id.renderButton(node, {
+      type: 'standard',
+      shape: 'rectangular',
+      theme: isDark ? 'filled_black' : 'outline',
+      size: 'large',
+      width: node.offsetWidth || 320,
+      text: 'continue_with',
+      logo_alignment: 'center',
+    });
+  }, [isDark]);
+
+  const googleCallback = useCallback(async (response) => {
+    setLoading(true);
+    setError('');
+    try {
+      const data = await userApi.googleAuth(response.credential);
+      login(data.token, data.user);
+      onSuccess?.();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [login, onSuccess]);
+
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID || !window.google || googleInitialized.current) return;
+    googleInitialized.current = true;
     window.google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
-      callback: async (response) => {
-        setLoading(true);
-        setError('');
-        try {
-          const data = await userApi.googleAuth(response.credential);
-          login(data.token, data.user);
-          onSuccess?.();
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      },
+      callback: googleCallback,
     });
-    window.google.accounts.id.prompt();
-  };
+  }, [googleCallback]);
 
   const bg = isDark ? 'bg-neutral-900' : 'bg-white';
   const text = isDark ? 'text-neutral-100' : 'text-gray-900';
@@ -144,7 +188,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className={`${bg} rounded-2xl p-8 w-full max-w-md shadow-2xl text-center`}
+          className={`${bg} p-8 w-full max-w-md shadow-2xl text-center`}
           onClick={e => e.stopPropagation()}
         >
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-700/30 dark:bg-neutral-900/30 flex items-center justify-center">
@@ -172,7 +216,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} rounded-2xl w-full max-w-md shadow-2xl overflow-hidden`}
+        className={`${bg} w-full max-w-md shadow-2xl overflow-hidden`}
         onClick={e => e.stopPropagation()}
       >
         {/* Tabs */}
@@ -194,7 +238,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
 
         <div className="p-6">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 dark:bg-neutral-800 text-red-600 dark:text-neutral-400 text-sm">
+            <div className="mb-4 p-3 bg-red-50 dark:bg-neutral-800 text-red-600 dark:text-neutral-400 text-sm">
               {error}
             </div>
           )}
@@ -218,7 +262,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       required
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                      className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       placeholder="tu@email.com"
                     />
                   </div>
@@ -232,7 +276,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       required
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
-                      className={`w-full pl-10 pr-10 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                      className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                     />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                       {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -242,7 +286,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 bg-black dark:bg-neutral-200 text-white dark:text-neutral-900 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+                  className={`w-full py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 ${isDark ? 'bg-neutral-200 text-neutral-900' : 'bg-black text-white'}`}
                 >
                   {loading ? t_processing : t_login}
                 </button>
@@ -255,14 +299,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       <span className={`text-xs ${subtext}`}>{t_or}</span>
                       <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleGoogleLogin}
-                      className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
-                    >
-                      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                      {t_google}
-                    </button>
+                    <div ref={googleBtnRef} className="w-full flex justify-center" />
                   </>
                 )}
 
@@ -281,7 +318,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 exit={{ opacity: 0, x: -20 }}
               >
                 {/* Benefits banner */}
-                <div className={`${cardBg} rounded-xl p-4 mb-5`}>
+                <div className={`${cardBg} p-4 mb-5`}>
                   <h3 className={`text-sm font-bold ${text} mb-2`}>{t_benefits}</h3>
                   <ul className="space-y-1.5">
                     {[
@@ -308,7 +345,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                           required
                           value={regNombre}
                           onChange={e => setRegNombre(e.target.value)}
-                          className={`w-full pl-10 pr-3 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                          className={`w-full pl-10 pr-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         />
                       </div>
                     </div>
@@ -319,7 +356,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regApellido}
                         onChange={e => setRegApellido(e.target.value)}
-                        className={`w-full px-3 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full px-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                     </div>
                   </div>
@@ -332,7 +369,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regEmail}
                         onChange={e => setRegEmail(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
                     </div>
@@ -344,10 +381,10 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         required
-                        minLength={6}
+                        minLength={8}
                         value={regPassword}
                         onChange={e => setRegPassword(e.target.value)}
-                        className={`w-full pl-10 pr-10 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                         {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -361,10 +398,10 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       <input
                         type="password"
                         required
-                        minLength={6}
+                        minLength={8}
                         value={regPassword2}
                         onChange={e => setRegPassword2(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2.5 rounded-lg border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       {regPassword2 && regPassword === regPassword2 && (
                         <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
@@ -374,7 +411,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+                    className={`w-full py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-50 ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
                   >
                     {loading ? t_processing : t_register}
                   </button>
@@ -387,14 +424,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         <span className={`text-xs ${subtext}`}>{t_or}</span>
                         <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleGoogleLogin}
-                        className={`w-full py-2.5 rounded-lg border ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-gray-300 hover:bg-gray-50'} font-medium text-sm flex items-center justify-center gap-2 transition-colors ${text}`}
-                      >
-                        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                        {t_google}
-                      </button>
+                      <div ref={googleBtnRegRef} className="w-full flex justify-center" />
                     </>
                   )}
 

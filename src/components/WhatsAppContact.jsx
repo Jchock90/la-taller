@@ -21,9 +21,9 @@ const WhatsAppContact = ({ button = false }) => {
   }
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, duration: 0.5 }}
+      initial={{ opacity: 0, scale: 0, rotate: -180 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 1 }}
       className="fixed left-6 bottom-6 z-50"
     >
       <a

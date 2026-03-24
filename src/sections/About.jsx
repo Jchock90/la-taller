@@ -45,9 +45,10 @@ const About = () => {
   return (
     <section id="quien-soy" className={`pt-10 pb-16 px-6 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0, y: 40, filter: 'blur(15px)', scale: 0.9 }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+        transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+        viewport={{ once: true }}
         className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8 text-center font-italic`}
       >
         {t('about.originTitle')}
@@ -55,9 +56,10 @@ const About = () => {
 
       <div className="max-w-5xl mx-auto">
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="mb-20"
         >
           <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center pb-2`}>
@@ -93,9 +95,10 @@ const About = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 50, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+          viewport={{ once: true, amount: 0.2 }}
           className="mb-16"
         >
           <h3 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-12 text-center font-italic`}>
@@ -127,9 +130,10 @@ const About = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(12px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+          viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto mt-12"
         >
           <blockquote className={`text-xl italic ${isDark ? 'text-gray-300' : 'text-black'}`}>

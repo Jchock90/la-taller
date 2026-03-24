@@ -22,7 +22,8 @@ const Toast = ({ message, show, onClose }) => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
-          className={`fixed bottom-20 right-6 z-50 ${isDark ? 'bg-green-700' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3`}
+          className={`fixed right-6 z-50 ${isDark ? 'bg-green-700' : 'bg-green-500'} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3`}
+          style={{ bottom: 'calc(var(--fab-bottom, 24px) + 64px)' }}
         >
           <FiCheck className="w-5 h-5" />
           <span className="font-medium">{message}</span>

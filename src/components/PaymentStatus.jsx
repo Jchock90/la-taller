@@ -28,8 +28,8 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
     success: {
       icon: FiCheckCircle,
       iconColor: 'text-green-500',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
+      bgColor: isDark ? 'bg-neutral-900' : 'bg-green-50',
+      borderColor: isDark ? 'border-neutral-700' : 'border-green-200',
       title: successTitle,
       message: successMsg,
       submessage: successSub,
@@ -37,8 +37,8 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
     failure: {
       icon: FiXCircle,
       iconColor: 'text-red-500',
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
+      bgColor: isDark ? 'bg-neutral-900' : 'bg-red-50',
+      borderColor: isDark ? 'border-neutral-700' : 'border-red-200',
       title: failTitle,
       message: failMsg,
       submessage: failSub,
@@ -46,8 +46,8 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
     pending: {
       icon: FiClock,
       iconColor: 'text-yellow-500',
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
+      bgColor: isDark ? 'bg-neutral-900' : 'bg-yellow-50',
+      borderColor: isDark ? 'border-neutral-700' : 'border-yellow-200',
       title: pendingTitle,
       message: pendingMsg,
       submessage: pendingSub,
@@ -58,7 +58,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
   const Icon = config.icon;
 
   return (
-    <section className="min-h-screen flex items-center justify-center py-20 px-6 bg-gray-50">
+    <section className={`min-h-screen flex items-center justify-center py-20 px-6 ${isDark ? 'bg-black' : 'bg-gray-50'}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -74,15 +74,15 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
           <Icon className={`${config.iconColor} w-20 h-20`} />
         </motion.div>
 
-        <h1 className="text-3xl md:text-4xl font-bold text-black mb-4">
+        <h1 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>
           {config.title}
         </h1>
 
-        <p className="text-lg text-gray-700 mb-4">
+        <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-4`}>
           {config.message}
         </p>
 
-        <p className="text-base text-gray-600 mb-8">
+        <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-8`}>
           {config.submessage}
         </p>
 
@@ -91,7 +91,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setCurrentSection('home')}
-            className="bg-black text-white px-8 py-3 rounded-lg font-medium shadow-lg hover:bg-gray-800 transition-colors"
+            className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors ${isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}
           >
             {backHomeText}
           </motion.button>

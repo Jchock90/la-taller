@@ -75,7 +75,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} rounded-2xl w-full max-w-lg max-h-[85vh] shadow-2xl overflow-hidden flex flex-col`}
+        className={`${bg} w-full max-w-lg max-h-[85vh] shadow-2xl overflow-hidden flex flex-col`}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -110,7 +110,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
               <p className={subtext}>{t_noPurchases}</p>
               <button
                 onClick={() => { onClose?.(); setCurrentSection?.('que-vendo'); }}
-                className="mt-4 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                className={`mt-4 px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
               >
                 {t_exploreProducts}
               </button>
@@ -129,7 +129,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                   <motion.div
                     key={purchase._id}
                     layout
-                    className={`${cardBg} rounded-xl overflow-hidden border ${borderColor}`}
+                    className={`${cardBg} overflow-hidden border ${borderColor}`}
                   >
                     <button
                       onClick={() => setExpandedId(isExpanded ? null : purchase._id)}
@@ -195,7 +195,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                               href={purchase.trackingUrl.startsWith('http') ? purchase.trackingUrl : `https://${purchase.trackingUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className={`mt-2 flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isDark ? 'bg-neutral-900/30 text-neutral-300 hover:bg-neutral-900/50' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
+                              className={`mt-2 flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors ${isDark ? 'bg-neutral-900/30 text-neutral-300 hover:bg-neutral-900/50' : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'}`}
                             >
                               <FiExternalLink size={14} />
                               {t_trackShipment}

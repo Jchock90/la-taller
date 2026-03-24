@@ -209,4 +209,41 @@ export const adminApi = {
     if (!res.ok) throw new Error('Error al borrar imagen');
     return res.json();
   },
+
+  // Email
+  async getEmailRecipients(token) {
+    const res = await fetch(`${API_URL}/api/admin/email/recipients`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al obtener destinatarios');
+    return res.json();
+  },
+
+  async sendEmail(token, { to, subject, body, html, attachments, type }) {
+    const res = await fetch(`${API_URL}/api/admin/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ to, subject, body, html, attachments, type }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error al enviar email');
+    return data;
+  },
+
+  async getSentEmails(token) {
+    const res = await fetch(`${API_URL}/api/admin/email/sent`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al obtener historial');
+    return res.json();
+  },
+
+  async deleteSentEmail(token, id) {
+    const res = await fetch(`${API_URL}/api/admin/email/sent/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Error al eliminar email');
+    return res.json();
+  },
 };

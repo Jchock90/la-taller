@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { FiEye } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
@@ -9,11 +10,12 @@ const ProductCard = ({ item, index, onViewDetail }) => {
   
   return (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.1, duration: 0.5 }}
-    whileHover={{ y: -5 }}
-    className={`${isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-100'} rounded-lg overflow-hidden shadow-md border h-full flex flex-col`}
+    initial={{ opacity: 0, y: 50, scale: 0.9, filter: 'blur(6px)' }}
+    whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+    transition={{ type: 'spring', stiffness: 80, damping: 15, delay: index * 0.08 }}
+    viewport={{ once: true, amount: 0.2 }}
+    whileHover={{ y: -8, scale: 1.03 }}
+    className={`${isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-100'} overflow-hidden shadow-md border h-full flex flex-col`}
   >
     <div className="h-64 overflow-hidden relative group">
       <motion.img
@@ -30,8 +32,8 @@ const ProductCard = ({ item, index, onViewDetail }) => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`flex items-center justify-center w-full py-2 px-4 rounded-md font-medium transition-colors ${
-          isDark ? 'bg-white text-black' : 'bg-black text-white'
+        className={`flex items-center justify-center w-full py-2.5 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+          isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
         }`}
         onClick={() => onViewDetail(item)}
       >
@@ -43,4 +45,4 @@ const ProductCard = ({ item, index, onViewDetail }) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

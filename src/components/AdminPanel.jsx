@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff, FiPackage, FiShoppingCart, FiUpload, FiUsers } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiRefreshCw, FiLogOut, FiSave, FiX, FiArrowLeft, FiEyeOff, FiPackage, FiShoppingCart, FiUpload, FiUsers, FiMail } from 'react-icons/fi';
 import { adminApi } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import SalesPanel from './SalesPanel';
 import UsersPanel from './UsersPanel';
+import EmailPanel from './EmailPanel';
 
 const EMPTY_PRODUCT = {
   name: '',
@@ -40,13 +41,13 @@ const formatPrice = (raw) => {
 
 const ConfirmModal = ({ title, message, confirmText, confirmColor, onConfirm, onCancel }) => (
   <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-    <div className="bg-gray-800 rounded-xl p-6 w-96 shadow-2xl border border-gray-700">
+    <div className="bg-neutral-800 rounded-xl p-6 w-96 shadow-2xl border border-neutral-700">
       <h3 className="text-white text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-gray-400 text-sm mb-6">{message}</p>
+      <p className="text-neutral-400 text-sm mb-6">{message}</p>
       <div className="flex gap-3 justify-end">
         <button
           onClick={onCancel}
-          className="bg-gray-700 text-gray-300 px-4 py-2 rounded font-medium hover:bg-gray-600 transition-colors text-sm"
+          className="bg-neutral-700 text-neutral-300 px-4 py-2 rounded font-medium hover:bg-neutral-600 transition-colors text-sm"
         >
           Cancelar
         </button>
@@ -184,8 +185,8 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
     onSave({ ...form, price: normalizedPrice, gallery: cleanGallery });
   };
 
-  const inputClass = 'w-full bg-gray-800 border border-gray-700 text-gray-100 rounded px-3 py-2 focus:outline-none focus:border-purple-500 text-sm';
-  const labelClass = 'block text-gray-400 text-sm mb-1 font-medium';
+  const inputClass = 'w-full bg-neutral-800 border border-neutral-700 text-neutral-100 rounded px-3 py-2 focus:outline-none focus:border-neutral-500 text-sm';
+  const labelClass = 'block text-neutral-400 text-sm mb-1 font-medium';
 
   const isExistingCollection = existingCollections.includes(form.collectionName);
 
@@ -193,28 +194,28 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
     <>
     {uploading && (
       <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-        <div className="bg-gray-800 rounded-xl p-6 w-80 shadow-2xl">
+        <div className="bg-neutral-800 rounded-xl p-6 w-80 shadow-2xl">
           <p className="text-white text-center font-medium mb-3">Subiendo imagen...</p>
-          <div className="w-full bg-gray-700 rounded-full h-4 overflow-hidden">
+          <div className="w-full bg-neutral-700 rounded-full h-4 overflow-hidden">
             <div
-              className="bg-purple-500 h-4 rounded-full transition-all duration-200"
+              className="bg-neutral-400 h-4 rounded-full transition-all duration-200"
               style={{ width: `${uploadProgress}%` }}
             />
           </div>
-          <p className="text-purple-400 text-center text-sm mt-2 font-mono">{uploadProgress}%</p>
+          <p className="text-neutral-400 text-center text-sm mt-2 font-mono">{uploadProgress}%</p>
         </div>
       </div>
     )}
     {uploadError && (
       <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-        <div className="bg-gray-800 rounded-xl p-6 w-96 shadow-2xl border border-red-800/50">
+        <div className="bg-neutral-800 rounded-xl p-6 w-96 shadow-2xl border border-red-800/50">
           <div className="flex items-center gap-3 mb-3">
             <svg className="w-6 h-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-red-300 font-medium">{uploadError}</p>
           </div>
-          <button onClick={() => setUploadError('')} className="w-full mt-2 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg text-sm transition-colors">
+          <button onClick={() => setUploadError('')} className="w-full mt-2 py-2 bg-neutral-700 hover:bg-neutral-600 text-neutral-200 rounded-lg text-sm transition-colors">
             Cerrar
           </button>
         </div>
@@ -223,7 +224,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className={labelClass}>Nombre * <span className="text-gray-600 font-normal">({form.name.length}/60)</span></label>
+          <label className={labelClass}>Nombre * <span className="text-neutral-600 font-normal">({form.name.length}/60)</span></label>
           <input className={inputClass} value={form.name} onChange={e => handleChange('name', e.target.value)} required maxLength={60} />
         </div>
         <div>
@@ -262,7 +263,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
           </div>
         </div>
         <div>
-          <label className={labelClass}>Descripción de colección <span className="text-gray-600 font-normal">({form.collectionDescription.length}/100)</span></label>
+          <label className={labelClass}>Descripción de colección <span className="text-neutral-600 font-normal">({form.collectionDescription.length}/100)</span></label>
           <input className={`${inputClass} ${isExistingCollection ? 'opacity-50 cursor-not-allowed' : ''}`}
             value={form.collectionDescription}
             onChange={e => handleChange('collectionDescription', e.target.value)}
@@ -303,9 +304,9 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <div className="flex items-center gap-3 pt-6">
           <label className="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" checked={form.active} onChange={e => handleChange('active', e.target.checked)} className="sr-only peer" />
-            <div className="w-10 h-5 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:bg-purple-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
+            <div className="w-10 h-5 bg-neutral-700 peer-focus:outline-none rounded-full peer peer-checked:bg-neutral-200 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-5"></div>
           </label>
-          <span className="text-gray-400 text-sm">Producto activo</span>
+          <span className="text-neutral-400 text-sm">Producto activo</span>
         </div>
       </div>
 
@@ -313,7 +314,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <label className={labelClass}>Imagen principal *</label>
         <div className="flex gap-2 mb-2">
           <input className={inputClass} value={form.imageUrl} onChange={e => handleChange('imageUrl', e.target.value)} required placeholder="URL o subí una foto (solo JPG)" />
-          <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-gray-600 text-gray-400' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
+          <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-neutral-600 text-neutral-400' : 'bg-neutral-100 text-neutral-900 hover:bg-neutral-300'}`}>
             <FiUpload size={14} />
             {uploading ? '...' : 'Subir'}
             <input type="file" accept="image/jpeg" className="hidden" disabled={uploading}
@@ -321,7 +322,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
           </label>
         </div>
         {form.imageUrl && (
-          <img src={form.imageUrl} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded border border-gray-700" />
+          <img src={form.imageUrl} alt="Preview" className="mt-2 h-24 w-24 object-cover rounded border border-neutral-700" />
         )}
       </div>
 
@@ -329,9 +330,9 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <label className={labelClass}>Galería de imágenes</label>
         {form.gallery.map((url, i) => (
           <div key={i} className="flex gap-2 mb-2 items-center">
-            {url && <img src={url} alt={`Gallery ${i + 1}`} className="w-10 h-10 object-cover rounded border border-gray-700 flex-shrink-0" />}
+            {url && <img src={url} alt={`Gallery ${i + 1}`} className="w-10 h-10 object-cover rounded border border-neutral-700 flex-shrink-0" />}
             <input className={inputClass} value={url} onChange={e => handleGalleryChange(i, e.target.value)} placeholder={`Imagen ${i + 1}`} />
-            <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-gray-600 text-gray-400' : 'bg-purple-600 text-white hover:bg-purple-700'}`}>
+            <label className={`flex items-center gap-1 px-3 py-2 rounded text-sm cursor-pointer transition-colors ${uploading ? 'bg-neutral-600 text-neutral-400' : 'bg-neutral-100 text-neutral-900 hover:bg-neutral-300'}`}>
               <FiUpload size={14} />
               <input type="file" accept="image/jpeg" className="hidden" disabled={uploading}
                 onChange={e => handleImageUpload(e.target.files[0], 'gallery', i)} />
@@ -341,7 +342,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
             </button>
           </div>
         ))}
-        <button type="button" onClick={addGallerySlot} className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1 mt-1">
+        <button type="button" onClick={addGallerySlot} className="text-neutral-400 hover:text-neutral-300 text-sm flex items-center gap-1 mt-1">
           <FiPlus size={14} /> Agregar imagen
         </button>
       </div>
@@ -356,8 +357,8 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
               onClick={() => toggleTalle(t)}
               className={`px-3 py-1 rounded text-sm border transition-colors ${
                 form.talles.includes(t)
-                  ? 'border-purple-600 bg-purple-600 text-white'
-                  : 'border-gray-700 text-gray-400 hover:border-gray-500'
+                  ? 'border-purple-600 bg-neutral-100 text-neutral-900'
+                  : 'border-neutral-700 text-neutral-400 hover:border-neutral-500'
               }`}
             >
               {t}
@@ -370,9 +371,9 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <label className={labelClass}>Colores</label>
         <div className="flex gap-2 flex-wrap mb-2">
           {form.colores.map(c => (
-            <span key={c} className="bg-gray-800 text-gray-300 text-sm px-3 py-1 rounded-full flex items-center gap-1">
+            <span key={c} className="bg-neutral-800 text-neutral-300 text-sm px-3 py-1 rounded-full flex items-center gap-1">
               {c}
-              <button type="button" onClick={() => removeColor(c)} className="text-gray-500 hover:text-red-400">
+              <button type="button" onClick={() => removeColor(c)} className="text-neutral-500 hover:text-red-400">
                 <FiX size={12} />
               </button>
             </span>
@@ -386,24 +387,24 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
             placeholder="Agregar color..."
             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addColor(); }}}
           />
-          <button type="button" onClick={addColor} className="bg-gray-700 text-gray-300 px-3 py-2 rounded hover:bg-gray-600 text-sm">
+          <button type="button" onClick={addColor} className="bg-neutral-700 text-neutral-300 px-3 py-2 rounded hover:bg-neutral-600 text-sm">
             Agregar
           </button>
         </div>
       </div>
 
       <div>
-        <label className={labelClass}>Composición <span className="text-gray-600 font-normal">({form.composicion.length}/120)</span></label>
+        <label className={labelClass}>Composición <span className="text-neutral-600 font-normal">({form.composicion.length}/120)</span></label>
         <input className={inputClass} value={form.composicion} onChange={e => handleChange('composicion', e.target.value)} maxLength={120} />
       </div>
 
       <div>
-        <label className={labelClass}>Fabricación <span className="text-gray-600 font-normal">({form.fabricacion.length}/300)</span></label>
+        <label className={labelClass}>Fabricación <span className="text-neutral-600 font-normal">({form.fabricacion.length}/300)</span></label>
         <textarea className={`${inputClass} h-20 resize-none`} value={form.fabricacion} onChange={e => handleChange('fabricacion', e.target.value)} maxLength={300} />
       </div>
 
       <div>
-        <label className={labelClass}>Cuidados <span className="text-gray-600 font-normal">({form.cuidados.length}/200)</span></label>
+        <label className={labelClass}>Cuidados <span className="text-neutral-600 font-normal">({form.cuidados.length}/200)</span></label>
         <textarea className={`${inputClass} h-20 resize-none`} value={form.cuidados} onChange={e => handleChange('cuidados', e.target.value)} maxLength={200} />
       </div>
 
@@ -411,7 +412,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <button
           type="submit"
           disabled={loading}
-          className="bg-purple-600 text-white px-6 py-2 rounded font-medium hover:bg-purple-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="bg-neutral-100 text-neutral-900 px-6 py-2 rounded font-medium hover:bg-neutral-300 transition-colors disabled:opacity-50 flex items-center gap-2"
         >
           <FiSave size={16} />
           {loading ? 'Guardando...' : 'Guardar'}
@@ -419,7 +420,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <button
           type="button"
           onClick={onCancel}
-          className="bg-gray-700 text-gray-300 px-6 py-2 rounded font-medium hover:bg-gray-600 transition-colors"
+          className="bg-neutral-700 text-neutral-300 px-6 py-2 rounded font-medium hover:bg-neutral-600 transition-colors"
         >
           Cancelar
         </button>
@@ -568,7 +569,7 @@ const AdminPanel = ({ setCurrentSection }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100">
+    <div className="min-h-screen bg-neutral-950 text-neutral-100">
       {confirmModal && (
         <ConfirmModal
           {...confirmModal}
@@ -576,36 +577,42 @@ const AdminPanel = ({ setCurrentSection }) => {
         />
       )}
       {/* Header */}
-      <div className="bg-gray-900 border-b border-gray-800">
+      <div className="bg-neutral-900 border-b border-neutral-800">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => setCurrentSection('home')} className="text-gray-400 hover:text-gray-100 flex items-center gap-1">
+            <button onClick={() => setCurrentSection('home')} className="text-neutral-400 hover:text-neutral-100 flex items-center gap-1">
               <FiArrowLeft size={18} />
               <span className="text-sm">Volver al sitio</span>
             </button>
             <h1 className="text-xl font-bold">Admin Panel</h1>
           </div>
-          <div className="flex gap-1 bg-gray-800 rounded-lg p-1">
+          <div className="flex gap-1 bg-neutral-800 rounded-lg p-1">
             <button
               onClick={() => setActiveTab('products')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'products' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'products' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
               <FiPackage size={14} /> Productos
             </button>
             <button
               onClick={() => setActiveTab('sales')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'sales' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'sales' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
               <FiShoppingCart size={14} /> Ventas
             </button>
             <button
               onClick={() => setActiveTab('users')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'users' ? 'bg-purple-600 text-white' : 'text-gray-400 hover:text-gray-200'}`}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'users' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
               <FiUsers size={14} /> Usuarios
             </button>
+            <button
+              onClick={() => setActiveTab('email')}
+              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'email' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+            >
+              <FiMail size={14} /> Email
+            </button>
           </div>
-          <button onClick={handleLogout} className="text-gray-400 hover:text-red-400 flex items-center gap-1 text-sm">
+          <button onClick={handleLogout} className="text-neutral-400 hover:text-red-400 flex items-center gap-1 text-sm">
             <FiLogOut size={16} />
             Cerrar sesión
           </button>
@@ -630,11 +637,13 @@ const AdminPanel = ({ setCurrentSection }) => {
           <SalesPanel />
         ) : activeTab === 'users' ? (
           <UsersPanel />
+        ) : activeTab === 'email' ? (
+          <EmailPanel />
         ) : (
         <>
         {/* Form view */}
         {editingProduct !== null ? (
-          <div className="bg-gray-900 rounded-xl p-6 border border-gray-800">
+          <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800">
             <h2 className="text-lg font-semibold mb-4">
               {editingProduct === 'new' ? 'Nuevo Producto' : `Editar: ${editingProduct.name}`}
             </h2>
@@ -662,23 +671,23 @@ const AdminPanel = ({ setCurrentSection }) => {
           /* List view */
           <>
             <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-400">{products.length} productos en total</p>
+              <p className="text-neutral-400">{products.length} productos en total</p>
               <div className="flex gap-3">
-                <button onClick={fetchProducts} className="bg-gray-800 text-gray-300 px-4 py-2 rounded hover:bg-gray-700 flex items-center gap-2 text-sm">
+                <button onClick={fetchProducts} className="bg-neutral-800 text-neutral-300 px-4 py-2 rounded hover:bg-neutral-700 flex items-center gap-2 text-sm">
                   <FiRefreshCw size={14} /> Recargar
                 </button>
-                <button onClick={() => setEditingProduct('new')} className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 flex items-center gap-2 text-sm">
+                <button onClick={() => setEditingProduct('new')} className="bg-neutral-100 text-neutral-900 px-4 py-2 rounded hover:bg-neutral-300 flex items-center gap-2 text-sm">
                   <FiPlus size={14} /> Nuevo Producto
                 </button>
               </div>
             </div>
 
             {loading ? (
-              <div className="text-center py-20 text-gray-500">Cargando productos...</div>
+              <div className="text-center py-20 text-neutral-500">Cargando productos...</div>
             ) : products.length === 0 ? (
-              <div className="text-center py-20 text-gray-500">
+              <div className="text-center py-20 text-neutral-500">
                 <p className="mb-4">No hay productos registrados.</p>
-                <button onClick={() => setEditingProduct('new')} className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                <button onClick={() => setEditingProduct('new')} className="bg-neutral-100 text-neutral-900 px-6 py-2 rounded hover:bg-neutral-300">
                   Crear primer producto
                 </button>
               </div>
@@ -687,8 +696,8 @@ const AdminPanel = ({ setCurrentSection }) => {
                 {products.map(product => (
                   <div
                     key={product._id}
-                    className={`bg-gray-900 border rounded-lg p-4 flex items-center gap-4 ${
-                      product.active ? 'border-gray-800' : 'border-red-900/50 opacity-60'
+                    className={`bg-neutral-900 border rounded-lg p-4 flex items-center gap-4 ${
+                      product.active ? 'border-neutral-800' : 'border-red-900/50 opacity-60'
                     }`}
                   >
                     <img
@@ -703,13 +712,13 @@ const AdminPanel = ({ setCurrentSection }) => {
                           <span className="text-xs bg-red-900/50 text-red-400 px-2 py-0.5 rounded">Inactivo</span>
                         )}
                       </div>
-                      <p className="text-purple-400 text-sm">{product.price}</p>
-                      <p className="text-gray-600 text-xs">{product.collectionName}{product.categoria ? ` · ${product.categoria}` : ''} · Orden: {product.order}</p>
+                      <p className="text-neutral-400 text-sm">{product.price}</p>
+                      <p className="text-neutral-600 text-xs">{product.collectionName}{product.categoria ? ` · ${product.categoria}` : ''} · Orden: {product.order}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <button
                         onClick={() => setEditingProduct(product)}
-                        className="bg-gray-800 text-gray-300 p-2 rounded hover:bg-gray-700"
+                        className="bg-neutral-800 text-neutral-300 p-2 rounded hover:bg-neutral-700"
                         title="Editar"
                       >
                         <FiEdit2 size={16} />
@@ -717,7 +726,7 @@ const AdminPanel = ({ setCurrentSection }) => {
                       {product.active ? (
                         <button
                           onClick={() => handleDeactivate(product)}
-                          className="bg-gray-800 text-yellow-400 p-2 rounded hover:bg-yellow-900/30"
+                          className="bg-neutral-800 text-yellow-400 p-2 rounded hover:bg-yellow-900/30"
                           title="Desactivar"
                         >
                           <FiEyeOff size={16} />
@@ -725,7 +734,7 @@ const AdminPanel = ({ setCurrentSection }) => {
                       ) : (
                         <button
                           onClick={() => handleRestore(product)}
-                          className="bg-gray-800 text-green-400 p-2 rounded hover:bg-green-900/30"
+                          className="bg-neutral-800 text-green-400 p-2 rounded hover:bg-green-900/30"
                           title="Restaurar"
                         >
                           <FiRefreshCw size={16} />
@@ -733,7 +742,7 @@ const AdminPanel = ({ setCurrentSection }) => {
                       )}
                       <button
                         onClick={() => handlePermanentDelete(product)}
-                        className="bg-gray-800 text-red-400 p-2 rounded hover:bg-red-900/30"
+                        className="bg-neutral-800 text-red-400 p-2 rounded hover:bg-red-900/30"
                         title="Eliminar permanentemente"
                       >
                         <FiTrash2 size={16} />

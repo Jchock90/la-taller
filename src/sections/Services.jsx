@@ -176,9 +176,10 @@ const galleries = [
     <section id="que-hago" className={`py-20 pt-10 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 50, filter: 'blur(15px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 55, damping: 15 }}
+          viewport={{ once: true }}
           className="text-center mb-16"
         >
           <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8`}>{t('services.title')}</h2>
@@ -218,9 +219,10 @@ const galleries = [
           {galleries.map((gallery, galleryIndex) => (
             <motion.div
               key={galleryIndex}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: galleryIndex * 0.2, duration: 0.5 }}
+              initial={{ opacity: 0, y: 80, scale: 0.8, filter: 'blur(8px)' }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+              transition={{ type: 'spring', stiffness: 70, damping: 14, delay: galleryIndex * 0.15 }}
+              viewport={{ once: true, amount: 0.2 }}
               className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow`}
             >
               <h3 className={`text-xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center`}>

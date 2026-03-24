@@ -92,11 +92,11 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
 
   return createPortal(
     <div className={`fixed inset-0 z-50 flex items-center justify-center ${isDark ? 'bg-black/50' : 'bg-black/50'}`}>
-      <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-8 rounded-lg shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto`}>
+      <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-8 shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto`}>
         <button type="button" onClick={onClose} className={`absolute top-2 right-2 ${isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-500 hover:text-black'} text-2xl`}>&times;</button>
         <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>{orderSummaryText}</h2>
 
-        <div className={`mb-6 border rounded p-3 ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50'}`}>
+        <div className={`mb-6 border p-3 ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50'}`}>
           {cart.map(item => (
             <div key={item._id} className={`flex justify-between text-sm py-1 ${isDark ? 'text-gray-400' : ''}`}>
               <span>{item.name} x{item.quantity}</span>
@@ -112,31 +112,31 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
         <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-gray-100' : ''}`}>{shippingText}</h3>
         <div className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-2 gap-4">
-            <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <input name="direccion" value={formData.direccion} onChange={handleInputChange} required placeholder={addressText} className={`col-span-2 border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="pisoDepto" value={formData.pisoDepto} onChange={handleInputChange} placeholder={floorText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="direccion" value={formData.direccion} onChange={handleInputChange} required placeholder={addressText} className={`col-span-2 border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="pisoDepto" value={formData.pisoDepto} onChange={handleInputChange} placeholder={floorText} className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
           </div>
           <div className="grid grid-cols-3 gap-4">
-            <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
+            <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
               <option value="">{selectProvinceText}</option>
               {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
             </select>
-            <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-2 rounded ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
+            <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-2 ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
               <option value="">{loadingCiudades ? loadingCitiesText : selectCityText}</option>
               {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
             </select>
           </div>
         </div>
         {errorMsg && (
-          <div className={`mt-4 flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
+          <div className={`mt-4 flex items-center gap-2 px-4 py-3 text-sm font-medium ${
             isDark ? 'bg-red-900/40 text-red-300 border border-red-800/50' : 'bg-red-50 text-red-600 border border-red-200'
           }`}>
             <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -145,9 +145,9 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
             {errorMsg}
           </div>
         )}
-        <button type="submit" className={`mt-6 w-full py-2 rounded font-medium transition-colors ${
-          isDark ? 'bg-white text-black' : 'bg-black text-white'
-        }`} disabled={loading}>
+        <button type="submit" className={`mt-6 w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 ${
+          isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
+        } disabled:opacity-50 disabled:cursor-not-allowed`} disabled={loading}>
           {loading ? processingText : goToPayText}
         </button>
       </form>

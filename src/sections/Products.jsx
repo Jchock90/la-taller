@@ -281,9 +281,10 @@ const Products = () => {
     <section id="que-vendo" className={`py-20 pt-10 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <div className="container mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 50, filter: 'blur(15px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 55, damping: 15 }}
+          viewport={{ once: true }}
           className="text-center mb-16"
         >
           <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{titleText}</h2>
@@ -293,11 +294,17 @@ const Products = () => {
         </motion.div>
 
         {loadingProducts ? (
-          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>{loadingText}</div>
+          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <svg className="animate-spin h-8 w-8 mx-auto mb-3" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            {loadingText}
+          </div>
         ) : (
         <>
         {/* Filter bar */}
-        <div className={`mb-10 rounded-xl p-4 ${isDark ? 'bg-neutral-900/50 border border-neutral-800' : 'bg-gray-50 border border-gray-200'}`}>
+        <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900/50 border border-neutral-800' : 'bg-gray-50 border border-gray-200'}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <FiFilter size={16} />
@@ -317,7 +324,7 @@ const Products = () => {
             <select
               value={filters.categoria}
               onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
-              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allCategories}</option>
               {filterOptions.categorias.map(c => <TranslatedOption key={c} value={c} />)}
@@ -325,7 +332,7 @@ const Products = () => {
             <select
               value={filters.coleccion}
               onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
-              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allCollections}</option>
               {filterOptions.colecciones.map(c => <TranslatedOption key={c} value={c} />)}
@@ -333,7 +340,7 @@ const Products = () => {
             <select
               value={filters.talle}
               onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
-              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allSizes}</option>
               {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
@@ -341,7 +348,7 @@ const Products = () => {
             <select
               value={filters.color}
               onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
-              className={`rounded-lg px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allColors}</option>
               {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
@@ -351,25 +358,25 @@ const Products = () => {
           {hasActiveFilter && (
             <div className="flex flex-wrap gap-2 mt-3">
               {filters.categoria && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
                   <TranslatedText text={filters.categoria} />
                   <button onClick={() => setFilters(f => ({ ...f, categoria: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.coleccion && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
                   <TranslatedText text={filters.coleccion} />
                   <button onClick={() => setFilters(f => ({ ...f, coleccion: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.talle && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
                   {sizeLabel} {filters.talle}
                   <button onClick={() => setFilters(f => ({ ...f, talle: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.color && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
                   <TranslatedText text={filters.color} />
                   <button onClick={() => setFilters(f => ({ ...f, color: '' }))}><FiX size={12} /></button>
                 </span>
@@ -399,9 +406,10 @@ const Products = () => {
         collections.map((collection, colIndex) => (
           <motion.div
             key={colIndex}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: colIndex * 0.2, duration: 0.5 }}
+            initial={{ opacity: 0, x: colIndex % 2 === 0 ? -60 : 60, filter: 'blur(8px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            transition={{ type: 'spring', stiffness: 60, damping: 16 }}
+            viewport={{ once: true, amount: 0.1 }}
             className="mb-20"
           >
             <div className="mb-8">
@@ -424,10 +432,11 @@ const Products = () => {
         )}
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className={`${isDark ? 'bg-black' : 'bg-white'} p-8 rounded-lg text-center`}
+          initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+          viewport={{ once: true }}
+          className={`${isDark ? 'bg-black' : 'bg-white'} p-8 text-center`}
         >
           <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{customTitle}</h3>
           <p className={`${isDark ? 'text-gray-400' : 'text-gray-700'} mb-6 max-w-2xl mx-auto`}>
@@ -439,8 +448,8 @@ const Products = () => {
             whileTap={{ scale: 0.95 }}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-block px-8 py-3 rounded-full font-medium shadow-lg transition-colors ${
-              isDark ? 'bg-white text-black' : 'bg-black text-white'
+            className={`inline-block px-8 py-2.5 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+              isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
             }`}
           >
             {customButton}
@@ -455,8 +464,8 @@ const Products = () => {
           isUserAuthenticated
             ? 'bg-green-600 text-white'
             : isDark
-              ? 'bg-neutral-800 text-neutral-200'
-              : 'bg-gray-200 text-gray-900'
+              ? 'bg-neutral-800 text-neutral-600'
+              : 'bg-gray-200 text-gray-400'
         }`}
         style={{ bottom: 'var(--fab-bottom, 24px)', transition: 'bottom 0.15s ease-out' }}
         title={isUserAuthenticated ? user?.nombre : ''}

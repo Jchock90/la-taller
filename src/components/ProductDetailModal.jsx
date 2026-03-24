@@ -18,6 +18,13 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
     setSelectedColor('');
     setValidationMsg('');
   }, [product?._id]);
+
+  // Close on Escape
+  useEffect(() => {
+    const handleEsc = (e) => e.key === 'Escape' && onClose();
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, [onClose]);
   
   const { translatedText: selectSizeText } = useAutoTranslate('Por favor selecciona un talle');
   const { translatedText: selectColorText } = useAutoTranslate('Por favor selecciona un color');
@@ -62,7 +69,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`${isDark ? 'bg-neutral-900' : 'bg-white'} rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row`}
+            className={`${isDark ? 'bg-neutral-900' : 'bg-white'} shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full md:w-1/2 h-72 md:h-auto md:min-h-[500px] relative">
@@ -88,7 +95,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                           <button
                             key={t}
                             onClick={() => { setSelectedSize(prev => prev === t ? '' : t); setValidationMsg(''); }}
-                            className={`border rounded px-3 py-1 transition-colors ${
+                            className={`border px-3 py-1 transition-colors ${
                               selectedSize === t 
                                 ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
                                 : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
@@ -109,7 +116,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                           <button
                             key={c}
                             onClick={() => { setSelectedColor(prev => prev === c ? '' : c); setValidationMsg(''); }}
-                            className={`rounded-full px-3 py-1 transition-colors ${
+                            className={`px-3 py-1 transition-colors ${
                               selectedColor === c 
                                 ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
                                 : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -143,7 +150,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                 <motion.div
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`mt-4 flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
+                  className={`mt-4 flex items-center gap-2 px-4 py-3 text-sm font-medium ${
                     isDark ? 'bg-red-900/40 text-red-300 border border-red-800/50' : 'bg-red-50 text-red-600 border border-red-200'
                   }`}
                 >
@@ -157,8 +164,8 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`mt-6 flex items-center justify-center w-full py-3 px-4 rounded-md font-medium transition-colors ${
-                  isDark ? 'bg-white text-black' : 'bg-black text-white'
+                className={`mt-6 flex items-center justify-center w-full py-3 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+                  isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
                 }`}
                 onClick={handleAddToCart}
               >
