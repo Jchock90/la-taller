@@ -286,11 +286,11 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} w-full max-w-md shadow-2xl overflow-hidden`}
+        className={`${bg} w-full max-w-md shadow-2xl overflow-hidden max-h-[90vh] flex flex-col`}
         onClick={e => e.stopPropagation()}
       >
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 dark:border-neutral-700">
+        <div className="flex border-b border-gray-200 dark:border-neutral-700 shrink-0">
           {['login', 'register'].map(t => (
             <button
               key={t}
@@ -306,7 +306,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
           ))}
         </div>
 
-        <div className="p-6">
+        <div className="p-6 overflow-y-auto">
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-neutral-800 text-red-600 dark:text-neutral-400 text-sm">
               {error}
