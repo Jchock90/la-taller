@@ -129,7 +129,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
             transition={{ type: 'spring', stiffness: 100, damping: 16 }}
-            className={`relative z-40 shadow-lg md:hidden ${
+            className={`absolute left-0 right-0 z-40 shadow-lg md:hidden ${
               isDark ? 'bg-black' : 'bg-white'
             }`}
           >
