@@ -15,9 +15,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-  const [needsVerification, setNeedsVerification] = useState(false);
-  const [verificationEmail, setVerificationEmail] = useState('');
+  const [successMsg, setSuccessMsg] = useState(false);
 
   // Close on Escape
   useEffect(() => {
@@ -34,6 +32,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [regNombre, setRegNombre] = useState('');
   const [regApellido, setRegApellido] = useState('');
   const [regEmail, setRegEmail] = useState('');
+  const [regEmail2, setRegEmail2] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regPassword2, setRegPassword2] = useState('');
 
@@ -47,6 +46,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { translatedText: t_name } = useAutoTranslate('Nombre');
   const { translatedText: t_lastname } = useAutoTranslate('Apellido');
   const { translatedText: t_confirmPass } = useAutoTranslate('Confirmar contraseña');
+  const { translatedText: t_confirmEmail } = useAutoTranslate('Confirmar email');
   const { translatedText: t_or } = useAutoTranslate('o');
   const { translatedText: t_google } = useAutoTranslate('Continuar con Google');
   const { translatedText: t_noAccount } = useAutoTranslate('¿No tenés cuenta?');
@@ -56,10 +56,9 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { translatedText: t_benefit2 } = useAutoTranslate('Historial completo de todas tus compras');
   const { translatedText: t_benefit3 } = useAutoTranslate('Proceso de compra más rápido');
   const { translatedText: t_passNoMatch } = useAutoTranslate('Las contraseñas no coinciden');
-  const { translatedText: t_verifyTitle } = useAutoTranslate('Verifica tu email');
-  const { translatedText: t_verifyMsg } = useAutoTranslate('Te enviamos un enlace de verificación a');
-  const { translatedText: t_resend } = useAutoTranslate('Reenviar enlace');
-  const { translatedText: t_resent } = useAutoTranslate('Enlace reenviado');
+  const { translatedText: t_emailNoMatch } = useAutoTranslate('Los emails no coinciden');
+  const { translatedText: t_successTitle } = useAutoTranslate('¡Cuenta creada!');
+  const { translatedText: t_successMsg } = useAutoTranslate('Tu cuenta fue creada exitosamente. Ya podés empezar a comprar.');
   const { translatedText: t_processing } = useAutoTranslate('Procesando...');
 
   const handleLogin = async (e) => {
@@ -71,12 +70,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       login(data.token, data.user);
       onSuccess?.();
     } catch (err) {
-      if (err.needsVerification) {
-        setNeedsVerification(true);
-        setVerificationEmail(loginEmail);
-      } else {
-        setError(err.message);
-      }
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -85,6 +79,10 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
+    if (regEmail !== regEmail2) {
+      setError(t_emailNoMatch);
+      return;
+    }
     if (regPassword !== regPassword2) {
       setError(t_passNoMatch);
       return;
@@ -95,27 +93,14 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     }
     setLoading(true);
     try {
-      await userApi.register({
+      const data = await userApi.register({
         nombre: regNombre,
         apellido: regApellido,
         email: regEmail,
         password: regPassword,
       });
-      setNeedsVerification(true);
-      setVerificationEmail(regEmail);
-      setSuccessMsg('');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleResendVerification = async () => {
-    setLoading(true);
-    try {
-      await userApi.resendVerification(verificationEmail);
-      setSuccessMsg(t_resent);
+      login(data.token, data.user);
+      setSuccessMsg(true);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -181,30 +166,26 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const inputBg = isDark ? 'bg-neutral-800 border-neutral-700 text-white' : 'bg-gray-50 border-gray-300 text-gray-900';
   const cardBg = isDark ? 'bg-neutral-800/50' : 'bg-gray-50';
 
-  // Verification screen
-  if (needsVerification) {
+  // Success screen
+  if (successMsg) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => { onSuccess?.(); onClose(); }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className={`${bg} p-8 w-full max-w-md shadow-2xl text-center`}
           onClick={e => e.stopPropagation()}
         >
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-700/30 dark:bg-neutral-900/30 flex items-center justify-center">
-            <FiMail className="w-8 h-8 text-neutral-300" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-900/30 flex items-center justify-center">
+            <FiCheck className="w-8 h-8 text-green-400" />
           </div>
-          <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_verifyTitle}</h2>
-          <p className={`${subtext} mb-1`}>{t_verifyMsg}</p>
-          <p className={`font-medium mb-6 ${text}`}>{verificationEmail}</p>
-          {successMsg && <p className="text-neutral-400 text-sm mb-4">{successMsg}</p>}
-          {error && <p className="text-neutral-500 text-sm mb-4">{error}</p>}
+          <h2 className={`text-xl font-bold mb-2 ${text}`}>{t_successTitle}</h2>
+          <p className={`${subtext} mb-6`}>{t_successMsg}</p>
           <button
-            onClick={handleResendVerification}
-            disabled={loading}
-            className="text-sm underline text-neutral-400 hover:text-neutral-300 disabled:opacity-50 border-none dark:border-none"
+            onClick={() => { onSuccess?.(); onClose(); }}
+            className={`px-6 py-2.5 font-semibold text-sm hover:opacity-90 transition-opacity ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
           >
-            {loading ? t_processing : t_resend}
+            OK
           </button>
         </motion.div>
       </div>
@@ -372,6 +353,23 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
+                    </div>
+                  </div>
+                  <div>
+                    <label className={`text-xs font-medium ${subtext} mb-1 block`}>{t_confirmEmail}</label>
+                    <div className="relative">
+                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 ${subtext}`} />
+                      <input
+                        type="email"
+                        required
+                        value={regEmail2}
+                        onChange={e => setRegEmail2(e.target.value)}
+                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        placeholder="tu@email.com"
+                      />
+                      {regEmail2 && regEmail === regEmail2 && (
+                        <FiCheck className={`absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400`} size={16} />
+                      )}
                     </div>
                   </div>
                   <div>

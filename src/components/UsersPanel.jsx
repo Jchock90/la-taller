@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
-import { FiTrash2, FiSearch, FiMail, FiCheckCircle, FiXCircle, FiUsers, FiRefreshCw, FiChevronDown, FiChevronUp, FiShoppingBag, FiPackage, FiTruck, FiExternalLink, FiSend } from 'react-icons/fi';
+import { FiTrash2, FiSearch, FiMail, FiUsers, FiRefreshCw, FiChevronDown, FiChevronUp, FiShoppingBag, FiPackage, FiTruck, FiExternalLink, FiSend } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { userApi } from '../services/userApi';
 import { adminApi } from '../services/api';
@@ -121,7 +121,6 @@ export default function UsersPanel() {
               <tr className="bg-neutral-800/50 text-neutral-400 text-xs uppercase">
                 <th className="text-left px-4 py-3">Usuario</th>
                 <th className="text-left px-4 py-3">Email</th>
-                <th className="text-center px-4 py-3">Verificado</th>
                 <th className="text-center px-4 py-3">Método</th>
                 <th className="text-center px-4 py-3">Compras</th>
                 <th className="text-left px-4 py-3">Fecha</th>
@@ -143,13 +142,6 @@ export default function UsersPanel() {
                           <FiMail size={13} />
                           {user.email}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        {user.emailVerified ? (
-                          <FiCheckCircle className="inline text-green-500" size={16} />
-                        ) : (
-                          <FiXCircle className="inline text-red-400" size={16} />
-                        )}
                       </td>
                       <td className="px-4 py-3 text-center">
                         {user.googleId ? (

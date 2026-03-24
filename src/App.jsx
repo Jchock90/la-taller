@@ -14,7 +14,6 @@ import Footer from './components/Footer';
 import PaymentStatus from './components/PaymentStatus';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
-import EmailVerification from './components/EmailVerification';
 import CookieConsent from './components/CookieConsent';
 
 function AppContent({ currentSection, setCurrentSection, renderSection }) {
@@ -33,14 +32,14 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
     <div className={`min-h-screen transition-colors duration-300 ${isDark ? 'bg-black' : 'bg-white'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded">Ir al contenido</a>
       <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
-        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
+        {!['success', 'failure', 'pending'].includes(currentSection) && (
           <>
             <TickerBar />
             <Navbar currentSection={currentSection} setCurrentSection={setCurrentSection} />
           </>
         )}
         <main id="main-content">{renderSection()}</main>
-        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
+        {!['success', 'failure', 'pending'].includes(currentSection) && (
           <Footer setCurrentSection={setCurrentSection} />
         )}
         <CookieConsent />
@@ -58,7 +57,6 @@ const SECTION_PATHS = {
   'success': '/success',
   'failure': '/failure',
   'pending': '/pending',
-  'verificar-email': '/verificar-email',
 };
 
 const PATH_TO_SECTION = Object.fromEntries(
@@ -111,8 +109,6 @@ function App() {
         return <PaymentStatus status="failure" setCurrentSection={setCurrentSection} />;
       case 'pending':
         return <PaymentStatus status="pending" setCurrentSection={setCurrentSection} />;
-      case 'verificar-email':
-        return <EmailVerification setCurrentSection={setCurrentSection} />;
       default:
         return <Home setCurrentSection={setCurrentSection} />;
     }

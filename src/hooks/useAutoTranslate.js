@@ -160,17 +160,10 @@ const localTranslations = {
   'Historial completo de todas tus compras': 'Complete history of all your purchases',
   'Proceso de compra más rápido': 'Faster checkout process',
   'Las contraseñas no coinciden': 'Passwords do not match',
-  'Verifica tu email': 'Verify your email',
-  'Te enviamos un enlace de verificación a': 'We sent a verification link to',
-  'Reenviar enlace': 'Resend link',
-  'Enlace reenviado': 'Link resent',
-
-  // EmailVerification
-  'Verificando tu email...': 'Verifying your email...',
-  '¡Email verificado!': 'Email verified!',
-  'Tu cuenta ha sido verificada correctamente. Ya podés empezar a comprar.': 'Your account has been verified successfully. You can now start shopping.',
-  'Error de verificación': 'Verification error',
-  'Ir a la tienda': 'Go to store',
+  'Los emails no coinciden': 'Emails do not match',
+  'Confirmar email': 'Confirm email',
+  '¡Cuenta creada!': 'Account created!',
+  'Tu cuenta fue creada exitosamente. Ya podés empezar a comprar.': 'Your account was created successfully. You can now start shopping.',
 
   // UserDashboard
   'Mi cuenta': 'My account',
