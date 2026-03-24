@@ -122,33 +122,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   };
 
   const googleInitialized = useRef(false);
-  const googleBtnRef = useCallback((node) => {
-    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleInitialized.current) return;
-    node.innerHTML = '';
-    window.google.accounts.id.renderButton(node, {
-      type: 'standard',
-      shape: 'rectangular',
-      theme: isDark ? 'filled_black' : 'outline',
-      size: 'large',
-      width: node.offsetWidth || 320,
-      text: 'continue_with',
-      logo_alignment: 'center',
-    });
-  }, [isDark]);
-
-  const googleBtnRegRef = useCallback((node) => {
-    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleInitialized.current) return;
-    node.innerHTML = '';
-    window.google.accounts.id.renderButton(node, {
-      type: 'standard',
-      shape: 'rectangular',
-      theme: isDark ? 'filled_black' : 'outline',
-      size: 'large',
-      width: node.offsetWidth || 320,
-      text: 'continue_with',
-      logo_alignment: 'center',
-    });
-  }, [isDark]);
+  const [googleReady, setGoogleReady] = useState(false);
 
   const googleCallback = useCallback(async (response) => {
     setLoading(true);
@@ -165,13 +139,55 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   }, [login, onSuccess]);
 
   useEffect(() => {
-    if (!GOOGLE_CLIENT_ID || !window.google || googleInitialized.current) return;
-    googleInitialized.current = true;
-    window.google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: googleCallback,
-    });
+    if (!GOOGLE_CLIENT_ID || googleInitialized.current) return;
+
+    const init = () => {
+      if (!window.google) return false;
+      googleInitialized.current = true;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: googleCallback,
+      });
+      setGoogleReady(true);
+      return true;
+    };
+
+    if (!init()) {
+      // Google script may not be loaded yet — poll briefly
+      const interval = setInterval(() => {
+        if (init()) clearInterval(interval);
+      }, 200);
+      return () => clearInterval(interval);
+    }
   }, [googleCallback]);
+
+  const googleBtnRef = useCallback((node) => {
+    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleReady) return;
+    node.innerHTML = '';
+    window.google.accounts.id.renderButton(node, {
+      type: 'standard',
+      shape: 'rectangular',
+      theme: isDark ? 'filled_black' : 'outline',
+      size: 'large',
+      width: node.offsetWidth || 320,
+      text: 'continue_with',
+      logo_alignment: 'center',
+    });
+  }, [isDark, googleReady]);
+
+  const googleBtnRegRef = useCallback((node) => {
+    if (!node || !GOOGLE_CLIENT_ID || !window.google || !googleReady) return;
+    node.innerHTML = '';
+    window.google.accounts.id.renderButton(node, {
+      type: 'standard',
+      shape: 'rectangular',
+      theme: isDark ? 'filled_black' : 'outline',
+      size: 'large',
+      width: node.offsetWidth || 320,
+      text: 'continue_with',
+      logo_alignment: 'center',
+    });
+  }, [isDark, googleReady]);
 
   const bg = isDark ? 'bg-neutral-900' : 'bg-white';
   const text = isDark ? 'text-neutral-100' : 'text-gray-900';
