@@ -67,7 +67,10 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
     setErrorMsg('');
     try {
       const items = cart.map(c => ({
+        id: c._id || c.name,
         title: c.name,
+        description: c.description || c.name,
+        category_id: c.category || 'fashion',
         unit_price: parsePrice(c.price),
         quantity: c.quantity,
       }));
