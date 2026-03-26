@@ -362,6 +362,8 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 </button>
 
                 {/* Google */}
+                {/* Google login button oculto temporalmente */}
+                {/*
                 {GOOGLE_CLIENT_ID && (
                   <>
                     <div className="flex items-center gap-3">
@@ -372,6 +374,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                     <div ref={googleBtnRef} className="w-full flex justify-center" />
                   </>
                 )}
+                */}
 
                 <p className={`text-center text-sm ${subtext}`}>
                   {t_noAccount}{' '}
@@ -504,6 +507,8 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   </button>
 
                   {/* Google */}
+                  {/* Google register button oculto temporalmente */}
+                  {/*
                   {GOOGLE_CLIENT_ID && (
                     <>
                       <div className="flex items-center gap-3">
@@ -514,6 +519,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       <div ref={googleBtnRegRef} className="w-full flex justify-center" />
                     </>
                   )}
+                  */}
 
                   <p className={`text-center text-sm ${subtext}`}>
                     {t_hasAccount}{' '}
