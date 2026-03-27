@@ -245,7 +245,8 @@ const Products = () => {
 
     const sizeText = selectedSize ? ` (${selectedSize})` : '';
     const colorText = selectedColor ? ` - ${selectedColor}` : '';
-    setToastMessage(`${item.name}${sizeText}${colorText} ${addedToCartText}`);
+    const qtyText = quantity > 1 ? ` x${quantity}` : '';
+    setToastMessage(`${item.name}${sizeText}${colorText}${qtyText} ${addedToCartText}`);
     setShowToast(true);
   };
 

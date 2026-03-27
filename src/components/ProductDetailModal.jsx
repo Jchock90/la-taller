@@ -7,19 +7,31 @@ import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate, TranslatedText } from '../hooks/useAutoTranslate';
 
 const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [selections, setSelections] = useState([{ size: '', color: '' }]);
   const [validationMsg, setValidationMsg] = useState('');
   const { isDark } = useTheme();
 
   // Resetear selección al cambiar de producto
   useEffect(() => {
-    setSelectedSize('');
-    setSelectedColor('');
     setQuantity(1);
+    setSelections([{ size: '', color: '' }]);
     setValidationMsg('');
   }, [product?._id]);
+
+  // Sync selections array length with quantity
+  useEffect(() => {
+    setSelections(prev => {
+      if (prev.length === quantity) return prev;
+      if (quantity > prev.length) {
+        // Add new units copying the last selection as default
+        const last = prev[prev.length - 1] || { size: '', color: '' };
+        return [...prev, ...Array(quantity - prev.length).fill(null).map(() => ({ ...last }))];
+      }
+      // Remove excess
+      return prev.slice(0, quantity);
+    });
+  }, [quantity]);
 
   // Close on Escape
   useEffect(() => {
@@ -28,8 +40,6 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
     return () => document.removeEventListener('keydown', handleEsc);
   }, [onClose]);
   
-  const { translatedText: selectSizeText } = useAutoTranslate('Por favor selecciona un talle');
-  const { translatedText: selectColorText } = useAutoTranslate('Por favor selecciona un color');
   const { translatedText: sizesAvailableText } = useAutoTranslate('Talles disponibles');
   const { translatedText: colorsText } = useAutoTranslate('Colores');
   const { translatedText: compositionText } = useAutoTranslate('Composición');
@@ -38,22 +48,48 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const { translatedText: addToCartText } = useAutoTranslate('Agregar al carrito');
   const { translatedText: safePayText } = useAutoTranslate('Pago seguro');
   const { translatedText: quantityLabel } = useAutoTranslate('Cantidad');
+  const { translatedText: unitLabel } = useAutoTranslate('Unidad');
+  const { translatedText: selectSizeForUnit } = useAutoTranslate('Selecciona talle para la unidad');
+  const { translatedText: selectColorForUnit } = useAutoTranslate('Selecciona color para la unidad');
   
   if (!product) return null;
 
   const details = product;
+  const hasSizes = details.talles && details.talles.length > 0;
+  const hasColors = details.colores && details.colores.length > 0;
+
+  const updateSelection = (index, field, value) => {
+    setSelections(prev => prev.map((s, i) => i === index ? { ...s, [field]: s[field] === value ? '' : value } : s));
+    setValidationMsg('');
+  };
 
   const handleAddToCart = () => {
-    if (details && details.talles.length > 0 && !selectedSize) {
-      setValidationMsg(selectSizeText);
-      return;
-    }
-    if (details && details.colores.length > 0 && !selectedColor) {
-      setValidationMsg(selectColorText);
-      return;
+    // Validate all units have required selections
+    for (let i = 0; i < selections.length; i++) {
+      if (hasSizes && !selections[i].size) {
+        setValidationMsg(`${selectSizeForUnit} ${i + 1}`);
+        return;
+      }
+      if (hasColors && !selections[i].color) {
+        setValidationMsg(`${selectColorForUnit} ${i + 1}`);
+        return;
+      }
     }
     setValidationMsg('');
-    onAddToCart(product, selectedSize, selectedColor, quantity);
+
+    // Group by size+color combo
+    const grouped = {};
+    selections.forEach(s => {
+      const key = `${s.size}||${s.color}`;
+      grouped[key] = (grouped[key] || 0) + 1;
+    });
+
+    // Add each unique combo to cart
+    Object.entries(grouped).forEach(([key, qty]) => {
+      const [size, color] = key.split('||');
+      onAddToCart(product, size, color, qty);
+    });
+
     onClose();
   };
 
@@ -90,47 +126,61 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
 
               {details && (
                 <div className={`space-y-5 text-sm ${isDark ? 'text-gray-400' : ''}`}>
-                  {details.talles && details.talles.length > 0 && (
-                    <div>
-                      <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{sizesAvailableText} *</h3>
-                      <div className="flex gap-2 flex-wrap">
-                        {details.talles.map(t => (
-                          <button
-                            key={t}
-                            onClick={() => { setSelectedSize(prev => prev === t ? '' : t); setValidationMsg(''); }}
-                            className={`border px-4 py-2 md:px-3 md:py-1 transition-colors ${
-                              selectedSize === t 
-                                ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
-                                : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
-                            }`}
-                          >
-                            {t}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
-                  {details.colores && details.colores.length > 0 && (
-                    <div>
-                      <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{colorsText} *</h3>
-                      <div className="flex gap-2 flex-wrap">
-                        {details.colores.map(c => (
-                          <button
-                            key={c}
-                            onClick={() => { setSelectedColor(prev => prev === c ? '' : c); setValidationMsg(''); }}
-                            className={`px-4 py-2 md:px-3 md:py-1 transition-colors ${
-                              selectedColor === c 
-                                ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
-                                : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            }`}
-                          >
-                            {c}
-                          </button>
-                        ))}
-                      </div>
+                  {/* Per-unit size/color selectors */}
+                  {(hasSizes || hasColors) && selections.map((sel, idx) => (
+                    <div key={idx} className={`space-y-4 ${quantity > 1 ? `pt-4 ${idx > 0 ? `border-t ${isDark ? 'border-neutral-700' : 'border-gray-200'}` : ''}` : ''}`}>
+                      {quantity > 1 && (
+                        <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{unitLabel} {idx + 1}</h3>
+                      )}
+
+                      {hasSizes && (
+                        <div>
+                          <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>
+                            {sizesAvailableText} *
+                          </h3>
+                          <div className="flex gap-2 flex-wrap">
+                            {details.talles.map(t => (
+                              <button
+                                key={t}
+                                onClick={() => updateSelection(idx, 'size', t)}
+                                className={`border px-4 py-2 md:px-3 md:py-1 transition-colors ${
+                                  sel.size === t
+                                    ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
+                                    : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
+                                }`}
+                              >
+                                {t}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {hasColors && (
+                        <div>
+                          <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>
+                            {colorsText} *
+                          </h3>
+                          <div className="flex gap-2 flex-wrap">
+                            {details.colores.map(c => (
+                              <button
+                                key={c}
+                                onClick={() => updateSelection(idx, 'color', c)}
+                                className={`px-4 py-2 md:px-3 md:py-1 transition-colors ${
+                                  sel.color === c
+                                    ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
+                                    : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                }`}
+                              >
+                                {c}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  ))}
 
                   <div>
                     <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{compositionText}</h3>
