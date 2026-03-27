@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { FiChevronLeft, FiChevronRight, FiFilter, FiX, FiUser } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiFilter, FiX } from 'react-icons/fi';
 import { parsePrice } from '../data/products';
 import { productsApi } from '../services/api';
 import { WHATSAPP_URL } from '../data/constants';
@@ -9,12 +9,10 @@ import ProductCard from '../components/ProductCard';
 import { CartPanel, CartButton } from '../components/CartPanel';
 import ProductDetailModal from '../components/ProductDetailModal';
 import CheckoutForm from '../components/CheckoutForm';
-import UserAuth from '../components/UserAuth';
-import UserDashboard from '../components/UserDashboard';
+import WhatsAppContact from '../components/WhatsAppContact';
 import Toast from '../components/Toast';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import { useUserAuth } from '../context/UserAuthContext';
 import { useAutoTranslate, TranslatedText, TranslatedOption } from '../hooks/useAutoTranslate';
 
 const GAP = 24; // gap-6 = 24px
@@ -131,9 +129,6 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
 const Products = () => {
   const { t } = useLanguage();
   const { isDark } = useTheme();
-  const { isUserAuthenticated, user } = useUserAuth();
-  const [showUserAuth, setShowUserAuth] = useState(false);
-  const [showUserDashboard, setShowUserDashboard] = useState(false);
   
   const { translatedText: titleText } = useAutoTranslate('Tesoro');
   const { translatedText: subtitleText } = useAutoTranslate('Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle');
@@ -457,21 +452,8 @@ const Products = () => {
         </motion.div>
       </div>
 
-      {/* User button */}
-      <button
-        onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
-        className={`fixed left-6 z-50 w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:scale-110 ${
-          isUserAuthenticated
-            ? 'bg-green-600 text-white'
-            : isDark
-              ? 'bg-neutral-800 text-neutral-600'
-              : 'bg-gray-200 text-gray-400'
-        }`}
-        style={{ bottom: 'var(--fab-bottom, 24px)', transition: 'bottom 0.15s ease-out' }}
-        title={isUserAuthenticated ? user?.nombre : ''}
-      >
-        <FiUser size={24} />
-      </button>
+      {/* WhatsApp button */}
+      <WhatsAppContact />
 
       <CartButton cartCount={cartCount} onClick={() => setShowCart(true)} />
 
@@ -506,19 +488,6 @@ const Products = () => {
         show={showToast} 
         onClose={() => setShowToast(false)} 
       />
-
-      {showUserAuth && (
-        <UserAuth
-          onClose={() => setShowUserAuth(false)}
-          onSuccess={() => setShowUserAuth(false)}
-        />
-      )}
-
-      {showUserDashboard && (
-        <UserDashboard
-          onClose={() => setShowUserDashboard(false)}
-        />
-      )}
     </section>
   );
 };

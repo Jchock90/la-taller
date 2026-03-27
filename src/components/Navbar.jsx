@@ -1,18 +1,24 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
+import { FiMenu, FiX, FiSun, FiMoon, FiUser } from 'react-icons/fi';
 import { FaSpotify } from 'react-icons/fa';
 import { useState } from 'react';
 import { NAV_ITEMS } from '../data/constants';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
+import { useUserAuth } from '../context/UserAuthContext';
 import { getConsent } from './CookieConsent';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
+import UserAuth from './UserAuth';
+import UserDashboard from './UserDashboard';
 
 const Navbar = ({ currentSection, setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [spotifyOpen, setSpotifyOpen] = useState(false);
+  const [showUserAuth, setShowUserAuth] = useState(false);
+  const [showUserDashboard, setShowUserDashboard] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
+  const { isUserAuthenticated, user } = useUserAuth();
   const consent = getConsent();
   const spotifyAllowed = consent?.thirdParty !== false;
   const { translatedText: spotifyDisabledText } = useAutoTranslate('Spotify deshabilitado (cookies de terceros rechazadas)');
@@ -63,6 +69,19 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
         </div>
 
         <div className="flex items-center space-x-2 md:space-x-4">
+          <motion.button
+            onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
+            whileHover={{ scale: 1.1 }}
+            className={`p-2 rounded-lg transition-colors ${
+              isUserAuthenticated
+                ? 'text-green-500 hover:bg-green-500/10'
+                : isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'
+            }`}
+            aria-label="User account"
+            title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
+          >
+            <FiUser size={20} />
+          </motion.button>
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
@@ -154,6 +173,19 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {showUserAuth && (
+        <UserAuth
+          onClose={() => setShowUserAuth(false)}
+          onSuccess={() => setShowUserAuth(false)}
+        />
+      )}
+
+      {showUserDashboard && (
+        <UserDashboard
+          onClose={() => setShowUserDashboard(false)}
+        />
+      )}
     </>
   );
 };
