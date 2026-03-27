@@ -6,55 +6,39 @@ import { useAutoTranslate } from '../hooks/useAutoTranslate';
 
 const SimpleCarousel = ({ images, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState('right');
-
-  const nextSlide = () => {
-    setDirection('right');
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const prevSlide = () => {
-    setDirection('left');
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      nextSlide();
+      setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [images.length, currentIndex]);
+  }, [images.length]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
-      {images.map((image, index) => (
+    <div className="relative h-full w-full overflow-hidden bg-black">
+      <AnimatePresence mode="sync">
         <motion.div
-          key={index}
-          initial={{ opacity: 0, x: direction === 'right' ? 100 : -100 }}
-          animate={{
-            opacity: index === currentIndex ? 1 : 0,
-            x: index === currentIndex ? 0 : (direction === 'right' ? -100 : 100)
-          }}
-          transition={{ duration: 0.8 }}
+          key={currentIndex}
+          initial={{ opacity: 0, scale: 1.15 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ opacity: { duration: 1.2, ease: [0.22, 1, 0.36, 1] }, scale: { duration: 7, ease: 'linear' } }}
           className="absolute inset-0 w-full h-full cursor-pointer"
           style={{
-            backgroundImage: `url(${image})`,
+            backgroundImage: `url(${images[currentIndex]})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-          onClick={() => onImageClick(image)}
+          onClick={() => onImageClick(images[currentIndex])}
         />
-      ))}
+      </AnimatePresence>
 
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-3">
+      <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 z-10">
         {images.map((_, index) => (
           <button
             key={index}
-            onClick={() => {
-              setDirection(index > currentIndex ? 'right' : 'left');
-              setCurrentIndex(index);
-            }}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-6' : 'bg-white/50'}`}
+            onClick={() => setCurrentIndex(index)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-5' : 'bg-white/50'}`}
             aria-label={`Ir a slide ${index + 1}`}
           />
         ))}
