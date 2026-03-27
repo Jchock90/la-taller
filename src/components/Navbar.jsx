@@ -73,15 +73,15 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={`p-2 rounded-lg transition-colors ${
-              isUserAuthenticated
-                ? 'text-green-500 hover:bg-green-500/10'
-                : isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'
+              isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'
             }`}
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold uppercase leading-none">
+              <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold uppercase leading-none ${
+                isDark ? 'bg-white/10 text-gray-200' : 'bg-black/10 text-black'
+              }`}>
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
