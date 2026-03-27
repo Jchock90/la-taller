@@ -40,8 +40,8 @@ const formatPrice = (raw) => {
 };
 
 const ConfirmModal = ({ title, message, confirmText, confirmColor, onConfirm, onCancel }) => (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-    <div className="bg-neutral-800 rounded-xl p-6 w-96 shadow-2xl border border-neutral-700">
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+    <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-neutral-700">
       <h3 className="text-white text-lg font-semibold mb-2">{title}</h3>
       <p className="text-neutral-400 text-sm mb-6">{message}</p>
       <div className="flex gap-3 justify-end">
@@ -193,8 +193,8 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
   return (
     <>
     {uploading && (
-      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-        <div className="bg-neutral-800 rounded-xl p-6 w-80 shadow-2xl">
+      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-xs shadow-2xl">
           <p className="text-white text-center font-medium mb-3">Subiendo imagen...</p>
           <div className="w-full bg-neutral-700 rounded-full h-4 overflow-hidden">
             <div
@@ -207,8 +207,8 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       </div>
     )}
     {uploadError && (
-      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-        <div className="bg-neutral-800 rounded-xl p-6 w-96 shadow-2xl border border-red-800/50">
+      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-red-800/50">
           <div className="flex items-center gap-3 mb-3">
             <svg className="w-6 h-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -408,11 +408,11 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <textarea className={`${inputClass} h-20 resize-none`} value={form.cuidados} onChange={e => handleChange('cuidados', e.target.value)} maxLength={200} />
       </div>
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex flex-wrap gap-3 pt-2">
         <button
           type="submit"
           disabled={loading}
-          className="bg-neutral-100 text-neutral-900 px-6 py-2 rounded font-medium hover:bg-neutral-300 transition-colors disabled:opacity-50 flex items-center gap-2"
+          className="bg-neutral-100 text-neutral-900 px-4 md:px-6 py-2 rounded font-medium hover:bg-neutral-300 transition-colors disabled:opacity-50 flex items-center gap-2 text-sm"
         >
           <FiSave size={16} />
           {loading ? 'Guardando...' : 'Guardar'}
@@ -420,7 +420,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
         <button
           type="button"
           onClick={onCancel}
-          className="bg-neutral-700 text-neutral-300 px-6 py-2 rounded font-medium hover:bg-neutral-600 transition-colors"
+          className="bg-neutral-700 text-neutral-300 px-4 md:px-6 py-2 rounded font-medium hover:bg-neutral-600 transition-colors text-sm"
         >
           Cancelar
         </button>
@@ -428,10 +428,11 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
           <button
             type="button"
             onClick={onDelete}
-            className="ml-auto bg-red-900/30 text-red-400 px-4 py-2 rounded font-medium hover:bg-red-900/50 transition-colors flex items-center gap-2"
+            className="md:ml-auto bg-red-900/30 text-red-400 px-4 py-2 rounded font-medium hover:bg-red-900/50 transition-colors flex items-center gap-2 text-sm"
           >
             <FiTrash2 size={16} />
-            Eliminar producto
+            <span className="hidden md:inline">Eliminar producto</span>
+            <span className="md:hidden">Eliminar</span>
           </button>
         )}
       </div>
@@ -578,48 +579,77 @@ const AdminPanel = ({ setCurrentSection }) => {
       )}
       {/* Header */}
       <div className="bg-neutral-900 border-b border-neutral-800">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button onClick={() => setCurrentSection('home')} className="text-neutral-400 hover:text-neutral-100 flex items-center gap-1">
-              <FiArrowLeft size={18} />
-              <span className="text-sm">Volver al sitio</span>
+        <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
+          <div className="flex items-center justify-between mb-3 md:mb-0">
+            <div className="flex items-center gap-3 md:gap-4">
+              <button onClick={() => setCurrentSection('home')} className="text-neutral-400 hover:text-neutral-100 flex items-center gap-1">
+                <FiArrowLeft size={18} />
+                <span className="text-sm hidden md:inline">Volver al sitio</span>
+              </button>
+              <h1 className="text-lg md:text-xl font-bold">Admin Panel</h1>
+            </div>
+            <div className="hidden md:flex gap-1 bg-neutral-800 rounded-lg p-1">
+              <button
+                onClick={() => setActiveTab('products')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'products' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              >
+                <FiPackage size={14} /> Productos
+              </button>
+              <button
+                onClick={() => setActiveTab('sales')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'sales' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              >
+                <FiShoppingCart size={14} /> Ventas
+              </button>
+              <button
+                onClick={() => setActiveTab('users')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'users' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              >
+                <FiUsers size={14} /> Usuarios
+              </button>
+              <button
+                onClick={() => setActiveTab('email')}
+                className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'email' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              >
+                <FiMail size={14} /> Email
+              </button>
+            </div>
+            <button onClick={handleLogout} className="text-neutral-400 hover:text-red-400 flex items-center gap-1 text-sm">
+              <FiLogOut size={16} />
+              <span className="hidden md:inline">Cerrar sesión</span>
             </button>
-            <h1 className="text-xl font-bold">Admin Panel</h1>
           </div>
-          <div className="flex gap-1 bg-neutral-800 rounded-lg p-1">
+          {/* Mobile tabs */}
+          <div className="flex md:hidden gap-1 bg-neutral-800 rounded-lg p-1 overflow-x-auto">
             <button
               onClick={() => setActiveTab('products')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'products' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs whitespace-nowrap transition-colors ${activeTab === 'products' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
-              <FiPackage size={14} /> Productos
+              <FiPackage size={13} /> Productos
             </button>
             <button
               onClick={() => setActiveTab('sales')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'sales' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs whitespace-nowrap transition-colors ${activeTab === 'sales' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
-              <FiShoppingCart size={14} /> Ventas
+              <FiShoppingCart size={13} /> Ventas
             </button>
             <button
               onClick={() => setActiveTab('users')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'users' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs whitespace-nowrap transition-colors ${activeTab === 'users' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
-              <FiUsers size={14} /> Usuarios
+              <FiUsers size={13} /> Usuarios
             </button>
             <button
               onClick={() => setActiveTab('email')}
-              className={`flex items-center gap-1.5 px-4 py-1.5 rounded text-sm transition-colors ${activeTab === 'email' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs whitespace-nowrap transition-colors ${activeTab === 'email' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
             >
-              <FiMail size={14} /> Email
+              <FiMail size={13} /> Email
             </button>
           </div>
-          <button onClick={handleLogout} className="text-neutral-400 hover:text-red-400 flex items-center gap-1 text-sm">
-            <FiLogOut size={16} />
-            Cerrar sesión
-          </button>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-4 md:px-6 py-4 md:py-8">
         {/* Messages */}
         {error && (
           <div className="bg-red-900/50 text-red-300 text-sm px-4 py-3 rounded mb-4 flex justify-between items-center">
@@ -643,7 +673,7 @@ const AdminPanel = ({ setCurrentSection }) => {
         <>
         {/* Form view */}
         {editingProduct !== null ? (
-          <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800">
+          <div className="bg-neutral-900 rounded-xl p-4 md:p-6 border border-neutral-800">
             <h2 className="text-lg font-semibold mb-4">
               {editingProduct === 'new' ? 'Nuevo Producto' : `Editar: ${editingProduct.name}`}
             </h2>
@@ -670,14 +700,14 @@ const AdminPanel = ({ setCurrentSection }) => {
         ) : (
           /* List view */
           <>
-            <div className="flex justify-between items-center mb-6">
-              <p className="text-neutral-400">{products.length} productos en total</p>
-              <div className="flex gap-3">
-                <button onClick={fetchProducts} className="bg-neutral-800 text-neutral-300 px-4 py-2 rounded hover:bg-neutral-700 flex items-center gap-2 text-sm">
-                  <FiRefreshCw size={14} /> Recargar
+            <div className="flex justify-between items-center mb-6 gap-3">
+              <p className="text-neutral-400 text-sm">{products.length} productos</p>
+              <div className="flex gap-2 md:gap-3">
+                <button onClick={fetchProducts} className="bg-neutral-800 text-neutral-300 px-3 md:px-4 py-2 rounded hover:bg-neutral-700 flex items-center gap-2 text-sm">
+                  <FiRefreshCw size={14} /> <span className="hidden md:inline">Recargar</span>
                 </button>
-                <button onClick={() => setEditingProduct('new')} className="bg-neutral-100 text-neutral-900 px-4 py-2 rounded hover:bg-neutral-300 flex items-center gap-2 text-sm">
-                  <FiPlus size={14} /> Nuevo Producto
+                <button onClick={() => setEditingProduct('new')} className="bg-neutral-100 text-neutral-900 px-3 md:px-4 py-2 rounded hover:bg-neutral-300 flex items-center gap-2 text-sm">
+                  <FiPlus size={14} /> <span className="hidden md:inline">Nuevo Producto</span>
                 </button>
               </div>
             </div>
@@ -696,26 +726,27 @@ const AdminPanel = ({ setCurrentSection }) => {
                 {products.map(product => (
                   <div
                     key={product._id}
-                    className={`bg-neutral-900 border rounded-lg p-4 flex items-center gap-4 ${
+                    className={`bg-neutral-900 border rounded-lg p-3 md:p-4 ${
                       product.active ? 'border-neutral-800' : 'border-red-900/50 opacity-60'
                     }`}
                   >
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold truncate">{product.name}</h3>
-                        {!product.active && (
-                          <span className="text-xs bg-red-900/50 text-red-400 px-2 py-0.5 rounded">Inactivo</span>
-                        )}
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold truncate text-sm md:text-base">{product.name}</h3>
+                          {!product.active && (
+                            <span className="text-xs bg-red-900/50 text-red-400 px-2 py-0.5 rounded flex-shrink-0">Inactivo</span>
+                          )}
+                        </div>
+                        <p className="text-neutral-400 text-sm">{product.price}</p>
+                        <p className="text-neutral-600 text-xs truncate">{product.collectionName}{product.categoria ? ` · ${product.categoria}` : ''} · Orden: {product.order}</p>
                       </div>
-                      <p className="text-neutral-400 text-sm">{product.price}</p>
-                      <p className="text-neutral-600 text-xs">{product.collectionName}{product.categoria ? ` · ${product.categoria}` : ''} · Orden: {product.order}</p>
-                    </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-1.5 md:gap-2 flex-shrink-0">
                       <button
                         onClick={() => setEditingProduct(product)}
                         className="bg-neutral-800 text-neutral-300 p-2 rounded hover:bg-neutral-700"
@@ -747,6 +778,7 @@ const AdminPanel = ({ setCurrentSection }) => {
                       >
                         <FiTrash2 size={16} />
                       </button>
+                    </div>
                     </div>
                   </div>
                 ))}

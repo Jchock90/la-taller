@@ -80,27 +80,27 @@ export default function UsersPanel() {
   return (
     <div>
       {/* Header row */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 gap-3">
         <div className="flex items-center gap-3">
           <FiUsers size={20} className="text-neutral-400" />
-          <h2 className="text-lg font-semibold text-white">
-            Usuarios registrados ({users.length})
+          <h2 className="text-base md:text-lg font-semibold text-white">
+            Usuarios ({users.length})
           </h2>
         </div>
         <div className="flex items-center gap-3">
-          <div className="relative">
+          <div className="relative flex-1 md:flex-none">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" size={14} />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Buscar..."
-              className="bg-neutral-800 text-neutral-200 text-sm pl-9 pr-3 py-2 rounded-lg border border-neutral-700 w-64 focus:outline-none focus:border-neutral-500"
+              className="bg-neutral-800 text-neutral-200 text-sm pl-9 pr-3 py-2 rounded-lg border border-neutral-700 w-full md:w-64 focus:outline-none focus:border-neutral-500"
             />
           </div>
           <button
             onClick={fetchUsers}
-            className="text-neutral-400 hover:text-neutral-200 transition-colors"
+            className="text-neutral-400 hover:text-neutral-200 transition-colors flex-shrink-0"
             title="Recargar"
           >
             <FiRefreshCw size={16} />
@@ -115,7 +115,128 @@ export default function UsersPanel() {
           {search ? 'No se encontraron usuarios' : 'No hay usuarios registrados'}
         </div>
       ) : (
-        <div className="bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden">
+        <>
+        {/* Mobile card layout */}
+        <div className="md:hidden space-y-3">
+          {filtered.map(user => {
+            const stats = user.purchaseStats || { totalPurchases: 0, totalSpent: 0 };
+            const isExpanded = expanded === user._id;
+            return (
+              <div key={user._id} className="bg-neutral-900 rounded-xl border border-neutral-800 p-4">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
+                    <p className="text-neutral-200 font-medium text-sm truncate">{user.nombre} {user.apellido}</p>
+                    <p className="text-neutral-500 text-xs flex items-center gap-1 truncate"><FiMail size={11} /> {user.email}</p>
+                  </div>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {user.googleId ? (
+                      <span className="text-[10px] bg-blue-900/30 text-blue-400 px-1.5 py-0.5 rounded-full">Google</span>
+                    ) : (
+                      <span className="text-[10px] bg-neutral-700 text-neutral-400 px-1.5 py-0.5 rounded-full">Email</span>
+                    )}
+                    {user.emailVerified ? (
+                      <span className="text-[10px] bg-green-900/30 text-green-400 px-1.5 py-0.5 rounded-full">Verificado</span>
+                    ) : (
+                      <span className="text-[10px] bg-yellow-900/30 text-yellow-400 px-1.5 py-0.5 rounded-full">No verif.</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center gap-2">
+                    {stats.totalPurchases > 0 ? (
+                      <button
+                        onClick={() => setExpanded(isExpanded ? null : user._id)}
+                        className="inline-flex items-center gap-1.5 text-xs bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded-full hover:bg-emerald-900/50 transition-colors"
+                      >
+                        <FiShoppingBag size={11} />
+                        {stats.totalPurchases} · ${stats.totalSpent.toLocaleString('es-AR')}
+                        {isExpanded ? <FiChevronUp size={11} /> : <FiChevronDown size={11} />}
+                      </button>
+                    ) : (
+                      <span className="text-xs text-neutral-600">Sin compras</span>
+                    )}
+                    <span className="text-xs text-neutral-600">
+                      {new Date(user.createdAt).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    </span>
+                  </div>
+                  {confirmDelete === user._id ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-red-400">¿Eliminar?</span>
+                      <button onClick={() => handleDelete(user._id)} className="text-xs bg-red-600 text-white px-2 py-1 rounded">Sí</button>
+                      <button onClick={() => setConfirmDelete(null)} className="text-xs bg-neutral-700 text-neutral-300 px-2 py-1 rounded">No</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => setConfirmDelete(user._id)} className="text-neutral-500 hover:text-red-400 transition-colors">
+                      <FiTrash2 size={14} />
+                    </button>
+                  )}
+                </div>
+                {/* Expanded purchases */}
+                {isExpanded && user.purchases?.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-neutral-800 space-y-3 max-h-80 overflow-y-auto">
+                    {user.purchases.map(p => (
+                      <div key={p._id} className="bg-neutral-800/40 rounded-lg p-3">
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] text-neutral-500 font-mono truncate">{p.orderId}</span>
+                          <span className={`text-xs font-medium ${statusColors[p.status] || 'text-neutral-400'}`}>
+                            {statusLabels[p.status] || p.status}
+                          </span>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="text-xs text-neutral-400 space-y-0.5">
+                            <p><span className="text-neutral-600">Dir:</span> {p.direccion}{p.pisoDepto ? ` (${p.pisoDepto})` : ''}, {p.ciudad}, {p.provincia}</p>
+                          </div>
+                          <div className="space-y-0.5">
+                            {p.items?.map((item, idx) => (
+                              <div key={idx} className="flex justify-between text-xs">
+                                <span className="text-neutral-400 truncate">
+                                  {item.quantity}× {item.title}
+                                  {item.talle ? ` (${item.talle})` : ''}
+                                  {item.color ? ` - ${item.color}` : ''}
+                                </span>
+                                <span className="text-neutral-500 flex-shrink-0 ml-2">${(item.unit_price * item.quantity)?.toLocaleString('es-AR')}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between mt-2 pt-2 border-t border-neutral-700">
+                          <span className="text-[10px] text-neutral-600">
+                            {new Date(p.createdAt).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                          </span>
+                          <span className="text-sm font-semibold text-neutral-300">${p.total?.toLocaleString('es-AR')}</span>
+                        </div>
+                        {/* Tracking */}
+                        <div className="mt-2">
+                          {p.status === 'shipped' && p.trackingUrl ? (
+                            <div className="flex items-center gap-2 bg-cyan-900/20 border border-cyan-800/30 rounded p-2">
+                              <FiTruck className="text-cyan-400 shrink-0" size={12} />
+                              <a href={p.trackingUrl.startsWith('http') ? p.trackingUrl : `https://${p.trackingUrl}`} target="_blank" rel="noopener noreferrer" className="text-xs text-cyan-300 hover:text-cyan-100 underline flex items-center gap-1 truncate">
+                                <FiExternalLink size={10} /> Ver seguimiento
+                              </a>
+                            </div>
+                          ) : editingTracking === p._id ? (
+                            <div className="flex gap-2">
+                              <input type="url" className="flex-1 bg-neutral-800 border border-neutral-700 text-neutral-100 rounded px-2 py-1 text-xs focus:outline-none focus:border-cyan-500" value={trackingUrl} onChange={e => setTrackingUrl(e.target.value)} placeholder="URL de seguimiento..." />
+                              <button onClick={() => handleSendTracking(p._id)} disabled={sendingTracking || !trackingUrl.trim()} className="bg-cyan-600 text-white px-2 py-1 rounded text-xs disabled:opacity-50"><FiSend size={10} /></button>
+                              <button onClick={() => { setEditingTracking(null); setTrackingUrl(''); }} className="bg-neutral-700 text-neutral-300 px-2 py-1 rounded text-xs">✕</button>
+                            </div>
+                          ) : (
+                            <button onClick={() => { setEditingTracking(p._id); setTrackingUrl(p.trackingUrl || ''); }} className="text-xs text-neutral-500 hover:text-cyan-400 flex items-center gap-1 transition-colors">
+                              <FiTruck size={11} /> {p.status === 'approved' ? 'Enviar seguimiento' : 'Agregar seguimiento'}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop table layout */}
+        <div className="hidden md:block bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-neutral-800/50 text-neutral-400 text-xs uppercase">
@@ -305,6 +426,7 @@ export default function UsersPanel() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );

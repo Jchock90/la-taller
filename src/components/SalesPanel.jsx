@@ -166,8 +166,8 @@ const SalesPanel = () => {
     <div>
       {/* Confirm Modal */}
       {confirmModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-neutral-800 rounded-xl p-6 w-96 shadow-2xl border border-neutral-700">
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+          <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-neutral-700">
             <h3 className="text-white text-lg font-semibold mb-2">{confirmModal.title}</h3>
             <p className="text-neutral-400 text-sm mb-6">{confirmModal.message}</p>
             <div className="flex gap-3 justify-end">
@@ -189,29 +189,29 @@ const SalesPanel = () => {
       )}
       {/* Stats Cards */}
       {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-neutral-400 text-xs mb-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 md:p-4">
+            <div className="flex items-center gap-2 text-neutral-400 text-[10px] md:text-xs mb-1">
               <FiShoppingBag size={14} /> VENTAS TOTALES
             </div>
-            <p className="text-2xl font-bold text-neutral-100">{stats.totalSales}</p>
+            <p className="text-xl md:text-2xl font-bold text-neutral-100">{stats.totalSales}</p>
           </div>
-          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-neutral-400 text-xs mb-1">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 md:p-4">
+            <div className="flex items-center gap-2 text-neutral-400 text-[10px] md:text-xs mb-1">
               <FiDollarSign size={14} /> INGRESOS
             </div>
-            <p className="text-2xl font-bold text-green-400">{formatMoney(stats.totalRevenue)}</p>
+            <p className="text-xl md:text-2xl font-bold text-green-400">{formatMoney(stats.totalRevenue)}</p>
           </div>
-          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-neutral-400 text-xs mb-1">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 md:p-4">
+            <div className="flex items-center gap-2 text-neutral-400 text-[10px] md:text-xs mb-1">
               <FiTrendingUp size={14} /> TICKET PROMEDIO
             </div>
-            <p className="text-2xl font-bold text-neutral-400">
+            <p className="text-xl md:text-2xl font-bold text-neutral-400">
               {stats.totalSales > 0 ? formatMoney(Math.round(stats.totalRevenue / stats.totalSales)) : '$0'}
             </p>
           </div>
-          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
-            <div className="flex items-center gap-2 text-neutral-400 text-xs mb-1">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 md:p-4">
+            <div className="flex items-center gap-2 text-neutral-400 text-[10px] md:text-xs mb-1">
               <FiBarChart2 size={14} /> TOP PRODUCTO
             </div>
             <p className="text-sm font-semibold text-neutral-100 truncate">
@@ -223,34 +223,35 @@ const SalesPanel = () => {
       )}
 
       {/* View Toggle + Filters */}
-      <div className="flex flex-col md:flex-row gap-3 mb-4">
-        <div className="flex gap-1 bg-neutral-900 rounded-lg p-1 border border-neutral-800">
-          <button
-            onClick={() => setView('list')}
-            className={`px-3 py-1.5 rounded text-sm transition-colors ${view === 'list' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
-          >
-            Ventas
-          </button>
-          <button
-            onClick={() => setView('stats')}
-            className={`px-3 py-1.5 rounded text-sm transition-colors ${view === 'stats' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
-          >
-            Estadísticas
-          </button>
-        </div>
-
-        <div className="flex gap-2 flex-1 flex-wrap">
-          <div className="relative flex-1 min-w-[200px]">
+      <div className="flex flex-col gap-3 mb-4">
+        <div className="flex gap-2 items-center">
+          <div className="flex gap-1 bg-neutral-900 rounded-lg p-1 border border-neutral-800">
+            <button
+              onClick={() => setView('list')}
+              className={`px-3 py-1.5 rounded text-sm transition-colors ${view === 'list' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+            >
+              Ventas
+            </button>
+            <button
+              onClick={() => setView('stats')}
+              className={`px-3 py-1.5 rounded text-sm transition-colors ${view === 'stats' ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-400 hover:text-neutral-200'}`}
+            >
+              Estadísticas
+            </button>
+          </div>
+          <div className="relative flex-1 min-w-0">
             <FiSearch className="absolute left-3 top-2.5 text-neutral-500" size={14} />
             <input
               className={`${inputClass} pl-9 w-full`}
-              placeholder="Buscar por nombre, email, orden..."
+              placeholder="Buscar..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
             />
           </div>
-          <select className={inputClass} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          <select className={`${inputClass} flex-1 min-w-[120px]`} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
             <option value="">Todos los estados</option>
             <option value="pending">Pendientes</option>
             <option value="in_process">En revisión</option>
@@ -258,8 +259,8 @@ const SalesPanel = () => {
             <option value="rejected">Rechazadas</option>
             <option value="refunded">Reembolsadas</option>
           </select>
-          <input type="date" className={inputClass} value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
-          <input type="date" className={inputClass} value={dateTo} onChange={e => setDateTo(e.target.value)} />
+          <input type="date" className={`${inputClass} flex-1 min-w-[120px]`} value={dateFrom} onChange={e => setDateFrom(e.target.value)} />
+          <input type="date" className={`${inputClass} flex-1 min-w-[120px]`} value={dateTo} onChange={e => setDateTo(e.target.value)} />
           <button onClick={handleSearch} className="bg-neutral-100 text-neutral-900 px-4 py-2 rounded text-sm hover:bg-neutral-300">
             Filtrar
           </button>
@@ -356,20 +357,20 @@ const SalesPanel = () => {
                 <div key={sale._id} className="bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden">
                   {/* Sale Row */}
                   <div
-                    className="p-4 flex items-center gap-4 cursor-pointer hover:bg-neutral-800/50 transition-colors"
+                    className="p-3 md:p-4 flex items-center gap-3 md:gap-4 cursor-pointer hover:bg-neutral-800/50 transition-colors"
                     onClick={() => setExpandedSale(expandedSale === sale._id ? null : sale._id)}
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-neutral-100">{sale.nombre} {sale.apellido}</span>
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <span className="font-semibold text-neutral-100 text-sm md:text-base">{sale.nombre} {sale.apellido}</span>
                         <span className={`text-xs px-2 py-0.5 rounded ${STATUS_COLORS[sale.status]}`}>
                           {STATUS_LABELS[sale.status]}
                         </span>
                         {sale.trackingUrl && <FiTruck className="text-cyan-400" size={14} title="Despachado con seguimiento" />}
                       </div>
-                      <div className="flex gap-4 text-xs text-neutral-500">
-                        <span>{sale.email}</span>
-                        <span>{formatDate(sale.createdAt)}</span>
+                      <div className="flex gap-2 md:gap-4 text-xs text-neutral-500 flex-wrap">
+                        <span className="truncate">{sale.email}</span>
+                        <span className="flex-shrink-0">{formatDate(sale.createdAt)}</span>
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
@@ -380,7 +381,7 @@ const SalesPanel = () => {
 
                   {/* Expanded Details */}
                   {expandedSale === sale._id && (
-                    <div className="border-t border-neutral-800 p-4 bg-neutral-950/50">
+                    <div className="border-t border-neutral-800 p-3 md:p-4 bg-neutral-950/50">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
                           <h4 className="text-xs text-neutral-500 uppercase mb-2">Datos del comprador</h4>

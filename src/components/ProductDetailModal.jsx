@@ -108,14 +108,14 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className={`${isDark ? 'bg-neutral-900' : 'bg-white'} shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row`}
+            className={`${isDark ? 'bg-neutral-900' : 'bg-white'} shadow-2xl w-full max-w-4xl h-[90vh] overflow-hidden flex flex-col md:flex-row`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full md:w-1/2 h-64 md:h-auto md:min-h-[500px] relative">
+            <div className="w-full md:w-1/2 h-64 md:h-auto md:min-h-[500px] relative flex-shrink-0">
               <Carousel images={product.gallery || [product.imageUrl]} />
             </div>
 
-            <div className={`w-full md:w-1/2 p-4 md:p-8 overflow-y-auto ${isDark ? 'bg-neutral-900' : ''}`}>
+            <div className={`w-full md:w-1/2 p-4 md:p-8 flex-1 min-h-0 overflow-y-auto ${isDark ? 'bg-neutral-900' : ''}`}>
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.name}</h2>
