@@ -34,7 +34,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
         initial={{ opacity: 0, filter: 'blur(12px)' }}
         animate={{ opacity: 1, filter: 'blur(0px)' }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className={`relative w-full z-50 flex items-center justify-between p-4 shadow-md ${isDark ? 'bg-neutral-900' : 'bg-purple-300'}`}
+        className={`relative w-full z-50 flex items-center justify-between py-2 px-4 shadow-md ${isDark ? 'bg-neutral-900' : 'bg-purple-300'}`}
       >
         <div className="flex items-center">
           <motion.img 
@@ -73,14 +73,14 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={isUserAuthenticated
-              ? `w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-white'}`
+              ? `w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`
               : `p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
             }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className="text-xs font-bold uppercase leading-none">
+              <span className="text-sm font-bold uppercase leading-none">
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
