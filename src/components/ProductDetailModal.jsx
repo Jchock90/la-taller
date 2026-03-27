@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiShoppingCart, FiX } from 'react-icons/fi';
+import { FiShoppingCart, FiX, FiPlus, FiMinus } from 'react-icons/fi';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import Carousel from './Carousel';
@@ -9,6 +9,7 @@ import { useAutoTranslate, TranslatedText } from '../hooks/useAutoTranslate';
 const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const [validationMsg, setValidationMsg] = useState('');
   const { isDark } = useTheme();
 
@@ -16,6 +17,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   useEffect(() => {
     setSelectedSize('');
     setSelectedColor('');
+    setQuantity(1);
     setValidationMsg('');
   }, [product?._id]);
 
@@ -35,6 +37,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const { translatedText: careText } = useAutoTranslate('Cuidados');
   const { translatedText: addToCartText } = useAutoTranslate('Agregar al carrito');
   const { translatedText: safePayText } = useAutoTranslate('Pago seguro');
+  const { translatedText: quantityLabel } = useAutoTranslate('Cantidad');
   
   if (!product) return null;
 
@@ -50,7 +53,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
       return;
     }
     setValidationMsg('');
-    onAddToCart(product, selectedSize, selectedColor);
+    onAddToCart(product, selectedSize, selectedColor, quantity);
     onClose();
   };
 
@@ -160,6 +163,28 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                   {validationMsg}
                 </motion.div>
               )}
+
+              {/* Quantity selector */}
+              <div className="mt-5 flex items-center gap-4">
+                <h3 className={`font-semibold text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{quantityLabel}</h3>
+                <div className={`flex items-center border ${isDark ? 'border-neutral-700' : 'border-gray-300'}`}>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                    className={`px-3 py-2 transition-colors ${isDark ? 'text-neutral-400 hover:bg-neutral-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    <FiMinus size={14} />
+                  </button>
+                  <span className={`px-4 py-2 text-sm font-medium min-w-[2.5rem] text-center ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(q => q + 1)}
+                    className={`px-3 py-2 transition-colors ${isDark ? 'text-neutral-400 hover:bg-neutral-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    <FiPlus size={14} />
+                  </button>
+                </div>
+              </div>
 
               <motion.button
                 whileHover={{ scale: 1.02 }}

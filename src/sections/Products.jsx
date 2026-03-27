@@ -226,7 +226,7 @@ const Products = () => {
     localStorage.setItem('la-taller-cart', JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (item, selectedSize, selectedColor) => {
+  const addToCart = (item, selectedSize, selectedColor, quantity = 1) => {
     setCart(prev => {
       const existing = prev.find(c => 
         c._id === item._id && 
@@ -236,11 +236,11 @@ const Products = () => {
       if (existing) {
         return prev.map(c => 
           c._id === item._id && c.selectedSize === selectedSize && c.selectedColor === selectedColor
-            ? { ...c, quantity: c.quantity + 1 }
+            ? { ...c, quantity: c.quantity + quantity }
             : c
         );
       }
-      return [...prev, { ...item, quantity: 1, selectedSize, selectedColor }];
+      return [...prev, { ...item, quantity, selectedSize, selectedColor }];
     });
 
     const sizeText = selectedSize ? ` (${selectedSize})` : '';
