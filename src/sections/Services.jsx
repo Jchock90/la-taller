@@ -223,14 +223,14 @@ const galleries = [
               whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
               transition={{ type: 'spring', stiffness: 70, damping: 14, delay: galleryIndex * 0.15 }}
               viewport={{ once: true, amount: 0.2 }}
-              className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow`}
+              className="p-2"
             >
               <h3 className={`text-xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center`}>
                 {gallery.title}
               </h3>
               
               <div 
-                className="h-64 rounded-lg overflow-hidden shadow-sm cursor-pointer"
+                className="h-64 rounded-lg overflow-hidden cursor-pointer"
                 onClick={() => openGallery(gallery)}
               >
                 <SimpleCarousel 
