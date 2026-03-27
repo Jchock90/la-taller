@@ -144,7 +144,7 @@ const Home = ({ setCurrentSection }) => {
             <img
               src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
               alt="Productos disponibles"
-              className="w-full h-[16rem] md:h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+              className="w-full h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
               style={{ objectPosition: 'center 70%' }}
               onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
             />
