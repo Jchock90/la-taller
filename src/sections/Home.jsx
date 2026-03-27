@@ -52,7 +52,6 @@ const Home = ({ setCurrentSection }) => {
   const { t } = useLanguage();
   const { isDark } = useTheme();
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [counters, setCounters] = useState({ years: 0, students: 0, pieces: 0, workshops: 0 });
   const [expandedGalleryIndex, setExpandedGalleryIndex] = useState(null);
 
   // Close gallery modal on Escape
@@ -104,10 +103,6 @@ const Home = ({ setCurrentSection }) => {
   const { translatedText: quoteText } = useAutoTranslate('La ropa que vistes es la primera pregunta que responde tu cuerpo cada mañana. En La Taller, aprendemos a responder con consciencia, creatividad y amor.');
   const { translatedText: galleryTitle } = useAutoTranslate('Momentos en La Taller');
   const { translatedText: testimonialTitle } = useAutoTranslate('Lo que dicen nuestras alumnas');
-  const { translatedText: stat1Label } = useAutoTranslate('Años tejiendo historias');
-  const { translatedText: stat2Label } = useAutoTranslate('Alumnas formadas');
-  const { translatedText: stat3Label } = useAutoTranslate('Prendas creadas');
-  const { translatedText: stat4Label } = useAutoTranslate('Talleres realizados');
   const { translatedText: testimonial1Text } = useAutoTranslate('La Taller cambió mi forma de relacionarme con mi cuerpo y la ropa. Cada prenda que creo es un acto de amor propio.');
   const { translatedText: testimonial2Text } = useAutoTranslate('Llegué sin saber coser nada y salí con una bombacha hecha por mis propias manos. Fue mágico.');
   const { translatedText: testimonial3Text } = useAutoTranslate('Es más que un taller, es un espacio donde te permites ser creativa y vulnerable al mismo tiempo.');
@@ -123,13 +118,6 @@ const Home = ({ setCurrentSection }) => {
     { text: testimonial3Text, author: 'Soledad' }
   ];
 
-  const translatedStats = [
-    { label: stat1Label, value: 8 },
-    { label: stat2Label, value: 250 },
-    { label: stat3Label, value: 1500 },
-    { label: stat4Label, value: 95 }
-  ];
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
@@ -137,36 +125,44 @@ const Home = ({ setCurrentSection }) => {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  useEffect(() => {
-    const targetStats = { years: 8, students: 250, pieces: 1500, workshops: 95 };
-    const duration = 2000;
-    const startTime = Date.now();
-
-    const timer = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-
-      setCounters({
-        years: Math.floor(targetStats.years * progress),
-        students: Math.floor(targetStats.students * progress),
-        pieces: Math.floor(targetStats.pieces * progress),
-        workshops: Math.floor(targetStats.workshops * progress)
-      });
-
-      if (progress === 1) clearInterval(timer);
-    }, 30);
-
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section id="home" className="relative">
       <div className="h-[80vh] w-full">
         <Carousel images={carouselImages} />
       </div>
 
-      {/* Typewriter quote below carousel */}
-      <TypewriterQuote text={quoteText} isDark={isDark} />
+      {/* Tesoro hero (moved up) */}
+      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-16`}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 15 }}
+          viewport={{ once: true }}
+          className="relative group max-w-md mx-auto px-6"
+        >
+          <div className="relative rounded-lg overflow-hidden">
+            <img
+              src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
+              alt="Productos disponibles"
+              className="w-full h-[20rem] md:h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+              style={{ objectPosition: 'center 70%' }}
+              onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
+            />
+            <div className="absolute bottom-0 left-0 w-full flex justify-center pb-6">
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
+                viewport={{ once: true }}
+                className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer transition-colors duration-300 ${isDark ? 'border-neutral-700 text-neutral-700 hover:bg-black/10' : 'border-neutral-700 text-neutral-700 hover:bg-black/10'}`}
+                onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
+              >
+                {seeCollectionText} →
+              </motion.span>
+            </div>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Hilo Propio hero */}
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'}`}>
@@ -209,26 +205,6 @@ const Home = ({ setCurrentSection }) => {
 
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
         <div className="max-w-6xl mx-auto px-6">
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-            {translatedStats.map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ type: 'spring', stiffness: 80, damping: 14, delay: idx * 0.1 }}
-                viewport={{ once: true, amount: 0.5 }}
-                className="text-center py-6"
-              >
-                <div className={`text-3xl md:text-4xl font-light ${isDark ? 'text-neutral-100' : 'text-black'} mb-2`}>
-                  {counters[Object.keys(counters)[idx]]}+
-                </div>
-                <div className={`w-6 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mx-auto mb-3`} />
-                <p className={`text-xs tracking-widest uppercase ${isDark ? 'text-neutral-500' : 'text-neutral-500'}`}>{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-
           {/* Testimonials */}
           <motion.h3
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
@@ -386,38 +362,8 @@ const Home = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      {/* Tesoro hero */}
-      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-16`}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          transition={{ type: 'spring', stiffness: 60, damping: 15 }}
-          viewport={{ once: true }}
-          className="relative group max-w-md mx-auto px-6"
-        >
-          <div className="relative rounded-lg overflow-hidden">
-            <img
-              src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
-              alt="Productos disponibles"
-              className="w-full h-[20rem] md:h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
-              style={{ objectPosition: 'center 70%' }}
-              onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
-            />
-            <div className="absolute bottom-0 left-0 w-full flex justify-center pb-6">
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
-                viewport={{ once: true }}
-                className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer transition-colors duration-300 ${isDark ? 'border-neutral-700 text-neutral-700 hover:bg-black/10' : 'border-neutral-700 text-neutral-700 hover:bg-black/10'}`}
-                onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
-              >
-                {seeCollectionText} →
-              </motion.span>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      {/* Typewriter quote */}
+      <TypewriterQuote text={quoteText} isDark={isDark} />
 
       <div>
         <WhatsAppContact />
