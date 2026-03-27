@@ -68,19 +68,19 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-0 md:space-x-2">
+        <div className="flex items-center gap-1 md:gap-2">
           <motion.button
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={isUserAuthenticated
-              ? `w-5 h-5 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`
-              : `p-3 md:p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
+              ? `p-2 rounded-lg flex items-center justify-center transition-colors ${isDark ? 'text-gray-200' : 'text-black'}`
+              : `p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
             }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className="text-[10px] font-bold uppercase leading-none">
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold uppercase leading-none ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`}>
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
@@ -90,7 +90,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-3 md:p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
+            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
@@ -99,21 +99,21 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-3 md:p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle theme"
           >
-            {isDark ? <FiSun size={22} /> : <FiMoon size={22} />}
+            {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
           </motion.button>
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-3 md:p-2 rounded-lg font-bold text-base ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-2 rounded-lg font-bold text-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
           <button 
-            className={`md:hidden p-3 ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`md:hidden p-2 ${isDark ? 'text-gray-200' : 'text-black'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
