@@ -68,7 +68,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-2 md:space-x-3">
+        <div className="flex items-center space-x-2 md:space-x-4">
           <motion.button
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
@@ -89,24 +89,24 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${spotifyAllowed ? (isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800') : (isDark ? 'bg-gray-700 text-gray-500 cursor-not-allowed' : 'bg-black/30 text-white/50 cursor-not-allowed')}`}
+            className={`p-2 rounded-lg transition-colors ${spotifyAllowed ? (isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
-            <FaSpotify size={16} />
+            <FaSpotify size={20} />
           </motion.button>
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800'}`}
+            className={`p-2 rounded-lg transition-colors ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
             aria-label="Toggle theme"
           >
-            {isDark ? <FiSun size={16} /> : <FiMoon size={16} />}
+            {isDark ? <FiSun size={22} /> : <FiMoon size={22} />}
           </motion.button>
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors font-semibold text-xs ${isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800'}`}
+            className={`p-2 rounded-lg transition-colors font-semibold text-sm ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
