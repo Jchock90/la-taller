@@ -28,7 +28,18 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   const { translatedText: goToPayText } = useAutoTranslate('Ir a pagar');
   const [formData, setFormData] = useState(() => {
     if (user) {
-      return { ...INITIAL_FORM, nombre: user.nombre || '', apellido: user.apellido || '', email: user.email || '', direccion: user.direccion || '', pisoDepto: user.pisoDepto || '' };
+      return {
+        ...INITIAL_FORM,
+        nombre: user.nombre || '',
+        apellido: user.apellido || '',
+        email: user.email || '',
+        telefono: user.telefono || '',
+        direccion: user.direccion || '',
+        pisoDepto: user.pisoDepto || '',
+        codigoPostal: user.codigoPostal || '',
+        provincia: user.provincia || '',
+        ciudad: user.ciudad || '',
+      };
     }
     return INITIAL_FORM;
   });

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FiPackage, FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiLogOut, FiUser, FiChevronDown, FiChevronUp, FiTruck, FiExternalLink } from 'react-icons/fi';
+import { FiPackage, FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiLogOut, FiUser, FiChevronDown, FiChevronUp, FiTruck, FiExternalLink, FiMapPin, FiSave, FiEdit3 } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { useUserAuth } from '../context/UserAuthContext';
 import { userApi } from '../services/userApi';
@@ -17,10 +17,18 @@ const STATUS_CONFIG = {
 
 export default function UserDashboard({ onClose, setCurrentSection }) {
   const { isDark } = useTheme();
-  const { user, userToken, logout } = useUserAuth();
+  const { user, userToken, logout, updateUser } = useUserAuth();
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
+  const [activeTab, setActiveTab] = useState('purchases');
+  const [profileForm, setProfileForm] = useState({});
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [profileMsg, setProfileMsg] = useState('');
+  const [provincias, setProvincias] = useState([]);
+  const [ciudades, setCiudades] = useState([]);
+  const [loadingCiudades, setLoadingCiudades] = useState(false);
 
   const { translatedText: t_myAccount } = useAutoTranslate('Mi cuenta');
   const { translatedText: t_myPurchases } = useAutoTranslate('Mis compras');
@@ -40,6 +48,25 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
   const { translatedText: t_shippingTo } = useAutoTranslate('Envío a');
   const { translatedText: t_shipped } = useAutoTranslate('Despachado');
   const { translatedText: t_trackShipment } = useAutoTranslate('Seguir mi envío');
+  const { translatedText: t_myProfile } = useAutoTranslate('Mi perfil');
+  const { translatedText: t_personalData } = useAutoTranslate('Datos personales');
+  const { translatedText: t_shippingAddress } = useAutoTranslate('Dirección de envío');
+  const { translatedText: t_name } = useAutoTranslate('Nombre');
+  const { translatedText: t_lastName } = useAutoTranslate('Apellido');
+  const { translatedText: t_phone } = useAutoTranslate('Teléfono');
+  const { translatedText: t_address } = useAutoTranslate('Dirección (calle y número)');
+  const { translatedText: t_floor } = useAutoTranslate('Piso / Depto');
+  const { translatedText: t_zip } = useAutoTranslate('Código Postal');
+  const { translatedText: t_province } = useAutoTranslate('Provincia');
+  const { translatedText: t_city } = useAutoTranslate('Ciudad');
+  const { translatedText: t_save } = useAutoTranslate('Guardar');
+  const { translatedText: t_edit } = useAutoTranslate('Editar');
+  const { translatedText: t_cancel } = useAutoTranslate('Cancelar');
+  const { translatedText: t_saved } = useAutoTranslate('Datos guardados correctamente');
+  const { translatedText: t_savedInfo } = useAutoTranslate('Estos datos se usarán para autocompletar tus próximas compras');
+  const { translatedText: t_selectProvince } = useAutoTranslate('Seleccionar provincia');
+  const { translatedText: t_selectCity } = useAutoTranslate('Seleccionar ciudad');
+  const { translatedText: t_loadingCities } = useAutoTranslate('Cargando ciudades...');
 
   const STATUS_LABELS = {
     pending: t_pending,
@@ -58,6 +85,67 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [userToken]);
+
+  // Init profile form from user data
+  useEffect(() => {
+    if (user) {
+      setProfileForm({
+        nombre: user.nombre || '',
+        apellido: user.apellido || '',
+        telefono: user.telefono || '',
+        direccion: user.direccion || '',
+        pisoDepto: user.pisoDepto || '',
+        codigoPostal: user.codigoPostal || '',
+        provincia: user.provincia || '',
+        ciudad: user.ciudad || '',
+      });
+    }
+  }, [user]);
+
+  // Load provincias
+  useEffect(() => {
+    fetch('https://apis.datos.gob.ar/georef/api/provincias')
+      .then(res => res.json())
+      .then(data => setProvincias(data.provincias || []))
+      .catch(() => {});
+  }, []);
+
+  // Load ciudades when provincia changes
+  useEffect(() => {
+    if (profileForm.provincia) {
+      setLoadingCiudades(true);
+      fetch(`https://apis.datos.gob.ar/georef/api/localidades?provincia=${encodeURIComponent(profileForm.provincia)}&max=1000`)
+        .then(res => res.json())
+        .then(data => setCiudades(data.localidades || []))
+        .catch(() => {})
+        .finally(() => setLoadingCiudades(false));
+    } else {
+      setCiudades([]);
+    }
+  }, [profileForm.provincia]);
+
+  const handleProfileChange = (field, value) => {
+    setProfileForm(prev => ({ ...prev, [field]: value }));
+    if (field === 'provincia') {
+      setProfileForm(prev => ({ ...prev, ciudad: '' }));
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    setSavingProfile(true);
+    setProfileMsg('');
+    try {
+      const { user: updated } = await userApi.updateProfile(userToken, profileForm);
+      updateUser(updated);
+      setEditingProfile(false);
+      setProfileMsg('success');
+      setTimeout(() => setProfileMsg(''), 3000);
+    } catch (err) {
+      setProfileMsg('error');
+    } finally {
+      setSavingProfile(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -91,17 +179,42 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
           </div>
           <button onClick={handleLogout} className={`flex items-center gap-1.5 text-sm ${subtext} hover:text-red-500 transition-colors`}>
             <FiLogOut size={16} />
-            {t_logout}
+            <span className="hidden md:inline">{t_logout}</span>
           </button>
         </div>
 
-        {/* Purchases */}
-        <div className="flex-1 overflow-y-auto p-5">
-          <h3 className={`font-semibold ${text} mb-4 flex items-center gap-2`}>
-            <FiPackage size={18} />
+        {/* Tabs */}
+        <div className={`flex border-b ${borderColor}`}>
+          <button
+            onClick={() => setActiveTab('purchases')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
+              activeTab === 'purchases'
+                ? `${text} border-b-2 ${isDark ? 'border-neutral-100' : 'border-black'}`
+                : `${subtext} hover:${text}`
+            }`}
+          >
+            <FiPackage size={16} />
             {t_myPurchases}
-          </h3>
+          </button>
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
+              activeTab === 'profile'
+                ? `${text} border-b-2 ${isDark ? 'border-neutral-100' : 'border-black'}`
+                : `${subtext} hover:${text}`
+            }`}
+          >
+            <FiMapPin size={16} />
+            {t_myProfile}
+          </button>
+        </div>
 
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-5">
+
+          {/* === PURCHASES TAB === */}
+          {activeTab === 'purchases' && (
+            <>
           {loading ? (
             <div className={`text-center py-12 ${subtext}`}>{t_loading}</div>
           ) : purchases.length === 0 ? (
@@ -209,6 +322,175 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
               })}
             </div>
           )}
+            </>
+          )}
+
+          {/* === PROFILE TAB === */}
+          {activeTab === 'profile' && (
+            <div className="space-y-5">
+              <div className="flex items-center justify-between">
+                <p className={`text-xs ${subtext}`}>{t_savedInfo}</p>
+                {!editingProfile && (
+                  <button
+                    onClick={() => setEditingProfile(true)}
+                    className={`flex items-center gap-1.5 text-sm ${subtext} hover:${text} transition-colors`}
+                  >
+                    <FiEdit3 size={14} />
+                    {t_edit}
+                  </button>
+                )}
+              </div>
+
+              {profileMsg === 'success' && (
+                <div className={`flex items-center gap-2 px-3 py-2 text-sm ${isDark ? 'bg-green-900/30 text-green-400' : 'bg-green-50 text-green-700'}`}>
+                  <FiCheckCircle size={14} />
+                  {t_saved}
+                </div>
+              )}
+              {profileMsg === 'error' && (
+                <div className={`flex items-center gap-2 px-3 py-2 text-sm ${isDark ? 'bg-red-900/30 text-red-400' : 'bg-red-50 text-red-600'}`}>
+                  <FiXCircle size={14} />
+                  Error
+                </div>
+              )}
+
+              {/* Personal data */}
+              <div>
+                <h4 className={`text-xs font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_personalData}</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className={`text-xs ${subtext} mb-1 block`}>{t_name}</label>
+                    <input
+                      value={profileForm.nombre || ''}
+                      onChange={e => handleProfileChange('nombre', e.target.value)}
+                      disabled={!editingProfile}
+                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                    />
+                  </div>
+                  <div>
+                    <label className={`text-xs ${subtext} mb-1 block`}>{t_lastName}</label>
+                    <input
+                      value={profileForm.apellido || ''}
+                      onChange={e => handleProfileChange('apellido', e.target.value)}
+                      disabled={!editingProfile}
+                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                    />
+                  </div>
+                  <div>
+                    <label className={`text-xs ${subtext} mb-1 block`}>Email</label>
+                    <input
+                      value={user?.email || ''}
+                      disabled
+                      className={`w-full border p-2.5 text-sm opacity-50 ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
+                    />
+                  </div>
+                  <div>
+                    <label className={`text-xs ${subtext} mb-1 block`}>{t_phone}</label>
+                    <input
+                      value={profileForm.telefono || ''}
+                      onChange={e => handleProfileChange('telefono', e.target.value)}
+                      disabled={!editingProfile}
+                      placeholder="+54 11 1234-5678"
+                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Shipping address */}
+              <div>
+                <h4 className={`text-xs font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_shippingAddress}</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="col-span-2">
+                      <label className={`text-xs ${subtext} mb-1 block`}>{t_address}</label>
+                      <input
+                        value={profileForm.direccion || ''}
+                        onChange={e => handleProfileChange('direccion', e.target.value)}
+                        disabled={!editingProfile}
+                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      />
+                    </div>
+                    <div>
+                      <label className={`text-xs ${subtext} mb-1 block`}>{t_floor}</label>
+                      <input
+                        value={profileForm.pisoDepto || ''}
+                        onChange={e => handleProfileChange('pisoDepto', e.target.value)}
+                        disabled={!editingProfile}
+                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    <div>
+                      <label className={`text-xs ${subtext} mb-1 block`}>{t_zip}</label>
+                      <input
+                        value={profileForm.codigoPostal || ''}
+                        onChange={e => handleProfileChange('codigoPostal', e.target.value)}
+                        disabled={!editingProfile}
+                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      />
+                    </div>
+                    <div>
+                      <label className={`text-xs ${subtext} mb-1 block`}>{t_province}</label>
+                      <select
+                        value={profileForm.provincia || ''}
+                        onChange={e => handleProfileChange('provincia', e.target.value)}
+                        disabled={!editingProfile}
+                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      >
+                        <option value="">{t_selectProvince}</option>
+                        {provincias.map(p => <option key={p.id} value={p.nombre}>{p.nombre}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className={`text-xs ${subtext} mb-1 block`}>{t_city}</label>
+                      <select
+                        value={profileForm.ciudad || ''}
+                        onChange={e => handleProfileChange('ciudad', e.target.value)}
+                        disabled={!editingProfile || !profileForm.provincia || loadingCiudades}
+                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      >
+                        <option value="">{loadingCiudades ? t_loadingCities : t_selectCity}</option>
+                        {ciudades.map(c => <option key={c.id} value={c.nombre}>{c.nombre}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions */}
+              {editingProfile && (
+                <div className="flex gap-3 pt-2">
+                  <button
+                    onClick={handleSaveProfile}
+                    disabled={savingProfile}
+                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${isDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
+                  >
+                    <FiSave size={14} />
+                    {savingProfile ? t_loading : t_save}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditingProfile(false);
+                      if (user) {
+                        setProfileForm({
+                          nombre: user.nombre || '', apellido: user.apellido || '',
+                          telefono: user.telefono || '', direccion: user.direccion || '',
+                          pisoDepto: user.pisoDepto || '', codigoPostal: user.codigoPostal || '',
+                          provincia: user.provincia || '', ciudad: user.ciudad || '',
+                        });
+                      }
+                    }}
+                    className={`px-4 py-2 text-sm ${subtext} hover:${text} transition-colors`}
+                  >
+                    {t_cancel}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
         </div>
       </motion.div>
     </div>

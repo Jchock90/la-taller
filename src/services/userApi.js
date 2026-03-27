@@ -50,6 +50,17 @@ export const userApi = {
     return res.json();
   },
 
+  async updateProfile(token, data) {
+    const res = await fetch(`${API_URL}/api/users/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Error al actualizar perfil');
+    return json;
+  },
+
   async getMyPurchases(token) {
     const res = await fetch(`${API_URL}/api/users/my-purchases`, {
       headers: { Authorization: `Bearer ${token}` },
