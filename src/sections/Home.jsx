@@ -9,10 +9,24 @@ import { useAutoTranslate } from '../hooks/useAutoTranslate';
 const TypewriterQuote = ({ text, isDark }) => {
   const [displayed, setDisplayed] = useState('');
   const [showCursor, setShowCursor] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const textRef = useRef(text);
+  const containerRef = useRef(null);
+
+  // Start typing only when scrolled into view
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (!text) return;
+    if (!text || !isVisible) return;
     textRef.current = text;
     setDisplayed('');
     let i = 0;
@@ -23,7 +37,7 @@ const TypewriterQuote = ({ text, isDark }) => {
       if (i >= text.length) clearInterval(timer);
     }, 90);
     return () => clearInterval(timer);
-  }, [text]);
+  }, [text, isVisible]);
 
   useEffect(() => {
     const blink = setInterval(() => setShowCursor(v => !v), 530);
@@ -32,13 +46,13 @@ const TypewriterQuote = ({ text, isDark }) => {
 
   if (!text) return null;
   return (
-    <div className={`py-12 md:py-24 px-6 ${isDark ? 'bg-black' : 'bg-white'} flex flex-col items-center`}>
+    <div ref={containerRef} className={`py-12 md:py-24 px-6 ${isDark ? 'bg-black' : 'bg-white'} flex flex-col items-center`}>
       <div className={`w-12 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mb-10`} />
       <div className="relative max-w-2xl w-full text-center">
-        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} invisible`} aria-hidden="true">
+        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium ${isDark ? 'text-neutral-300' : 'text-neutral-800'} invisible`} aria-hidden="true">
           "{text}"
         </p>
-        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} absolute inset-0`}>
+        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium ${isDark ? 'text-neutral-300' : 'text-neutral-800'} absolute inset-0`}>
           "{displayed}"
           <span className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-neutral-300' : 'bg-neutral-800'} ml-1 align-middle transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'}`} />
         </p>
