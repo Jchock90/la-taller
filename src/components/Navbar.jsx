@@ -72,9 +72,10 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-              isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800'
-            }`}
+            className={isUserAuthenticated
+              ? `w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800'}`
+              : `p-2 rounded-lg transition-colors ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`
+            }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
@@ -83,7 +84,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
-              <FiUser size={16} />
+              <FiUser size={20} />
             )}
           </motion.button>
           <motion.button
@@ -106,7 +107,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg transition-colors font-semibold text-sm ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
+            className={`p-2 rounded-lg transition-colors font-bold text-base ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
