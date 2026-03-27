@@ -332,7 +332,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       required
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
-                      className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                      className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       placeholder="tu@email.com"
                     />
                   </div>
@@ -346,7 +346,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                       required
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
-                      className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                      className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                     />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                       {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -418,7 +418,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                           required
                           value={regNombre}
                           onChange={e => setRegNombre(e.target.value)}
-                          className={`w-full pl-10 pr-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                          className={`w-full pl-10 pr-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         />
                       </div>
                     </div>
@@ -429,7 +429,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regApellido}
                         onChange={e => setRegApellido(e.target.value)}
-                        className={`w-full px-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full px-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                     </div>
                   </div>
@@ -442,7 +442,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regEmail}
                         onChange={e => setRegEmail(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
                     </div>
@@ -456,7 +456,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regEmail2}
                         onChange={e => setRegEmail2(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
                       {regEmail2 && regEmail === regEmail2 && (
@@ -474,7 +474,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         minLength={8}
                         value={regPassword}
                         onChange={e => setRegPassword(e.target.value)}
-                        className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                         {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -491,7 +491,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         minLength={8}
                         value={regPassword2}
                         onChange={e => setRegPassword2(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       {regPassword2 && regPassword === regPassword2 && (
                         <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />

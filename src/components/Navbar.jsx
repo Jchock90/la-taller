@@ -90,7 +90,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
+            className={`p-3 md:p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
@@ -99,7 +99,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-3 md:p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle theme"
           >
             {isDark ? <FiSun size={22} /> : <FiMoon size={22} />}
@@ -107,13 +107,13 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg font-bold text-base ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-3 md:p-2 rounded-lg font-bold text-base ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
           <button 
-            className={`md:hidden p-2 ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`md:hidden p-3 ${isDark ? 'text-gray-200' : 'text-black'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -162,7 +162,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
                 <a
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`group relative text-base tracking-wide uppercase cursor-pointer py-2 px-4 inline-block w-fit ${
+                  className={`group relative text-base tracking-wide uppercase cursor-pointer py-3 px-4 inline-block w-fit ${
                     isDark ? 'text-gray-100' : 'text-black'
                   }`}
                 >

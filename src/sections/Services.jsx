@@ -166,34 +166,34 @@ const galleries = [
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8`}>{t('services.title')}</h2>
+          <h2 className={`text-2xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8`}>{t('services.title')}</h2>
           
           <div className="max-w-4xl mx-auto text-left space-y-6 mb-12">
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
               <strong>{intro}</strong>
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               {para1}
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               {para2}
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               {para3}
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               {para4}
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               {para5}
             </p>
             
-            <p className={`text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
+            <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
               <strong>{conclusion}</strong>
             </p>
           </div>
@@ -214,7 +214,7 @@ const galleries = [
               </h3>
               
               <div 
-                className="h-64 rounded-lg overflow-hidden cursor-pointer"
+                className="h-48 md:h-64 rounded-lg overflow-hidden cursor-pointer"
                 onClick={() => openGallery(gallery)}
               >
                 <SimpleCarousel 
@@ -244,7 +244,7 @@ const galleries = [
               >
                 <button 
                   onClick={closeGallery}
-                  className={`absolute top-4 right-4 text-white text-4xl z-50 transition-colors ${
+                  className={`absolute top-4 right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                     isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
                   }`}
                   aria-label="Cerrar galería"
@@ -257,7 +257,7 @@ const galleries = [
                     e.stopPropagation();
                     prevImage();
                   }}
-                  className={`absolute left-4 text-white text-4xl z-50 transition-colors ${
+                  className={`absolute left-2 md:left-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                     isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
                   }`}
                   aria-label="Imagen anterior"
@@ -281,7 +281,7 @@ const galleries = [
                     e.stopPropagation();
                     nextImage();
                   }}
-                  className={`absolute right-4 text-white text-4xl z-50 transition-colors ${
+                  className={`absolute right-2 md:right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                     isDark ? 'hover:text-gray-300' : 'hover:text-indigo-300'
                   }`}
                   aria-label="Siguiente imagen"

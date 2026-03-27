@@ -49,7 +49,7 @@ const About = () => {
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
         transition={{ type: 'spring', stiffness: 60, damping: 14 }}
         viewport={{ once: true }}
-        className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8 text-center font-italic`}
+        className={`text-2xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8 text-center font-italic`}
       >
         {t('about.originTitle')}
       </motion.h2>
@@ -79,11 +79,11 @@ const About = () => {
             </div>
 
             <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              <p className="text-lg leading-relaxed">
+              <p className="text-base md:text-lg leading-relaxed">
                 {t('about.originText1')}
               </p>
 
-              <p className="text-lg leading-relaxed">
+              <p className="text-base md:text-lg leading-relaxed">
                 {t('about.originText2')}
               </p>
 
@@ -118,11 +118,11 @@ const About = () => {
             </div>
 
             <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
-              <p className="text-lg leading-relaxed">
+              <p className="text-base md:text-lg leading-relaxed">
                 {t('about.threadText1')}
               </p>
 
-              <p className="text-lg leading-relaxed">
+              <p className="text-base md:text-lg leading-relaxed">
                 {t('about.threadText2')}
               </p>
             </div>
@@ -156,7 +156,7 @@ const About = () => {
               >
                 <button 
                   onClick={closeImage}
-                  className={`absolute top-4 right-4 text-white text-4xl z-50 transition-colors ${
+                  className={`absolute top-4 right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                     isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
                   }`}
                   aria-label="Cerrar imagen"
@@ -171,7 +171,7 @@ const About = () => {
                         e.stopPropagation();
                         prevImage();
                       }}
-                      className={`absolute left-4 text-white text-4xl z-50 transition-colors ${
+                      className={`absolute left-2 md:left-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                         isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
                       }`}
                       aria-label="Imagen anterior"
@@ -184,7 +184,7 @@ const About = () => {
                         e.stopPropagation();
                         nextImage();
                       }}
-                      className={`absolute right-4 text-white text-4xl z-50 transition-colors ${
+                      className={`absolute right-2 md:right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                         isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
                       }`}
                       aria-label="Siguiente imagen"

@@ -32,13 +32,13 @@ const TypewriterQuote = ({ text, isDark }) => {
 
   if (!text) return null;
   return (
-    <div className={`py-16 md:py-24 px-6 ${isDark ? 'bg-black' : 'bg-white'} flex flex-col items-center`}>
+    <div className={`py-12 md:py-24 px-6 ${isDark ? 'bg-black' : 'bg-white'} flex flex-col items-center`}>
       <div className={`w-12 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mb-10`} />
       <div className="relative max-w-2xl w-full text-center">
-        <p className={`text-lg md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} invisible`} aria-hidden="true">
+        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} invisible`} aria-hidden="true">
           "{text}"
         </p>
-        <p className={`text-lg md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} absolute inset-0`}>
+        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium italic ${isDark ? 'text-neutral-300' : 'text-neutral-800'} absolute inset-0`}>
           "{displayed}"
           <span className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-neutral-300' : 'bg-neutral-800'} ml-1 align-middle transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'}`} />
         </p>
@@ -144,7 +144,7 @@ const Home = ({ setCurrentSection }) => {
             <img
               src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
               alt="Productos disponibles"
-              className="w-full h-[20rem] md:h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+              className="w-full h-[16rem] md:h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
               style={{ objectPosition: 'center 70%' }}
               onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
             />
@@ -171,7 +171,7 @@ const Home = ({ setCurrentSection }) => {
           whileInView={{ opacity: 1, filter: 'blur(0px)' }}
           transition={{ type: 'spring', stiffness: 60, damping: 14 }}
           viewport={{ once: true, amount: 0.2 }}
-          className="relative w-full h-[70vh] overflow-hidden cursor-pointer group"
+          className="relative w-full h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group"
           onClick={() => setCurrentSection && setCurrentSection('quien-soy')}
         >
           <img
@@ -186,7 +186,7 @@ const Home = ({ setCurrentSection }) => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl text-white text-center drop-shadow-lg mb-4"
+              className="text-2xl md:text-5xl text-white text-center drop-shadow-lg mb-4"
             >
               {hiloQuote}
             </motion.p>
@@ -303,7 +303,7 @@ const Home = ({ setCurrentSection }) => {
               >
                 <button 
                   onClick={() => setExpandedGalleryIndex(null)}
-                  className={`absolute top-4 right-4 text-white text-4xl z-50 transition-colors ${
+                  className={`absolute top-4 right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                     isDark ? 'hover:text-neutral-300' : 'hover:text-neutral-400'
                   }`}
                   aria-label="Cerrar imagen"
@@ -318,7 +318,7 @@ const Home = ({ setCurrentSection }) => {
                         e.stopPropagation();
                         setExpandedGalleryIndex((expandedGalleryIndex - 1 + galleryImages.length) % galleryImages.length);
                       }}
-                      className={`absolute left-4 text-white text-4xl z-50 transition-colors ${
+                      className={`absolute left-2 md:left-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                         isDark ? 'hover:text-neutral-300' : 'hover:text-neutral-400'
                       }`}
                       aria-label="Imagen anterior"
@@ -331,7 +331,7 @@ const Home = ({ setCurrentSection }) => {
                         e.stopPropagation();
                         setExpandedGalleryIndex((expandedGalleryIndex + 1) % galleryImages.length);
                       }}
-                      className={`absolute right-4 text-white text-4xl z-50 transition-colors ${
+                      className={`absolute right-2 md:right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
                         isDark ? 'hover:text-neutral-300' : 'hover:text-neutral-400'
                       }`}
                       aria-label="Siguiente imagen"

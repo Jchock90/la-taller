@@ -75,7 +75,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} w-full max-w-lg max-h-[85vh] shadow-2xl overflow-hidden flex flex-col`}
+        className={`${bg} w-full max-w-lg max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2`}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}

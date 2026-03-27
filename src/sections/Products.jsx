@@ -80,13 +80,13 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
       <button
         onClick={() => scroll(-1)}
         disabled={!canScrollLeft}
-        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
+        className={`flex-shrink-0 w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
           canScrollLeft
             ? 'bg-black/70 hover:bg-black/90 text-white cursor-pointer'
             : 'bg-gray-300/30 text-gray-500 cursor-default opacity-0 pointer-events-none'
         }`}
       >
-        <FiChevronLeft size={22} />
+        <FiChevronLeft size={24} />
       </button>
 
       {/* Scrollable area */}
@@ -114,13 +114,13 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
       <button
         onClick={() => scroll(1)}
         disabled={!canScrollRight}
-        className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
+        className={`flex-shrink-0 w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center shadow-lg transition-all ${
           canScrollRight
             ? 'bg-black/70 hover:bg-black/90 text-white cursor-pointer'
             : 'bg-gray-300/30 text-gray-500 cursor-default opacity-0 pointer-events-none'
         }`}
       >
-        <FiChevronRight size={22} />
+        <FiChevronRight size={24} />
       </button>
     </div>
   );

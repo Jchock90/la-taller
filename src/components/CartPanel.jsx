@@ -60,9 +60,9 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                       {item.selectedColor && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{colorText} {item.selectedColor}</p>}
                       <p className={`text-sm font-semibold ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>{item.price}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-1 ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={16} /></button>
                         <span className={`text-sm font-medium w-6 text-center ${isDark ? 'text-gray-100' : ''}`}>{item.quantity}</span>
-                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-1 ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiPlus size={14} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiPlus size={16} /></button>
                       </div>
                     </div>
                     <div className="text-right">

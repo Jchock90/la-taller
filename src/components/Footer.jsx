@@ -59,14 +59,14 @@ const Footer = ({ setCurrentSection }) => {
             <li>
               <a
                 href={`mailto:${CONTACT_INFO.email}`}
-                className={`text-sm ${label} ${hover} transition-colors break-all flex items-start gap-2`}
+                className={`text-sm ${label} ${hover} transition-colors break-all flex items-start gap-2 py-1`}
               >
-                <FiMail size={14} className="mt-0.5 shrink-0" />
+                <FiMail size={16} className="mt-0.5 shrink-0" />
                 {CONTACT_INFO.email}
               </a>
             </li>
-            <li className={`text-sm ${label} flex items-center gap-2`}>
-              <FiPhone size={14} className="shrink-0" />
+            <li className={`text-sm ${label} flex items-center gap-2 py-1`}>
+              <FiPhone size={16} className="shrink-0" />
               {CONTACT_INFO.phone}
             </li>
           </ul>
@@ -81,9 +81,9 @@ const Footer = ({ setCurrentSection }) => {
             rel="noopener noreferrer"
             className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest border border-neutral-700 px-4 py-2 ${label} ${hover} hover:border-neutral-500 transition-colors`}
           >
-            <FiInstagram size={13} />
+            <FiInstagram size={15} />
             Instagram
-            <FiArrowUpRight size={13} />
+            <FiArrowUpRight size={15} />
           </a>
         </div>
       </div>
