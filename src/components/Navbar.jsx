@@ -73,8 +73,8 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={isUserAuthenticated
-              ? `w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900 hover:bg-white' : 'bg-black text-white hover:bg-neutral-800'}`
-              : `p-2 rounded-lg transition-colors ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`
+              ? `w-8 h-8 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-white'}`
+              : `p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
             }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
@@ -90,7 +90,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg transition-colors ${spotifyAllowed ? (isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
+            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
@@ -99,7 +99,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg transition-colors ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
+            className={`p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle theme"
           >
             {isDark ? <FiSun size={22} /> : <FiMoon size={22} />}
@@ -107,7 +107,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg transition-colors font-bold text-base ${isDark ? 'text-gray-200 hover:bg-white/10' : 'text-black hover:bg-black/10'}`}
+            className={`p-2 rounded-lg font-bold text-base ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
