@@ -80,7 +80,13 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
-            <FiUser size={20} />
+            {isUserAuthenticated ? (
+              <span className="w-7 h-7 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold uppercase leading-none">
+                {user?.nombre?.charAt(0) || 'U'}
+              </span>
+            ) : (
+              <FiUser size={20} />
+            )}
           </motion.button>
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
