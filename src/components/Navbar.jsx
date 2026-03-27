@@ -68,19 +68,19 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           ))}
         </div>
 
-        <div className="flex items-center space-x-1 md:space-x-2">
+        <div className="flex items-center space-x-0 md:space-x-2">
           <motion.button
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={isUserAuthenticated
-              ? `w-7 h-7 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`
-              : `p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
+              ? `w-5 h-5 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`
+              : `p-3 md:p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
             }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className="text-xs font-bold uppercase leading-none">
+              <span className="text-[10px] font-bold uppercase leading-none">
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
