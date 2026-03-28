@@ -168,7 +168,7 @@ const galleries = [
         >
           <h2 className={`text-2xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8`}>{t('services.title')}</h2>
           
-          <div className="max-w-4xl mx-auto text-left space-y-6 mb-12">
+          <div className="max-w-5xl mx-auto text-left space-y-6 mb-12">
             <p className={`text-base md:text-lg leading-relaxed ${isDark ? 'text-gray-100' : 'text-black'}`}>
               <strong>{intro}</strong>
             </p>
@@ -199,7 +199,7 @@ const galleries = [
           </div>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
+        <div className="max-w-5xl mx-auto space-y-4 md:space-y-6">
           {/* First gallery — full width hero */}
           <motion.div
             initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
