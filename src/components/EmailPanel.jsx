@@ -692,7 +692,7 @@ export default function EmailPanel() {
 
       {/* Image Modal */}
       {modal === 'image' && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => { setModal(null); setImagePreview(null); }>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => { setModal(null); setImagePreview(null); }}>
           <div className="bg-neutral-900 border border-neutral-700 p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
             <h3 className="text-sm font-medium text-neutral-200 uppercase tracking-wider mb-4">Insertar imagen</h3>
             <div
