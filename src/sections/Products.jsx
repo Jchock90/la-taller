@@ -416,7 +416,7 @@ const Products = () => {
             whileTap={{ scale: 0.95 }}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-block px-8 py-2.5 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+            className={`inline-block px-8 py-2.5 tracking-widest uppercase text-xs border transition-colors duration-300 win-btn ${
               isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
             }`}
           >

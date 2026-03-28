@@ -112,7 +112,7 @@ const Home = ({ setCurrentSection }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
                 viewport={{ once: true }}
-                className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer transition-colors duration-300 ${isDark ? 'border-neutral-700 text-neutral-700 hover:bg-black/10' : 'border-neutral-700 text-neutral-700 hover:bg-black/10'}`}
+                className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer transition-colors duration-300 win-btn ${isDark ? 'border-neutral-700 text-neutral-700 hover:bg-black/10' : 'border-neutral-700 text-neutral-700 hover:bg-black/10'}`}
                 onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
               >
                 {seeCollectionText} →
@@ -157,7 +157,7 @@ const Home = ({ setCurrentSection }) => {
             className="text-center mt-10"
           >
             <button
-              className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer ${isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'} transition-colors duration-300`}
+              className={`px-12 py-3.5 tracking-widest uppercase text-sm border cursor-pointer win-btn ${isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'} transition-colors duration-300`}
               onClick={() => setCurrentSection && setCurrentSection('que-hago')}
             >
               {seeMoreText}
