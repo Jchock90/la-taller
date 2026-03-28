@@ -154,7 +154,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
 
   const bg = isDark ? 'bg-neutral-900' : 'bg-white';
   const text = isDark ? 'text-neutral-100' : 'text-gray-900';
-  const subtext = isDark ? 'text-neutral-400' : 'text-gray-500';
+  const subtext = isDark ? 'text-neutral-300' : 'text-gray-600';
   const cardBg = isDark ? 'bg-neutral-800' : 'bg-gray-50';
   const borderColor = isDark ? 'border-neutral-700' : 'border-gray-200';
 
@@ -163,7 +163,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} w-full max-w-lg max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2`}
+        className={`${bg} w-full max-w-lg md:max-w-xl max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2`}
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -329,11 +329,11 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
           {activeTab === 'profile' && (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-                <p className={`text-xs ${subtext}`}>{t_savedInfo}</p>
+                <p className={`text-xs md:text-sm ${subtext}`}>{t_savedInfo}</p>
                 {!editingProfile && (
                   <button
                     onClick={() => setEditingProfile(true)}
-                    className={`flex items-center gap-1.5 text-sm ${subtext} hover:${text} transition-colors`}
+                    className={`flex items-center gap-1.5 text-sm md:text-base ${subtext} hover:${text} transition-colors`}
                   >
                     <FiEdit3 size={14} />
                     {t_edit}
@@ -356,42 +356,42 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
 
               {/* Personal data */}
               <div>
-                <h4 className={`text-xs font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_personalData}</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <h4 className={`text-xs md:text-sm font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_personalData}</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                    <label className={`text-xs ${subtext} mb-1 block`}>{t_name}</label>
+                    <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_name}</label>
                     <input
                       value={profileForm.nombre || ''}
                       onChange={e => handleProfileChange('nombre', e.target.value)}
                       disabled={!editingProfile}
-                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                     />
                   </div>
                   <div>
-                    <label className={`text-xs ${subtext} mb-1 block`}>{t_lastName}</label>
+                    <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_lastName}</label>
                     <input
                       value={profileForm.apellido || ''}
                       onChange={e => handleProfileChange('apellido', e.target.value)}
                       disabled={!editingProfile}
-                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                     />
                   </div>
                   <div>
-                    <label className={`text-xs ${subtext} mb-1 block`}>Email</label>
+                    <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>Email</label>
                     <input
                       value={user?.email || ''}
                       disabled
-                      className={`w-full border p-2.5 text-sm opacity-50 ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
+                      className={`w-full border p-2.5 md:p-3 text-sm md:text-base opacity-50 ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
                     />
                   </div>
                   <div>
-                    <label className={`text-xs ${subtext} mb-1 block`}>{t_phone}</label>
+                    <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_phone}</label>
                     <input
                       value={profileForm.telefono || ''}
                       onChange={e => handleProfileChange('telefono', e.target.value)}
                       disabled={!editingProfile}
                       placeholder="+54 11 1234-5678"
-                      className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                      className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                     />
                   </div>
                 </div>
@@ -399,57 +399,57 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
 
               {/* Shipping address */}
               <div>
-                <h4 className={`text-xs font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_shippingAddress}</h4>
-                <div className="grid grid-cols-1 gap-3">
-                  <div className="grid grid-cols-3 gap-3">
+                <h4 className={`text-xs md:text-sm font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_shippingAddress}</h4>
+                <div className="grid grid-cols-1 gap-3 md:gap-4">
+                  <div className="grid grid-cols-3 gap-3 md:gap-4">
                     <div className="col-span-2">
-                      <label className={`text-xs ${subtext} mb-1 block`}>{t_address}</label>
+                      <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_address}</label>
                       <input
                         value={profileForm.direccion || ''}
                         onChange={e => handleProfileChange('direccion', e.target.value)}
                         disabled={!editingProfile}
-                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                        className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                       />
                     </div>
                     <div>
-                      <label className={`text-xs ${subtext} mb-1 block`}>{t_floor}</label>
+                      <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_floor}</label>
                       <input
                         value={profileForm.pisoDepto || ''}
                         onChange={e => handleProfileChange('pisoDepto', e.target.value)}
                         disabled={!editingProfile}
-                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                        className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-3 gap-3 md:gap-4">
                     <div>
-                      <label className={`text-xs ${subtext} mb-1 block`}>{t_zip}</label>
+                      <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_zip}</label>
                       <input
                         value={profileForm.codigoPostal || ''}
                         onChange={e => handleProfileChange('codigoPostal', e.target.value)}
                         disabled={!editingProfile}
-                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                        className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                       />
                     </div>
                     <div>
-                      <label className={`text-xs ${subtext} mb-1 block`}>{t_province}</label>
+                      <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_province}</label>
                       <select
                         value={profileForm.provincia || ''}
                         onChange={e => handleProfileChange('provincia', e.target.value)}
                         disabled={!editingProfile}
-                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                        className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                       >
                         <option value="">{t_selectProvince}</option>
                         {provincias.map(p => <option key={p.id} value={p.nombre}>{p.nombre}</option>)}
                       </select>
                     </div>
                     <div>
-                      <label className={`text-xs ${subtext} mb-1 block`}>{t_city}</label>
+                      <label className={`text-xs md:text-sm ${subtext} mb-1 block`}>{t_city}</label>
                       <select
                         value={profileForm.ciudad || ''}
                         onChange={e => handleProfileChange('ciudad', e.target.value)}
                         disabled={!editingProfile || !profileForm.provincia || loadingCiudades}
-                        className={`w-full border p-2.5 text-sm ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
+                        className={`w-full border p-2.5 md:p-3 text-sm md:text-base ${isDark ? 'bg-neutral-800 border-neutral-700 text-neutral-100' : 'bg-gray-50 border-gray-200 text-gray-900'} ${!editingProfile ? 'opacity-70' : ''}`}
                       >
                         <option value="">{loadingCiudades ? t_loadingCities : t_selectCity}</option>
                         {ciudades.map(c => <option key={c.id} value={c.nombre}>{c.nombre}</option>)}
@@ -465,9 +465,9 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                   <button
                     onClick={handleSaveProfile}
                     disabled={savingProfile}
-                    className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${isDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
+                    className={`flex items-center gap-2 px-4 py-2.5 text-sm md:text-base font-medium transition-colors disabled:opacity-50 ${isDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
                   >
-                    <FiSave size={14} />
+                    <FiSave size={16} />
                     {savingProfile ? t_loading : t_save}
                   </button>
                   <button
@@ -482,7 +482,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                         });
                       }
                     }}
-                    className={`px-4 py-2 text-sm ${subtext} hover:${text} transition-colors`}
+                    className={`px-4 py-2.5 text-sm md:text-base ${subtext} hover:${text} transition-colors`}
                   >
                     {t_cancel}
                   </button>
