@@ -272,7 +272,7 @@ const Products = () => {
         ) : (
         <>
         {/* Filter bar */}
-        <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900/50 border border-neutral-800' : 'bg-gray-50 border border-gray-200'}`}>
+        <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-purple-300 border border-purple-400'}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
               <FiFilter size={16} />
