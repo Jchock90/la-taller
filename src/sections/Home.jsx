@@ -122,88 +122,7 @@ const Home = ({ setCurrentSection }) => {
         </motion.div>
       </div>
 
-      {/* Hilo Propio hero */}
-      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'}`}>
-        <motion.div
-          initial={{ opacity: 0, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
-          viewport={{ once: true, amount: 0.2 }}
-          className="relative w-full h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group"
-          onClick={() => setCurrentSection && setCurrentSection('quien-soy')}
-        >
-          <img
-            src="https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_1600,q_auto,f_auto/v1749188256/IMG_20250401_130716_872_keefme.jpg"
-            alt="Hilo propio"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-2xl md:text-5xl text-white text-center drop-shadow-lg mb-4"
-            >
-              {hiloQuote}
-            </motion.p>
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="text-white/80 text-sm md:text-base tracking-widest uppercase group-hover:text-white transition-colors duration-300"
-            >
-              {hiloSub} →
-            </motion.span>
-          </div>
-        </motion.div>
-      </div>
-
-      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
-        <div className="max-w-6xl mx-auto px-6">
-          {/* Testimonials */}
-          <motion.h3
-            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            transition={{ type: 'spring', stiffness: 60, damping: 14 }}
-            viewport={{ once: true }}
-            className={`text-sm md:text-base tracking-[0.3em] uppercase text-center ${isDark ? 'text-neutral-400' : 'text-neutral-500'} mb-12`}
-          >{testimonialTitle}</motion.h3>
-
-          <AnimatePresence mode="wait">
-          <motion.div
-            key={currentTestimonial}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ type: 'spring', stiffness: 70, damping: 16 }}
-            className="max-w-2xl mx-auto text-center"
-          >
-            <span className={`block text-5xl md:text-6xl leading-none ${isDark ? 'text-neutral-700' : 'text-neutral-200'} mb-4 select-none`}>"</span>
-            <p className={`text-base md:text-lg italic leading-relaxed mb-6 ${isDark ? 'text-neutral-300' : 'text-neutral-700'}`}>
-              {translatedTestimonials[currentTestimonial].text}
-            </p>
-            <div className={`w-8 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mx-auto mb-4`} />
-            <p className={`text-sm tracking-[0.2em] uppercase ${isDark ? 'text-neutral-300' : 'text-neutral-600'}`}>
-              {translatedTestimonials[currentTestimonial].author}
-            </p>
-          </motion.div>
-          </AnimatePresence>
-
-          <div className="flex justify-center gap-2 mt-8">
-            {translatedTestimonials.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentTestimonial(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentTestimonial ? `${isDark ? 'bg-neutral-400' : 'bg-neutral-700'} w-8` : `${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} w-1.5`}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
+      {/* Momentos gallery */}
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
         <div className="max-w-6xl mx-auto px-6">
           <motion.h3
@@ -317,6 +236,88 @@ const Home = ({ setCurrentSection }) => {
             </motion.div>
           )}
           </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Hilo Propio hero */}
+      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'}`}>
+        <motion.div
+          initial={{ opacity: 0, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, filter: 'blur(0px)' }}
+          transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+          viewport={{ once: true, amount: 0.2 }}
+          className="relative w-full h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group"
+          onClick={() => setCurrentSection && setCurrentSection('quien-soy')}
+        >
+          <img
+            src="https://res.cloudinary.com/dtnkj0wdx/image/upload/c_fill,w_1600,q_auto,f_auto/v1749188256/IMG_20250401_130716_872_keefme.jpg"
+            alt="Hilo propio"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-500" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-2xl md:text-5xl text-white text-center drop-shadow-lg mb-4"
+            >
+              {hiloQuote}
+            </motion.p>
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ type: 'spring', stiffness: 60, damping: 14, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="text-white/80 text-sm md:text-base tracking-widest uppercase group-hover:text-white transition-colors duration-300"
+            >
+              {hiloSub} →
+            </motion.span>
+          </div>
+        </motion.div>
+      </div>
+
+      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
+        <div className="max-w-6xl mx-auto px-6">
+          {/* Testimonials */}
+          <motion.h3
+            initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+            viewport={{ once: true }}
+            className={`text-sm md:text-base tracking-[0.3em] uppercase text-center ${isDark ? 'text-neutral-400' : 'text-neutral-500'} mb-12`}
+          >{testimonialTitle}</motion.h3>
+
+          <AnimatePresence mode="wait">
+          <motion.div
+            key={currentTestimonial}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring', stiffness: 70, damping: 16 }}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <span className={`block text-5xl md:text-6xl leading-none ${isDark ? 'text-neutral-700' : 'text-neutral-200'} mb-4 select-none`}>"</span>
+            <p className={`text-base md:text-lg italic leading-relaxed mb-6 ${isDark ? 'text-neutral-300' : 'text-neutral-700'}`}>
+              {translatedTestimonials[currentTestimonial].text}
+            </p>
+            <div className={`w-8 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mx-auto mb-4`} />
+            <p className={`text-sm tracking-[0.2em] uppercase ${isDark ? 'text-neutral-300' : 'text-neutral-600'}`}>
+              {translatedTestimonials[currentTestimonial].author}
+            </p>
+          </motion.div>
+          </AnimatePresence>
+
+          <div className="flex justify-center gap-2 mt-8">
+            {translatedTestimonials.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentTestimonial(idx)}
+                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentTestimonial ? `${isDark ? 'bg-neutral-400' : 'bg-neutral-700'} w-8` : `${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} w-1.5`}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
