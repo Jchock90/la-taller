@@ -199,7 +199,7 @@ const galleries = [
           </div>
         </motion.div>
 
-        <div className="space-y-4 md:space-y-6">
+        <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
           {/* First gallery — full width hero */}
           <motion.div
             initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
