@@ -69,7 +69,6 @@ export const userApi = {
     return res.json();
   },
 
-  // Admin endpoints
   async getUsers(adminToken) {
     const res = await fetch(`${API_URL}/api/users/admin/list`, {
       headers: { Authorization: `Bearer ${adminToken}` },

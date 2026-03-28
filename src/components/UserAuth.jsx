@@ -22,18 +22,15 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [resending, setResending] = useState(false);
   const [resendOk, setResendOk] = useState(false);
 
-  // Close on Escape
   useEffect(() => {
     const handleEsc = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', handleEsc);
     return () => document.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
-  // Login form
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-  // Register form
   const [regNombre, setRegNombre] = useState('');
   const [regApellido, setRegApellido] = useState('');
   const [regEmail, setRegEmail] = useState('');
@@ -42,7 +39,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
 
   const { translatedText: t_passWeak } = useAutoTranslate('La contraseña debe tener al menos 8 caracteres, una mayúscula y un número');
 
-  // Translations
   const { translatedText: t_login } = useAutoTranslate('Iniciar sesión');
   const { translatedText: t_register } = useAutoTranslate('Crear cuenta');
   const { translatedText: t_email } = useAutoTranslate('Email');
@@ -151,7 +147,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     };
 
     if (!init()) {
-      // Google script may not be loaded yet — poll briefly
       const interval = setInterval(() => {
         if (init()) clearInterval(interval);
       }, 200);
@@ -206,7 +201,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     }
   };
 
-  // Verification pending screen (from login or register)
   if (needsVerification) {
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
@@ -243,7 +237,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     );
   }
 
-  // Success screen
   if (successMsg) {
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
@@ -287,7 +280,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
         className={`${bg} w-full max-w-md shadow-2xl overflow-hidden max-h-[90vh] flex flex-col`}
         onClick={e => e.stopPropagation()}
       >
-        {/* Tabs */}
         <div className="flex border-b border-gray-200 dark:border-neutral-700 shrink-0">
           {['login', 'register'].map(t => (
             <button
@@ -359,21 +351,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   {loading ? t_processing : t_login}
                 </button>
 
-                {/* Google */}
-                {/* Google login button oculto temporalmente */}
-                {/*
-                {GOOGLE_CLIENT_ID && (
-                  <>
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
-                      <span className={`text-xs ${subtext}`}>{t_or}</span>
-                      <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
-                    </div>
-                    <div ref={googleBtnRef} className="w-full flex justify-center" />
-                  </>
-                )}
-                */}
-
                 <p className={`text-center text-sm ${subtext}`}>
                   {t_noAccount}{' '}
                   <button type="button" onClick={() => { setTab('register'); setError(''); }} className="font-semibold underline">
@@ -388,7 +365,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
-                {/* Benefits banner */}
                 <div className={`${cardBg} p-4 mb-5`}>
                   <h3 className={`text-sm font-bold ${text} mb-2`}>{t_benefits}</h3>
                   <ul className="space-y-1.5">
@@ -498,21 +474,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   >
                     {loading ? t_processing : t_register}
                   </button>
-
-                  {/* Google */}
-                  {/* Google register button oculto temporalmente */}
-                  {/*
-                  {GOOGLE_CLIENT_ID && (
-                    <>
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
-                        <span className={`text-xs ${subtext}`}>{t_or}</span>
-                        <div className="flex-1 h-px bg-gray-200 dark:bg-neutral-700" />
-                      </div>
-                      <div ref={googleBtnRegRef} className="w-full flex justify-center" />
-                    </>
-                  )}
-                  */}
 
                   <p className={`text-center text-sm ${subtext}`}>
                     {t_hasAccount}{' '}

@@ -43,7 +43,6 @@ const CookieConsent = () => {
       localStorage.removeItem('language');
       localStorage.removeItem('translation_cache');
     }
-    // Recargar para aplicar los cambios
     window.location.reload();
   };
 

@@ -9,7 +9,7 @@ import { useAutoTranslate } from '../hooks/useAutoTranslate';
 export default function EmailVerification({ setCurrentSection }) {
   const { isDark } = useTheme();
   const { login } = useUserAuth();
-  const [status, setStatus] = useState('loading'); // loading | success | error
+  const [status, setStatus] = useState('loading');
   const [error, setError] = useState('');
 
   const { translatedText: t_verifying } = useAutoTranslate('Verificando tu email...');

@@ -14,7 +14,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate, TranslatedText, TranslatedOption } from '../hooks/useAutoTranslate';
 
-const GAP = 24; // gap-6 = 24px
+const GAP = 24;
 
 const CollectionCarousel = ({ items, onViewDetail }) => {
   const scrollRef = useRef(null);
@@ -50,7 +50,6 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
     };
   }, [items]);
 
-  // Prevent wheel events from being captured by horizontal carousel
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -75,7 +74,6 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
 
   return (
     <div className="flex items-center gap-3">
-      {/* Left arrow — outside */}
       <button
         onClick={() => scroll(-1)}
         disabled={!canScrollLeft}
@@ -88,7 +86,6 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
         <FiChevronLeft size={24} />
       </button>
 
-      {/* Scrollable area */}
       <div
         ref={scrollRef}
         className="flex-1 flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
@@ -109,7 +106,6 @@ const CollectionCarousel = ({ items, onViewDetail }) => {
         ))}
       </div>
 
-      {/* Right arrow — outside */}
       <button
         onClick={() => scroll(1)}
         disabled={!canScrollRight}
@@ -158,7 +154,6 @@ const Products = () => {
       .finally(() => setLoadingProducts(false));
   }, []);
 
-  // Extract all products flat + derive filter options
   const allProducts = useMemo(() => collections.flatMap(c => c.items.map(i => ({ ...i, collectionName: c.name }))), [collections]);
   const filterOptions = useMemo(() => ({
     categorias: [...new Set(allProducts.map(p => p.categoria).filter(Boolean))].sort(),
@@ -271,7 +266,6 @@ const Products = () => {
           </div>
         ) : (
         <>
-        {/* Filter bar */}
         <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900/50 border border-neutral-800' : 'bg-gray-50 border border-gray-200'}`}>
           <div className="flex items-center justify-between mb-3">
             <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>
@@ -356,7 +350,6 @@ const Products = () => {
           )}
         </div>
 
-        {/* Filtered grid view */}
         {hasActiveFilter ? (
           filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
@@ -370,7 +363,6 @@ const Products = () => {
             </div>
           )
         ) : (
-        /* Collection carousels */
         collections.map((collection, colIndex) => (
           <motion.div
             key={colIndex}

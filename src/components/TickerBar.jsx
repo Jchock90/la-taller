@@ -37,8 +37,5 @@ const TickerBar = () => {
   );
 };
 
-
-
 export default TickerBar;
-
-
+

@@ -16,7 +16,6 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
   const { translatedText: checkoutText } = useAutoTranslate('Finalizar compra');
   const { translatedText: safePayText } = useAutoTranslate('Pago seguro');
 
-  // Close on Escape
   useEffect(() => {
     if (!showCart) return;
     const handleEsc = (e) => e.key === 'Escape' && onClose();

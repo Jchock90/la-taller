@@ -37,7 +37,7 @@ const SalesPanel = () => {
   const [expandedSale, setExpandedSale] = useState(null);
   const [editingNotes, setEditingNotes] = useState(null);
   const [notesText, setNotesText] = useState('');
-  const [view, setView] = useState('list'); // 'list' | 'stats'
+  const [view, setView] = useState('list');
   const [confirmModal, setConfirmModal] = useState(null);
   const [editingTracking, setEditingTracking] = useState(null);
   const [trackingUrl, setTrackingUrl] = useState('');
@@ -164,7 +164,6 @@ const SalesPanel = () => {
 
   return (
     <div>
-      {/* Confirm Modal */}
       {confirmModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-neutral-700">
@@ -187,7 +186,6 @@ const SalesPanel = () => {
           </div>
         </div>
       )}
-      {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
           <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-3 md:p-4">
@@ -222,7 +220,6 @@ const SalesPanel = () => {
         </div>
       )}
 
-      {/* View Toggle + Filters */}
       <div className="flex flex-col gap-3 mb-4">
         <div className="flex gap-2 items-center">
           <div className="flex gap-1 bg-neutral-900 rounded-lg p-1 border border-neutral-800">
@@ -277,10 +274,8 @@ const SalesPanel = () => {
         </div>
       )}
 
-      {/* Stats View */}
       {view === 'stats' && stats && (
         <div className="space-y-6">
-          {/* Top Products */}
           <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-5">
             <h3 className="font-semibold text-neutral-100 mb-4">Productos más vendidos</h3>
             {stats.topProducts.length === 0 ? (
@@ -308,7 +303,6 @@ const SalesPanel = () => {
             )}
           </div>
 
-          {/* Sales by Month */}
           <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-5">
             <h3 className="font-semibold text-neutral-100 mb-4">Ventas por mes</h3>
             {stats.salesByMonth.length === 0 ? (
@@ -337,7 +331,6 @@ const SalesPanel = () => {
         </div>
       )}
 
-      {/* Sales List View */}
       {view === 'list' && (
         <>
           <div className="flex justify-between items-center mb-3">
@@ -355,7 +348,6 @@ const SalesPanel = () => {
             <div className="space-y-2">
               {sales.map(sale => (
                 <div key={sale._id} className="bg-neutral-900 border border-neutral-800 rounded-lg overflow-hidden">
-                  {/* Sale Row */}
                   <div
                     className="p-3 md:p-4 flex items-center gap-3 md:gap-4 cursor-pointer hover:bg-neutral-800/50 transition-colors"
                     onClick={() => setExpandedSale(expandedSale === sale._id ? null : sale._id)}
@@ -379,7 +371,6 @@ const SalesPanel = () => {
                     </div>
                   </div>
 
-                  {/* Expanded Details */}
                   {expandedSale === sale._id && (
                     <div className="border-t border-neutral-800 p-3 md:p-4 bg-neutral-950/50">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -415,7 +406,6 @@ const SalesPanel = () => {
                         </div>
                       </div>
 
-                      {/* Notes */}
                       <div className="mb-4">
                         <h4 className="text-xs text-neutral-500 uppercase mb-2">Notas internas</h4>
                         {editingNotes === sale._id ? (
@@ -442,7 +432,6 @@ const SalesPanel = () => {
                         )}
                       </div>
 
-                      {/* Tracking / Despacho */}
                       <div className="mb-4">
                         <h4 className="text-xs text-neutral-500 uppercase mb-2">Seguimiento de envío</h4>
                         {sale.status === 'shipped' && sale.trackingUrl ? (
@@ -491,7 +480,6 @@ const SalesPanel = () => {
                         )}
                       </div>
 
-                      {/* Actions */}
                       <div className="flex gap-2 flex-wrap">
                         {sale.status === 'approved' && (
                           <button
@@ -532,7 +520,6 @@ const SalesPanel = () => {
             </div>
           )}
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center gap-3 mt-4">
               <button

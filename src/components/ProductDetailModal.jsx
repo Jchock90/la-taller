@@ -12,28 +12,23 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   const [validationMsg, setValidationMsg] = useState('');
   const { isDark } = useTheme();
 
-  // Resetear selección al cambiar de producto
   useEffect(() => {
     setQuantity(1);
     setSelections([{ size: '', color: '' }]);
     setValidationMsg('');
   }, [product?._id]);
 
-  // Sync selections array length with quantity
   useEffect(() => {
     setSelections(prev => {
       if (prev.length === quantity) return prev;
       if (quantity > prev.length) {
-        // Add new units copying the last selection as default
         const last = prev[prev.length - 1] || { size: '', color: '' };
         return [...prev, ...Array(quantity - prev.length).fill(null).map(() => ({ ...last }))];
       }
-      // Remove excess
       return prev.slice(0, quantity);
     });
   }, [quantity]);
 
-  // Close on Escape
   useEffect(() => {
     const handleEsc = (e) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', handleEsc);
@@ -64,7 +59,6 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
   };
 
   const handleAddToCart = () => {
-    // Validate all units have required selections
     for (let i = 0; i < selections.length; i++) {
       if (hasSizes && !selections[i].size) {
         setValidationMsg(`${selectSizeForUnit} ${i + 1}`);
@@ -77,14 +71,12 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
     }
     setValidationMsg('');
 
-    // Group by size+color combo
     const grouped = {};
     selections.forEach(s => {
       const key = `${s.size}||${s.color}`;
       grouped[key] = (grouped[key] || 0) + 1;
     });
 
-    // Add each unique combo to cart
     Object.entries(grouped).forEach(([key, qty]) => {
       const [size, color] = key.split('||');
       onAddToCart(product, size, color, qty);
@@ -127,7 +119,6 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               {details && (
                 <div className={`space-y-5 text-sm ${isDark ? 'text-neutral-400' : ''}`}>
 
-                  {/* Per-unit size/color selectors */}
                   {(hasSizes || hasColors) && selections.map((sel, idx) => (
                     <div key={idx} className={`space-y-4 ${quantity > 1 ? `pt-4 ${idx > 0 ? `border-t ${isDark ? 'border-neutral-700' : 'border-gray-200'}` : ''}` : ''}`}>
                       {quantity > 1 && (
@@ -214,7 +205,6 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                 </motion.div>
               )}
 
-              {/* Quantity selector */}
               <div className="mt-5 flex items-center gap-4">
                 <h3 className={`font-semibold text-sm ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{quantityLabel}</h3>
                 <div className={`flex items-center border ${isDark ? 'border-neutral-700' : 'border-gray-300'}`}>

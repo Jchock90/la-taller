@@ -200,7 +200,6 @@ const galleries = [
         </motion.div>
 
         <div className="max-w-5xl mx-auto space-y-4 md:space-y-6">
-          {/* First gallery — full width hero */}
           <motion.div
             initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -224,7 +223,6 @@ const galleries = [
             </div>
           </motion.div>
 
-          {/* Remaining galleries — 3 columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {galleries.slice(1).map((gallery, i) => (
               <motion.div

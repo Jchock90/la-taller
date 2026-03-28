@@ -20,7 +20,6 @@ const About = () => {
   ]
 };
 
-
   const openImage = (galleryKey, index = 0) => {
     setSelectedImage(galleryKey);
     setCurrentImageIndex(index);

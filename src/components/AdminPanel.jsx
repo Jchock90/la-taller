@@ -66,7 +66,6 @@ const FORM_STORAGE_KEY = 'admin-form-draft';
 
 const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCollections, existingCategories, collectionDescriptions, nextOrder }) => {
   const [form, setForm] = useState(() => {
-    // Intentar restaurar borrador guardado
     try {
       const saved = sessionStorage.getItem(FORM_STORAGE_KEY);
       if (saved) {
@@ -80,7 +79,6 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
     return base;
   });
 
-  // Guardar borrador en cada cambio
   useEffect(() => {
     sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(form));
   }, [form]);
@@ -142,7 +140,6 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       ...prev,
       gallery: prev.gallery.filter((_, i) => i !== index),
     }));
-    // Borrar de Cloudinary si era una imagen subida
     if (urlToDelete && urlToDelete.includes('res.cloudinary.com')) {
       try {
         await adminApi.deleteImage(token, urlToDelete);
@@ -577,7 +574,6 @@ const AdminPanel = ({ setCurrentSection }) => {
           onCancel={() => setConfirmModal(null)}
         />
       )}
-      {/* Header */}
       <div className="bg-neutral-900 border-b border-neutral-800">
         <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
           <div className="flex items-center justify-between mb-3 md:mb-0">
@@ -619,7 +615,6 @@ const AdminPanel = ({ setCurrentSection }) => {
               <span className="hidden md:inline">Cerrar sesión</span>
             </button>
           </div>
-          {/* Mobile tabs */}
           <div className="flex md:hidden gap-1 bg-neutral-800 rounded-lg p-1 overflow-x-auto">
             <button
               onClick={() => setActiveTab('products')}
@@ -650,7 +645,6 @@ const AdminPanel = ({ setCurrentSection }) => {
       </div>
 
       <div className="container mx-auto px-4 md:px-6 py-4 md:py-8">
-        {/* Messages */}
         {error && (
           <div className="bg-red-900/50 text-red-300 text-sm px-4 py-3 rounded mb-4 flex justify-between items-center">
             {error}
@@ -671,7 +665,6 @@ const AdminPanel = ({ setCurrentSection }) => {
           <EmailPanel />
         ) : (
         <>
-        {/* Form view */}
         {editingProduct !== null ? (
           <div className="bg-neutral-900 rounded-xl p-4 md:p-6 border border-neutral-800">
             <h2 className="text-lg font-semibold mb-4">
@@ -698,7 +691,6 @@ const AdminPanel = ({ setCurrentSection }) => {
             />
           </div>
         ) : (
-          /* List view */
           <>
             <div className="flex justify-between items-center mb-6 gap-3">
               <p className="text-neutral-400 text-sm">{products.length} productos</p>

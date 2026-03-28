@@ -9,7 +9,6 @@ const TABS = [
   { id: 'newsletter', label: 'Newsletter', icon: FiMail },
 ];
 
-// Toolbar button
 const ToolBtn = ({ icon: Icon, label, onClick }) => (
   <button
     type="button"
@@ -34,7 +33,7 @@ export default function EmailPanel() {
   const [sentEmails, setSentEmails] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
   const [loadingHistory, setLoadingHistory] = useState(false);
-  const [modal, setModal] = useState(null); // null | 'link' | 'image'
+  const [modal, setModal] = useState(null);
   const [linkUrl, setLinkUrl] = useState('');
   const [linkText, setLinkText] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
@@ -42,7 +41,6 @@ export default function EmailPanel() {
   const savedSelectionRef = useRef(null);
   const editorHtmlRef = useRef('');
 
-  // Form
   const [to, setTo] = useState('');
   const [subject, setSubject] = useState('');
   const editorRef = useRef(null);
@@ -100,7 +98,6 @@ export default function EmailPanel() {
     }
   };
 
-  // Save/restore selection for modals
   const saveSelection = () => {
     const sel = window.getSelection();
     if (sel.rangeCount > 0) savedSelectionRef.current = sel.getRangeAt(0);
@@ -114,7 +111,6 @@ export default function EmailPanel() {
     }
   };
 
-  // Rich text commands
   const exec = useCallback((cmd, value = null) => {
     document.execCommand(cmd, false, value);
     editorRef.current?.focus();
@@ -192,7 +188,6 @@ export default function EmailPanel() {
     }, 0);
   };
 
-  // Extract base64 images from HTML and replace with CID references for email
   const extractImagesForEmail = (html) => {
     const attachments = [];
     const processedHtml = html.replace(
@@ -242,7 +237,6 @@ export default function EmailPanel() {
         if (editorRef.current) editorRef.current.innerHTML = '';
         setTo('');
       }
-      // Refresh history
       if (showHistory) fetchSentEmails();
     } catch (err) {
       setResult({ error: err.message });
@@ -255,7 +249,6 @@ export default function EmailPanel() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <FiMail size={20} className="text-neutral-400" />
@@ -266,7 +259,6 @@ export default function EmailPanel() {
         </button>
       </div>
 
-      {/* Tab selector */}
       <div className="flex gap-1 bg-neutral-900 p-1 border border-neutral-800 w-fit">
         {TABS.map(t => (
           <button
@@ -281,7 +273,6 @@ export default function EmailPanel() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: Compose */}
         <div className="lg:col-span-2 space-y-4">
           <div className="bg-neutral-900 border border-neutral-800 p-5 space-y-4">
             <div className="flex items-center justify-between">
@@ -301,7 +292,6 @@ export default function EmailPanel() {
               </button>
             </div>
 
-            {/* Recipient field — individual */}
             {tab === 'individual' && (
               <div>
                 <label className="text-xs text-neutral-500 mb-1 block">Para</label>
@@ -321,7 +311,6 @@ export default function EmailPanel() {
               </div>
             )}
 
-            {/* Selected count */}
             {tab === 'selected' && (
               <div className="text-sm text-neutral-400">
                 {selectedEmails.length === 0
@@ -331,7 +320,6 @@ export default function EmailPanel() {
               </div>
             )}
 
-            {/* Newsletter info */}
             {tab === 'newsletter' && (
               <div className="bg-neutral-800/20 border border-neutral-700/30 p-3 text-sm text-neutral-300 flex items-start gap-2">
                 <FiUsers className="shrink-0 mt-0.5" size={16} />
@@ -349,11 +337,9 @@ export default function EmailPanel() {
               />
             </div>
 
-            {/* Rich Text Editor */}
             <div>
               <label className="text-xs text-neutral-500 mb-1 block">Contenido</label>
 
-              {/* Preview mode */}
               {preview && (
                 <div className="border border-neutral-700 bg-white p-6 min-h-[280px]">
                   <div
@@ -363,9 +349,7 @@ export default function EmailPanel() {
                 </div>
               )}
 
-              {/* Editor with toolbar — hidden when preview active */}
               <div className={`border border-neutral-700 overflow-hidden ${preview ? 'hidden' : ''}`}>
-                  {/* Toolbar */}
                   <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 border-b border-neutral-700 bg-neutral-800/80">
                     <ToolBtn icon={FiBold} label="Negrita (Ctrl+B)" onClick={() => exec('bold')} />
                     <ToolBtn icon={FiItalic} label="Cursiva (Ctrl+I)" onClick={() => exec('italic')} />
@@ -404,7 +388,6 @@ export default function EmailPanel() {
                     </div>
                   </div>
 
-                  {/* Editable area */}
                   <div
                     ref={editorRef}
                     contentEditable
@@ -415,7 +398,6 @@ export default function EmailPanel() {
                 </div>
             </div>
 
-            {/* Result */}
             {result && (
               <div className={`p-3 text-sm flex items-start gap-2 ${
                 result.error
@@ -442,7 +424,6 @@ export default function EmailPanel() {
               </div>
             )}
 
-            {/* Send button */}
             <button
               onClick={handleSend}
               disabled={sending || !subject.trim() || (tab === 'individual' && !to.trim()) || (tab === 'selected' && selectedEmails.length === 0)}
@@ -454,7 +435,6 @@ export default function EmailPanel() {
           </div>
         </div>
 
-        {/* Right: Contact list (for individual & selected) */}
         {tab !== 'newsletter' && (
           <div className="space-y-3">
             <div className="bg-neutral-900 border border-neutral-800 p-4">
@@ -536,7 +516,6 @@ export default function EmailPanel() {
               )}
             </div>
 
-            {/* Selected tags */}
             {tab === 'selected' && selectedEmails.length > 0 && (
               <div className="bg-neutral-900 border border-neutral-800 p-4">
                 <h4 className="text-xs text-neutral-500 uppercase mb-2">Seleccionados ({selectedEmails.length})</h4>
@@ -556,7 +535,6 @@ export default function EmailPanel() {
         )}
       </div>
 
-      {/* Sent emails history */}
       <div className="bg-neutral-900 border border-neutral-800">
         <button
           onClick={() => { setShowHistory(h => !h); if (!showHistory && sentEmails.length === 0) fetchSentEmails(); }}
@@ -648,7 +626,6 @@ export default function EmailPanel() {
         )}
       </div>
 
-      {/* Link Modal */}
       {modal === 'link' && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setModal(null)}>
           <div className="bg-neutral-900 border border-neutral-700 p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
@@ -690,7 +667,6 @@ export default function EmailPanel() {
         </div>
       )}
 
-      {/* Image Modal */}
       {modal === 'image' && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => { setModal(null); setImagePreview(null); }}>
           <div className="bg-neutral-900 border border-neutral-700 p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>

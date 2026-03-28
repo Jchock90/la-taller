@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const productsApi = {
-  // Público: obtener productos activos agrupados por colección
   async getCollections() {
     const res = await fetch(`${API_URL}/api/products`);
     if (!res.ok) throw new Error('Error al cargar productos');
@@ -9,7 +8,6 @@ export const productsApi = {
     return data.collections;
   },
 
-  // Público: obtener un producto por ID
   async getProduct(id) {
     const res = await fetch(`${API_URL}/api/products/${encodeURIComponent(id)}`);
     if (!res.ok) throw new Error('Producto no encontrado');
@@ -18,7 +16,6 @@ export const productsApi = {
 };
 
 export const adminApi = {
-  // Login
   async login(password) {
     const res = await fetch(`${API_URL}/api/admin/login`, {
       method: 'POST',
@@ -32,7 +29,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Listar todos los productos (incluye inactivos)
   async getProducts(token) {
     const res = await fetch(`${API_URL}/api/admin/products`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -41,7 +37,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Crear producto
   async createProduct(token, productData) {
     const res = await fetch(`${API_URL}/api/admin/products`, {
       method: 'POST',
@@ -58,7 +53,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Actualizar producto
   async updateProduct(token, id, productData) {
     const res = await fetch(`${API_URL}/api/admin/products/${encodeURIComponent(id)}`, {
       method: 'PUT',
@@ -75,7 +69,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Eliminar producto (soft delete)
   async deleteProduct(token, id) {
     const res = await fetch(`${API_URL}/api/admin/products/${encodeURIComponent(id)}`, {
       method: 'DELETE',
@@ -85,7 +78,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Restaurar producto
   async restoreProduct(token, id) {
     const res = await fetch(`${API_URL}/api/admin/products/${encodeURIComponent(id)}/restore`, {
       method: 'PUT',
@@ -95,7 +87,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Eliminar producto permanentemente
   async permanentDeleteProduct(token, id) {
     const res = await fetch(`${API_URL}/api/admin/products/${encodeURIComponent(id)}/permanent`, {
       method: 'DELETE',
@@ -104,8 +95,6 @@ export const adminApi = {
     if (!res.ok) throw new Error('Error al eliminar producto');
     return res.json();
   },
-
-  // --- Ventas ---
 
   async getSales(token, params = {}) {
     const query = new URLSearchParams(params).toString();
@@ -164,7 +153,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Subir imagen con progreso
   async uploadImage(token, file, oldUrl, onProgress) {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
@@ -199,7 +187,6 @@ export const adminApi = {
     });
   },
 
-  // Borrar imagen de Cloudinary
   async deleteImage(token, imageUrl) {
     const res = await fetch(`${API_URL}/api/admin/delete-image`, {
       method: 'POST',
@@ -210,7 +197,6 @@ export const adminApi = {
     return res.json();
   },
 
-  // Email
   async getEmailRecipients(token) {
     const res = await fetch(`${API_URL}/api/admin/email/recipients`, {
       headers: { Authorization: `Bearer ${token}` },

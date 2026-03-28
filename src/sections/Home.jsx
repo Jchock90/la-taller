@@ -12,7 +12,6 @@ const Home = ({ setCurrentSection }) => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [expandedGalleryIndex, setExpandedGalleryIndex] = useState(null);
 
-  // Close gallery modal on Escape
   const closeGallery = useCallback(() => setExpandedGalleryIndex(null), []);
   useEffect(() => {
     if (expandedGalleryIndex === null) return;
@@ -58,7 +57,6 @@ const Home = ({ setCurrentSection }) => {
     { label: 'Talleres realizados', value: 95 }
   ];
 
-
   const { translatedText: galleryTitle } = useAutoTranslate('Momentos en La Taller');
   const { translatedText: testimonialTitle } = useAutoTranslate('Lo que dicen nuestras alumnas');
   const { translatedText: testimonial1Text } = useAutoTranslate('La Taller cambió mi forma de relacionarme con mi cuerpo y la ropa. Cada prenda que creo es un acto de amor propio.');
@@ -89,7 +87,6 @@ const Home = ({ setCurrentSection }) => {
         <Carousel images={carouselImages} />
       </div>
 
-      {/* Tesoro hero (moved up) */}
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-16`}>
         <motion.div
           initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }}
@@ -122,7 +119,6 @@ const Home = ({ setCurrentSection }) => {
         </motion.div>
       </div>
 
-      {/* Momentos gallery */}
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
         <div className="max-w-6xl mx-auto px-6">
           <motion.h3
@@ -148,7 +144,6 @@ const Home = ({ setCurrentSection }) => {
             ))}
           </div>
 
-          {/* CTA below gallery */}
           <motion.div
             initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -164,7 +159,6 @@ const Home = ({ setCurrentSection }) => {
             </button>
           </motion.div>
 
-          {/* Modal for expanded gallery image */}
           <AnimatePresence>
           {expandedGalleryIndex !== null && (
             <motion.div
@@ -239,7 +233,6 @@ const Home = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      {/* Hilo Propio hero */}
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'}`}>
         <motion.div
           initial={{ opacity: 0, filter: 'blur(10px)' }}
@@ -280,7 +273,6 @@ const Home = ({ setCurrentSection }) => {
 
       <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
         <div className="max-w-6xl mx-auto px-6">
-          {/* Testimonials */}
           <motion.h3
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

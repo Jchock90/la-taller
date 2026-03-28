@@ -80,7 +80,6 @@ export default function UsersPanel() {
 
   return (
     <div>
-      {/* Header row */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 gap-3">
         <div className="flex items-center gap-3">
           <FiUsers size={20} className="text-neutral-400" />
@@ -117,7 +116,6 @@ export default function UsersPanel() {
         </div>
       ) : (
         <>
-        {/* Mobile card layout */}
         <div className="md:hidden space-y-3">
           {filtered.map(user => {
             const stats = user.purchaseStats || { totalPurchases: 0, totalSpent: 0 };
@@ -182,7 +180,6 @@ export default function UsersPanel() {
                     </button>
                   )}
                 </div>
-                {/* Expanded profile data */}
                 {profileExpanded === user._id && (
                   <div className="mt-3 pt-3 border-t border-neutral-800">
                     <p className="text-neutral-500 uppercase font-semibold text-[10px] mb-2">Datos personales</p>
@@ -205,7 +202,6 @@ export default function UsersPanel() {
                     </div>
                   </div>
                 )}
-                {/* Expanded purchases */}
                 {isExpanded && user.purchases?.length > 0 && (
                   <div className="mt-3 pt-3 border-t border-neutral-800 space-y-3 max-h-80 overflow-y-auto">
                     {user.purchases.map(p => (
@@ -239,7 +235,6 @@ export default function UsersPanel() {
                           </span>
                           <span className="text-sm font-semibold text-neutral-300">${p.total?.toLocaleString('es-AR')}</span>
                         </div>
-                        {/* Tracking */}
                         <div className="mt-2">
                           {p.status === 'shipped' && p.trackingUrl ? (
                             <div className="flex items-center gap-2 bg-cyan-900/20 border border-cyan-800/30 rounded p-2">
@@ -269,7 +264,6 @@ export default function UsersPanel() {
           })}
         </div>
 
-        {/* Desktop table layout */}
         <div className="hidden md:block bg-neutral-900 rounded-xl border border-neutral-800 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
@@ -366,7 +360,6 @@ export default function UsersPanel() {
                         </div>
                       </td>
                     </tr>
-                    {/* Expanded profile row */}
                     {profileExpanded === user._id && (
                       <tr>
                         <td colSpan={7} className="px-4 py-3 bg-violet-950/20 border-l-2 border-violet-800/50">
@@ -400,7 +393,6 @@ export default function UsersPanel() {
                         </td>
                       </tr>
                     )}
-                    {/* Expanded purchases row */}
                     {isExpanded && user.purchases?.length > 0 && (
                       <tr>
                         <td colSpan={7} className="px-4 py-3 bg-neutral-800/40">
@@ -414,7 +406,6 @@ export default function UsersPanel() {
                                   </span>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                  {/* Buyer & Shipping info */}
                                   <div className="text-xs text-neutral-400 space-y-0.5">
                                     <p className="text-neutral-500 uppercase font-semibold text-[10px] mb-1">Datos de envío</p>
                                     <p><span className="text-neutral-600">Nombre:</span> {p.nombre} {p.apellido}</p>
@@ -423,7 +414,6 @@ export default function UsersPanel() {
                                     {p.direccion && <p><span className="text-neutral-600">Dirección:</span> {p.direccion}{p.pisoDepto ? ` (${p.pisoDepto})` : ''}</p>}
                                     <p><span className="text-neutral-600">Ubicación:</span> {p.ciudad}, {p.provincia} (CP: {p.codigoPostal})</p>
                                   </div>
-                                  {/* Products */}
                                   <div>
                                     <p className="text-neutral-500 uppercase font-semibold text-[10px] mb-1">Productos</p>
                                     <div className="space-y-0.5">
@@ -446,7 +436,6 @@ export default function UsersPanel() {
                                   </span>
                                   <span className="text-sm font-semibold text-neutral-300">${p.total?.toLocaleString('es-AR')}</span>
                                 </div>
-                                {/* Tracking / Despacho */}
                                 <div className="mt-2">
                                   {p.status === 'shipped' && p.trackingUrl ? (
                                     <div className="flex items-center gap-2 bg-cyan-900/20 border border-cyan-800/30 rounded p-2">

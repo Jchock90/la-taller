@@ -23,7 +23,6 @@ const Footer = ({ setCurrentSection }) => {
 
   return (
     <footer className={`${bg} text-white`}>
-      {/* Top bar — brand + tagline */}
       <div className={`border-b ${border} px-6 md:px-12 py-8`}>
         <img
           src="/img/logo-white.png"
@@ -34,9 +33,7 @@ const Footer = ({ setCurrentSection }) => {
         <p className={`text-xs uppercase tracking-[0.2em] ${muted}`}>{tagline}</p>
       </div>
 
-      {/* Main grid */}
       <div className={`border-b ${border} px-6 md:px-12 py-10 grid grid-cols-1 md:grid-cols-3 gap-10`}>
-        {/* Nav */}
         <div>
           <p className={`text-[10px] uppercase tracking-[0.2em] ${muted} mb-4`}>{navLabel}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -52,7 +49,6 @@ const Footer = ({ setCurrentSection }) => {
           </div>
         </div>
 
-        {/* Contact */}
         <div>
           <p className={`text-[10px] uppercase tracking-[0.2em] ${muted} mb-4`}>{contactLabel}</p>
           <ul className="space-y-3">
@@ -72,7 +68,6 @@ const Footer = ({ setCurrentSection }) => {
           </ul>
         </div>
 
-        {/* Instagram */}
         <div>
           <p className={`text-[10px] uppercase tracking-[0.2em] ${muted} mb-4`}>{followLabel}</p>
           <a
@@ -88,7 +83,6 @@ const Footer = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className={`px-6 md:px-12 py-5 flex flex-col items-center gap-1 win-status-bar`}>
         <p className={`text-[11px] ${muted}`}>© {new Date().getFullYear()} La Taller by Jesús Mansilla.</p>
         <p className={`text-[11px] ${muted}`}>{rightsText}</p>

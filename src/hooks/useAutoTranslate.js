@@ -3,13 +3,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { translateText } from '../services/translationService';
 
 const localTranslations = {
-  // TickerBar
   'Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo💘':
     'I accompany people on a journey toward their own creation, in a safe, sensitive and creative space💘',
   'Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo.':
     'I accompany people on a journey toward their own creation, in a safe, sensitive and creative space.',
 
-  // Home
   'La ropa que vistes es la primera pregunta que responde tu cuerpo cada mañana. En La Taller, aprendemos a responder con consciencia, creatividad y amor.':
     'The clothes you wear are the first question your body answers every morning. At La Taller, we learn to answer with awareness, creativity and love.',
   'Momentos en La Taller': 'Moments at La Taller',
@@ -26,7 +24,6 @@ const localTranslations = {
     'It\'s more than a workshop, it\'s a space where you allow yourself to be creative and vulnerable at the same time.',
   'Conocé más': 'Learn more',
 
-  // Services
   'Soy guía, docente e intérprete en el universo de la indumentaria. Enseño a hacer tu ropa desde cero: elegir la tela, imaginar el diseño, trazar el molde, cortar, coser, ajustar, estampar, bordar, revelar… hasta que la prenda toma forma, y con ella, la identidad de quien la viste.':
     'I am a guide, teacher and interpreter in the world of fashion. I teach you to make your own clothes from scratch: choose the fabric, imagine the design, trace the pattern, cut, sew, adjust, print, embroider, reveal… until the garment takes shape, and with it, the identity of the wearer.',
   'No solo comparto un saber técnico, comparto un oficio, un lenguaje sensible, una forma de pensar el cuerpo, el deseo y la vida cotidiana.':
@@ -44,7 +41,6 @@ const localTranslations = {
   'Taller de cianotipia': 'Cyanotype Workshop',
   'Taller de infancias': 'Children\'s Workshop',
 
-  // Products
   'Tesoro': 'Treasure',
   'Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle':
     'Exclusive pieces designed with artisanal care and attention to detail',
@@ -70,11 +66,9 @@ const localTranslations = {
   'Diseños vanguardistas que desafían convenciones':
     'Avant-garde designs that challenge conventions',
 
-  // ProductCard
   'Agregar al carrito': 'Add to cart',
   'Ver más': 'View more',
 
-  // ProductDetailModal
   'Por favor selecciona un talle': 'Please select a size',
   'Por favor selecciona un color': 'Please select a color',
   'Talles disponibles': 'Available sizes',
@@ -83,7 +77,6 @@ const localTranslations = {
   'Fabricación': 'Fabrication',
   'Cuidados': 'Care',
 
-  // CartPanel
   'Tu carrito': 'Your cart',
   'Tu carrito está vacío': 'Your cart is empty',
   'Talle:': 'Size:',
@@ -91,7 +84,6 @@ const localTranslations = {
   'Total:': 'Total:',
   'Finalizar compra': 'Checkout',
 
-  // CheckoutForm
   'Resumen de compra': 'Order summary',
   'Datos de envío': 'Shipping details',
   'Nombre': 'First name',
@@ -108,7 +100,6 @@ const localTranslations = {
   'Procesando...': 'Processing...',
   'Ir a pagar': 'Proceed to pay',
 
-  // PaymentStatus
   '¡Compra exitosa!': 'Purchase successful!',
   'Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.':
     'Your payment was processed successfully. You will soon receive an email with your purchase details and shipping tracking.',
@@ -128,24 +119,19 @@ const localTranslations = {
   'Ver productos': 'View products',
   'Contactar por WhatsApp': 'Contact via WhatsApp',
 
-  // CookieConsent
   '¿Aceptás nuestras cookies?': 'Do you accept our cookies?',
   'No, gracias': 'No, thanks',
   'Sí, dale': 'Yes, accept',
 
-  // Footer
   'Diseño de indumentaria artesanal por Jess': 'Artisanal clothing design by Jess',
   'Navegación': 'Navigation',
   'Contacto': 'Contact',
   'Todos los derechos reservados.': 'All rights reserved.',
 
-  // ProductDetailModal
   'Pago seguro': 'Secure payment',
 
-  // Navbar
   'Spotify deshabilitado (cookies de terceros rechazadas)': 'Spotify disabled (third-party cookies rejected)',
 
-  // UserAuth
   'Iniciar sesión': 'Sign in',
   'Crear cuenta': 'Create account',
   'Email': 'Email',
@@ -165,7 +151,6 @@ const localTranslations = {
   '¡Cuenta creada!': 'Account created!',
   'Tu cuenta fue creada exitosamente. Ya podés empezar a comprar.': 'Your account was created successfully. You can now start shopping.',
 
-  // UserDashboard
   'Mi cuenta': 'My account',
   'Mis compras': 'My purchases',
   'Aún no tenés compras realizadas': 'You have no purchases yet',
@@ -185,7 +170,6 @@ const localTranslations = {
   'Cargando...': 'Loading...',
   'Envío a': 'Shipping to',
 };
-
 
 export const useAutoTranslate = (text, sourceLang = 'es') => {
   const { language } = useLanguage();
@@ -207,14 +191,12 @@ export const useAutoTranslate = (text, sourceLang = 'es') => {
         return;
       }
 
-      // Check local dictionary first
       if (language === 'en' && sourceLang === 'es' && localTranslations[text]) {
         setTranslatedText(localTranslations[text]);
         setIsLoading(false);
         return;
       }
 
-      // Fall back to MyMemory translation API
       setIsLoading(true);
       try {
         const result = await translateText(text, language, sourceLang);
@@ -233,13 +215,11 @@ export const useAutoTranslate = (text, sourceLang = 'es') => {
   return { translatedText, isLoading };
 };
 
-// Component for translating dynamic content (product names, collections, etc.)
 export const TranslatedText = ({ text, sourceLang = 'es' }) => {
   const { translatedText } = useAutoTranslate(text, sourceLang);
   return translatedText;
 };
 
-// Component for translating <option> elements
 export const TranslatedOption = ({ value, text, sourceLang = 'es', ...props }) => {
   const { translatedText } = useAutoTranslate(text || value, sourceLang);
   return createElement('option', { value, ...props }, translatedText);

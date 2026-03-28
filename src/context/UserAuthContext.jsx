@@ -27,7 +27,6 @@ export function UserAuthProvider({ children }) {
     }
   }, [user]);
 
-  // Verify token on mount
   useEffect(() => {
     if (!userToken) return;
     fetch(`${API_URL}/api/users/profile`, {

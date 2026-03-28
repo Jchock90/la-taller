@@ -86,7 +86,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       .finally(() => setLoading(false));
   }, [userToken]);
 
-  // Init profile form from user data
   useEffect(() => {
     if (user) {
       setProfileForm({
@@ -102,7 +101,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
     }
   }, [user]);
 
-  // Load provincias
   useEffect(() => {
     fetch('https://apis.datos.gob.ar/georef/api/provincias')
       .then(res => res.json())
@@ -110,7 +108,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       .catch(() => {});
   }, []);
 
-  // Load ciudades when provincia changes
   useEffect(() => {
     if (profileForm.provincia) {
       setLoadingCiudades(true);
@@ -166,7 +163,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
         className={`${bg} w-full max-w-lg md:max-w-xl max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2`}
         onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
         <div className={`p-5 border-b ${borderColor} flex items-center justify-between`}>
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full ${isDark ? 'bg-neutral-800' : 'bg-gray-100'} flex items-center justify-center`}>
@@ -183,7 +179,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
           </button>
         </div>
 
-        {/* Tabs */}
         <div className={`flex border-b ${borderColor}`}>
           <button
             onClick={() => setActiveTab('purchases')}
@@ -209,10 +204,8 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="flex-1 overflow-y-auto p-5">
 
-          {/* === PURCHASES TAB === */}
           {activeTab === 'purchases' && (
             <>
           {loading ? (
@@ -329,7 +322,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
             </>
           )}
 
-          {/* === PROFILE TAB === */}
           {activeTab === 'profile' && (
             <div className="space-y-5">
               <div className="flex items-center justify-between">
@@ -358,7 +350,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                 </div>
               )}
 
-              {/* Personal data */}
               <div>
                 <h4 className={`text-xs md:text-sm font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_personalData}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
@@ -401,7 +392,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                 </div>
               </div>
 
-              {/* Shipping address */}
               <div>
                 <h4 className={`text-xs md:text-sm font-semibold uppercase tracking-wide ${subtext} mb-3`}>{t_shippingAddress}</h4>
                 <div className="grid grid-cols-1 gap-3 md:gap-4">
@@ -463,7 +453,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                 </div>
               </div>
 
-              {/* Actions */}
               {editingProfile && (
                 <div className="flex gap-3 pt-2">
                   <button

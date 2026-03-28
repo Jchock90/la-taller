@@ -21,7 +21,6 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   const { isDark } = useTheme();
   const { isAuthenticated } = useAuth();
 
-  // Footer avoidance for floating buttons (WhatsApp, Cart)
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -48,7 +47,6 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
     };
   }, [currentSection]);
 
-  // Admin section
   if (currentSection === 'admin') {
     if (!isAuthenticated) {
       return <AdminLogin />;
