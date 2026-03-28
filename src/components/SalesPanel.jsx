@@ -166,7 +166,7 @@ const SalesPanel = () => {
     <div>
       {/* Confirm Modal */}
       {confirmModal && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-neutral-700">
             <h3 className="text-white text-lg font-semibold mb-2">{confirmModal.title}</h3>
             <p className="text-neutral-400 text-sm mb-6">{confirmModal.message}</p>

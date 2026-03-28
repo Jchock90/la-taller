@@ -40,7 +40,7 @@ const formatPrice = (raw) => {
 };
 
 const ConfirmModal = ({ title, message, confirmText, confirmColor, onConfirm, onCancel }) => (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
     <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-neutral-700">
       <h3 className="text-white text-lg font-semibold mb-2">{title}</h3>
       <p className="text-neutral-400 text-sm mb-6">{message}</p>
@@ -193,7 +193,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
   return (
     <>
     {uploading && (
-      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-xs shadow-2xl">
           <p className="text-white text-center font-medium mb-3">Subiendo imagen...</p>
           <div className="w-full bg-neutral-700 rounded-full h-4 overflow-hidden">
@@ -207,7 +207,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
       </div>
     )}
     {uploadError && (
-      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div className="bg-neutral-800 rounded-xl p-5 md:p-6 w-full max-w-sm shadow-2xl border border-red-800/50">
           <div className="flex items-center gap-3 mb-3">
             <svg className="w-6 h-6 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

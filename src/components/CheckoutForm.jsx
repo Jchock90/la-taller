@@ -105,7 +105,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
   };
 
   return createPortal(
-    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isDark ? 'bg-black/50' : 'bg-black/50'}`}>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm`}>
       <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-4 md:p-8 shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto`}>
         <button type="button" onClick={onClose} className={`absolute top-2 right-2 ${isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-500 hover:text-black'} text-2xl`}>&times;</button>
         <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>{orderSummaryText}</h2>
