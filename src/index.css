@@ -90,7 +90,7 @@ html.dark ::-webkit-scrollbar-button:single-button {
     inset -2px -2px 0 rgba(255,255,255,0.08);
 }
 
-/* Subtle pixel-grid scanline overlay (optional on hero areas) */
+/* CRT scanline overlay */
 .win-scanlines::after {
   content: '';
   position: absolute;
@@ -100,8 +100,8 @@ html.dark ::-webkit-scrollbar-button:single-button {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.04) 2px,
-    rgba(0,0,0,0.04) 4px
+    rgba(0,0,0,0.09) 2px,
+    rgba(0,0,0,0.09) 4px
   );
   z-index: 1;
 }
