@@ -111,7 +111,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             className={`${isDark ? 'bg-neutral-900' : 'bg-white'} shadow-2xl w-full max-w-4xl h-[85vh] md:h-[90vh] overflow-hidden flex flex-col md:flex-row`}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full md:w-1/2 h-48 md:h-auto md:min-h-[500px] relative flex-shrink-0">
+            <div className="w-full md:w-1/2 h-48 md:h-auto md:min-h-[500px] relative flex-shrink-0 win-inset">
               <Carousel images={product.gallery || [product.imageUrl]} />
             </div>
 
@@ -239,7 +239,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className={`mt-6 flex items-center justify-center w-full py-3 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+                className={`mt-6 flex items-center justify-center w-full py-3 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 win-btn ${
                   isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
                 }`}
                 onClick={handleAddToCart}

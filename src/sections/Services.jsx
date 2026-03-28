@@ -206,7 +206,7 @@ const galleries = [
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ type: 'spring', stiffness: 70, damping: 14 }}
             viewport={{ once: true, amount: 0.2 }}
-            className="relative h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group"
+            className="relative h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group win-inset"
             onClick={() => openGallery(galleries[0])}
           >
             <SimpleCarousel 
@@ -234,7 +234,7 @@ const galleries = [
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ type: 'spring', stiffness: 70, damping: 14, delay: i * 0.12 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="relative h-72 md:h-96 overflow-hidden cursor-pointer group"
+                className="relative h-72 md:h-96 overflow-hidden cursor-pointer group win-inset"
                 onClick={() => openGallery(gallery)}
               >
                 <SimpleCarousel 

@@ -89,7 +89,7 @@ const Footer = ({ setCurrentSection }) => {
       </div>
 
       {/* Bottom bar */}
-      <div className={`px-6 md:px-12 py-5 flex flex-col items-center gap-1`}>
+      <div className={`px-6 md:px-12 py-5 flex flex-col items-center gap-1 win-status-bar`}>
         <p className={`text-[11px] ${muted}`}>© {new Date().getFullYear()} La Taller by Jesús Mansilla.</p>
         <p className={`text-[11px] ${muted}`}>{rightsText}</p>
       </div>

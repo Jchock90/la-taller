@@ -17,7 +17,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
     whileHover={{ y: -8, scale: 1.03 }}
     className={`${isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-100'} overflow-hidden shadow-md border h-full flex flex-col`}
   >
-    <div className="h-64 overflow-hidden relative group">
+    <div className="h-64 overflow-hidden relative group win-inset">
       <motion.img
         src={item.imageUrl}
         alt={item.name}
@@ -32,7 +32,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`flex items-center justify-center w-full py-2.5 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 ${
+        className={`flex items-center justify-center w-full py-2.5 px-4 tracking-widest uppercase text-xs border transition-colors duration-300 win-btn ${
           isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
         }`}
         onClick={() => onViewDetail(item)}
