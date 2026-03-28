@@ -221,7 +221,6 @@ const galleries = [
               <h3 className="text-xl md:text-3xl font-semibold text-white tracking-wide">
                 {galleries[0].title}
               </h3>
-              <div className="w-12 h-px bg-white/50 mt-3" />
             </div>
           </motion.div>
 
@@ -249,7 +248,6 @@ const galleries = [
                   <h3 className="text-base md:text-lg font-semibold text-white tracking-wide">
                     {gallery.title}
                   </h3>
-                  <div className="w-8 h-px bg-white/50 mt-2" />
                 </div>
               </motion.div>
             ))}
