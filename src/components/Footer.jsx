@@ -79,7 +79,7 @@ const Footer = ({ setCurrentSection }) => {
             href={CONTACT_INFO.instagram}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest border border-neutral-700 px-4 py-2 ${label} ${hover} hover:border-neutral-500 transition-colors`}
+            className={`inline-flex items-center gap-2 text-xs uppercase tracking-widest border border-neutral-700 px-4 py-2 win-btn ${label} ${hover} hover:border-neutral-500 transition-colors`}
           >
             <FiInstagram size={15} />
             Instagram

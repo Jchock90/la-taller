@@ -40,7 +40,7 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'tween', duration: 0.3 }}
-            className={`relative w-full max-w-md ${isDark ? 'bg-black' : 'bg-white'} h-full shadow-xl flex flex-col`}
+            className={`relative w-full max-w-md ${isDark ? 'bg-black' : 'bg-white'} h-full shadow-xl flex flex-col win-frame`}
           >
             <div className={`flex items-center justify-between p-4 ${isDark ? 'border-gray-800 text-gray-100' : 'border-gray-200'} border-b`}>
               <h2 className="text-xl font-bold">{yourCartText} ({cartCount})</h2>

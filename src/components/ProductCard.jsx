@@ -15,7 +15,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
     transition={{ type: 'spring', stiffness: 80, damping: 15, delay: index * 0.08 }}
     viewport={{ once: true, amount: 0.2 }}
     whileHover={{ y: -8, scale: 1.03 }}
-    className={`${isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-100'} overflow-hidden shadow-md border h-full flex flex-col`}
+    className={`${isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-100'} overflow-hidden shadow-md border h-full flex flex-col win-frame`}
   >
     <div className="h-64 overflow-hidden relative group win-inset">
       <motion.img

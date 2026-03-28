@@ -105,3 +105,38 @@ html.dark ::-webkit-scrollbar-button:single-button {
   );
   z-index: 1;
 }
+
+/* Win2000 window title bar gradient */
+.win-titlebar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  padding: 2px 6px;
+  font-size: 11px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+html.dark .win-titlebar {
+  background: linear-gradient(90deg, #1a1a2e, #16213e);
+}
+
+/* Win2000 window frame (raised panel) */
+.win-frame {
+  border: 2px solid;
+  border-color: rgba(255,255,255,0.12) rgba(0,0,0,0.25) rgba(0,0,0,0.25) rgba(255,255,255,0.12);
+}
+
+/* Win2000 section divider — etched horizontal rule */
+.win-etch {
+  border: none;
+  height: 2px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(255,255,255,0.08));
+}
+
+/* Win2000 tooltip / label chip */
+.win-chip {
+  border: 1px solid;
+  border-color: rgba(255,255,255,0.1) rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(255,255,255,0.1);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

@@ -9,7 +9,6 @@ import ProductCard from '../components/ProductCard';
 import { CartPanel, CartButton } from '../components/CartPanel';
 import ProductDetailModal from '../components/ProductDetailModal';
 import CheckoutForm from '../components/CheckoutForm';
-import WhatsAppContact from '../components/WhatsAppContact';
 import Toast from '../components/Toast';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
@@ -327,25 +326,25 @@ const Products = () => {
           {hasActiveFilter && (
             <div className="flex flex-wrap gap-2 mt-3">
               {filters.categoria && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs win-chip">
                   <TranslatedText text={filters.categoria} />
                   <button onClick={() => setFilters(f => ({ ...f, categoria: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.coleccion && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs win-chip">
                   <TranslatedText text={filters.coleccion} />
                   <button onClick={() => setFilters(f => ({ ...f, coleccion: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.talle && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs win-chip">
                   {sizeLabel} {filters.talle}
                   <button onClick={() => setFilters(f => ({ ...f, talle: '' }))}><FiX size={12} /></button>
                 </span>
               )}
               {filters.color && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs">
+                <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-700/20 text-neutral-200 text-xs win-chip">
                   <TranslatedText text={filters.color} />
                   <button onClick={() => setFilters(f => ({ ...f, color: '' }))}><FiX size={12} /></button>
                 </span>
@@ -425,9 +424,6 @@ const Products = () => {
           </motion.a>
         </motion.div>
       </div>
-
-      {/* WhatsApp button */}
-      <WhatsAppContact />
 
       <CartButton cartCount={cartCount} onClick={() => setShowCart(true)} />
 
