@@ -199,22 +199,42 @@ const galleries = [
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {galleries.map((gallery, galleryIndex) => (
-            <motion.div
-              key={galleryIndex}
-              initial={{ opacity: 0, y: 80, scale: 0.8, filter: 'blur(8px)' }}
-              whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-              transition={{ type: 'spring', stiffness: 70, damping: 14, delay: galleryIndex * 0.15 }}
-              viewport={{ once: true, amount: 0.2 }}
-              className="p-2"
-            >
-              <h3 className={`text-xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center`}>
-                {gallery.title}
+        <div className="space-y-4 md:space-y-6">
+          {/* First gallery — full width hero */}
+          <motion.div
+            initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ type: 'spring', stiffness: 70, damping: 14 }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="relative h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group"
+            onClick={() => openGallery(galleries[0])}
+          >
+            <SimpleCarousel 
+              images={galleries[0].images} 
+              onImageClick={(image) => {
+                const index = galleries[0].images.indexOf(image);
+                openGallery(galleries[0], index);
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 p-6 md:p-10 pointer-events-none">
+              <h3 className="text-xl md:text-3xl font-semibold text-white tracking-wide">
+                {galleries[0].title}
               </h3>
-              
-              <div 
-                className="h-48 md:h-64 rounded-lg overflow-hidden cursor-pointer"
+              <div className="w-12 h-px bg-white/50 mt-3" />
+            </div>
+          </motion.div>
+
+          {/* Remaining galleries — 3 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {galleries.slice(1).map((gallery, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 60, filter: 'blur(6px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                transition={{ type: 'spring', stiffness: 70, damping: 14, delay: i * 0.12 }}
+                viewport={{ once: true, amount: 0.2 }}
+                className="relative h-72 md:h-96 overflow-hidden cursor-pointer group"
                 onClick={() => openGallery(gallery)}
               >
                 <SimpleCarousel 
@@ -224,9 +244,16 @@ const galleries = [
                     openGallery(gallery, index);
                   }}
                 />
-              </div>
-            </motion.div>
-          ))}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 left-0 p-5 pointer-events-none">
+                  <h3 className="text-base md:text-lg font-semibold text-white tracking-wide">
+                    {gallery.title}
+                  </h3>
+                  <div className="w-8 h-px bg-white/50 mt-2" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <AnimatePresence>
