@@ -1,66 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Carousel from '../components/Carousel';
 import WhatsAppContact from '../components/WhatsAppContact';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { useAutoTranslate } from '../hooks/useAutoTranslate';
-
-const TypewriterQuote = ({ text, isDark }) => {
-  const [displayed, setDisplayed] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
-  const textRef = useRef(text);
-  const containerRef = useRef(null);
-
-  // Start typing only when scrolled into view
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!text || !isVisible) return;
-    textRef.current = text;
-    setDisplayed('');
-    let i = 0;
-    const timer = setInterval(() => {
-      if (textRef.current !== text) { clearInterval(timer); return; }
-      i++;
-      setDisplayed(text.slice(0, i));
-      if (i >= text.length) clearInterval(timer);
-    }, 90);
-    return () => clearInterval(timer);
-  }, [text, isVisible]);
-
-  useEffect(() => {
-    const blink = setInterval(() => setShowCursor(v => !v), 530);
-    return () => clearInterval(blink);
-  }, []);
-
-  if (!text) return null;
-  return (
-    <div ref={containerRef} className={`py-12 md:py-24 px-6 ${isDark ? 'bg-black' : 'bg-white'} flex flex-col items-center`}>
-      <div className={`w-12 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mb-10`} />
-      <div className="relative max-w-2xl w-full text-center">
-        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium ${isDark ? 'text-neutral-300' : 'text-neutral-800'} invisible`} aria-hidden="true">
-          "{text}"
-        </p>
-        <p className={`text-base md:text-2xl lg:text-3xl leading-relaxed font-medium ${isDark ? 'text-neutral-300' : 'text-neutral-800'} absolute inset-0`}>
-          "{displayed}"
-          <span className={`inline-block w-[2px] h-[1.2em] ${isDark ? 'bg-neutral-300' : 'bg-neutral-800'} ml-1 align-middle transition-opacity ${showCursor ? 'opacity-100' : 'opacity-0'}`} />
-        </p>
-      </div>
-      <div className={`w-12 h-px ${isDark ? 'bg-neutral-700' : 'bg-neutral-300'} mt-10`} />
-    </div>
-  );
-};
 
 const Home = ({ setCurrentSection }) => {
   const { t } = useLanguage();
@@ -114,7 +58,7 @@ const Home = ({ setCurrentSection }) => {
     { label: 'Talleres realizados', value: 95 }
   ];
 
-  const { translatedText: quoteText } = useAutoTranslate('La ropa que vistes es la primera pregunta que responde tu cuerpo cada mañana. En La Taller, aprendemos a responder con consciencia, creatividad y amor.');
+
   const { translatedText: galleryTitle } = useAutoTranslate('Momentos en La Taller');
   const { translatedText: testimonialTitle } = useAutoTranslate('Lo que dicen nuestras alumnas');
   const { translatedText: testimonial1Text } = useAutoTranslate('La Taller cambió mi forma de relacionarme con mi cuerpo y la ropa. Cada prenda que creo es un acto de amor propio.');
@@ -152,13 +96,13 @@ const Home = ({ setCurrentSection }) => {
           whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
           transition={{ type: 'spring', stiffness: 60, damping: 15 }}
           viewport={{ once: true }}
-          className="relative group max-w-md mx-auto px-6"
+          className="relative group max-w-2xl mx-auto px-6"
         >
           <div className="relative rounded-lg overflow-hidden">
             <img
               src="https://res.cloudinary.com/dtnkj0wdx/image/upload/v1753672721/T2_jew1by.jpg"
               alt="Productos disponibles"
-              className="w-full h-[24rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+              className="w-full h-[28rem] md:h-[36rem] object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
               style={{ objectPosition: 'center 70%' }}
               onClick={() => setCurrentSection && setCurrentSection('que-vendo')}
             />
@@ -260,7 +204,7 @@ const Home = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      <div className={`w-full ${isDark ? 'bg-black' : 'bg-neutral-50'} py-20`}>
+      <div className={`w-full ${isDark ? 'bg-black' : 'bg-white'} py-20`}>
         <div className="max-w-6xl mx-auto px-6">
           <motion.h3
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
@@ -277,7 +221,7 @@ const Home = ({ setCurrentSection }) => {
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 transition={{ type: 'spring', stiffness: 70, damping: 14, delay: idx * 0.1 }}
                 viewport={{ once: true, amount: 0.3 }}
-                className={`relative overflow-hidden cursor-pointer group ${idx === 0 || idx === 3 ? 'h-72 md:h-80' : 'h-56 md:h-64'}`}
+                className="relative overflow-hidden cursor-pointer group h-64 md:h-80"
                 onClick={() => setExpandedGalleryIndex(idx)}
               >
                 <img src={img} alt={`Galería ${idx}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -376,12 +320,7 @@ const Home = ({ setCurrentSection }) => {
         </div>
       </div>
 
-      {/* Typewriter quote */}
-      <TypewriterQuote text={quoteText} isDark={isDark} />
-
-      <div>
-        <WhatsAppContact />
-      </div>
+      <WhatsAppContact />
     </section>
   );
 };

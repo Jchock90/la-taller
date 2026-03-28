@@ -24,7 +24,8 @@ const WhatsAppContact = ({ button = false }) => {
       initial={{ opacity: 0, scale: 0, rotate: -180 }}
       animate={{ opacity: 1, scale: 1, rotate: 0 }}
       transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 1 }}
-      className="fixed left-6 bottom-6 z-50"
+      className="fixed left-6 z-50"
+      style={{ bottom: 'var(--fab-bottom, 24px)', transition: 'bottom 0.15s ease-out' }}
     >
       <a
         href={WHATSAPP_URL}
@@ -32,7 +33,7 @@ const WhatsAppContact = ({ button = false }) => {
         rel="noopener noreferrer"
         className="flex items-center bg-green-500 text-white px-2 py-2 rounded-full shadow-lg hover:bg-green-600 transition-colors"
       >
-        <FaWhatsapp size={38} className="" />
+        <FaWhatsapp size={38} />
       </a>
     </motion.div>
   );

@@ -26,7 +26,7 @@ const TickerBar = () => {
       <div className="relative w-full">
         <span
           ref={tickerRef}
-          className={`block whitespace-nowrap text-[10px] md:text-xs font-medium ticker-text animate-ticker leading-none ${
+          className={`block whitespace-nowrap text-xs md:text-sm font-medium ticker-text animate-ticker leading-none ${
             isDark ? 'text-gray-300' : 'text-neutral-300'
           }`}
         >

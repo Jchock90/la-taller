@@ -21,6 +21,33 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   const { isDark } = useTheme();
   const { isAuthenticated } = useAuth();
 
+  // Footer avoidance for floating buttons (WhatsApp, Cart)
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const footer = document.querySelector('footer');
+        if (footer) {
+          const footerTop = footer.getBoundingClientRect().top;
+          const vh = window.innerHeight;
+          const bottom = footerTop < vh ? (vh - footerTop + 24) : 24;
+          document.documentElement.style.setProperty('--fab-bottom', `${bottom}px`);
+        }
+        ticking = false;
+      });
+    };
+    document.documentElement.style.setProperty('--fab-bottom', '24px');
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [currentSection]);
+
   // Admin section
   if (currentSection === 'admin') {
     if (!isAuthenticated) {
