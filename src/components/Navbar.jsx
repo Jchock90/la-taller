@@ -107,7 +107,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg font-semibold text-xs tracking-wide ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-2 rounded-lg font-semibold text-sm ${isDark ? 'text-gray-200' : 'text-black'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
