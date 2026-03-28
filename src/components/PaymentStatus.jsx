@@ -74,15 +74,15 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
           <Icon className={`${config.iconColor} w-20 h-20`} />
         </motion.div>
 
-        <h1 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>
+        <h1 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-neutral-100' : 'text-black'} mb-4`}>
           {config.title}
         </h1>
 
-        <p className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-700'} mb-4`}>
+        <p className={`text-lg ${isDark ? 'text-neutral-300' : 'text-gray-700'} mb-4`}>
           {config.message}
         </p>
 
-        <p className={`text-base ${isDark ? 'text-gray-400' : 'text-gray-600'} mb-8`}>
+        <p className={`text-base ${isDark ? 'text-neutral-400' : 'text-gray-600'} mb-8`}>
           {config.submessage}
         </p>
 
@@ -91,7 +91,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setCurrentSection('home')}
-            className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors ${isDark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'}`}
+            className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors ${isDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-gray-800'}`}
           >
             {backHomeText}
           </motion.button>
@@ -102,7 +102,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
               whileTap={{ scale: 0.95 }}
               onClick={() => setCurrentSection('que-vendo')}
               className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors text-white ${
-                isDark ? 'bg-gray-700 hover:bg-gray-800' : 'bg-purple-600 hover:bg-purple-700'
+                isDark ? 'bg-neutral-700 hover:bg-neutral-800' : 'bg-purple-600 hover:bg-purple-700'
               }`}
             >
               {viewProductsText}

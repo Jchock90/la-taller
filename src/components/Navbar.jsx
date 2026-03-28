@@ -55,12 +55,12 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
               key={item.id}
               onClick={() => handleNavClick(item.id)}
               className={`group relative text-sm tracking-wide uppercase font-medium cursor-pointer pb-0.5 ${
-                isDark ? 'text-gray-200' : 'text-black'
+                isDark ? 'text-neutral-200' : 'text-black'
               }`}
             >
               {t(`nav.${item.id.replace(/-/g, '')}`)}
               <span className={`absolute left-0 bottom-0 h-[1.5px] transition-all duration-300 ${
-                isDark ? 'bg-gray-200' : 'bg-black'
+                isDark ? 'bg-neutral-200' : 'bg-black'
               } ${
                 currentSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
               }`} />
@@ -73,14 +73,14 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
             className={isUserAuthenticated
-              ? `p-2 rounded-lg flex items-center justify-center transition-colors ${isDark ? 'text-gray-200' : 'text-black'}`
-              : `p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`
+              ? `p-2 rounded-lg flex items-center justify-center transition-colors ${isDark ? 'text-neutral-200' : 'text-black'}`
+              : `p-2 rounded-lg ${isDark ? 'text-neutral-200' : 'text-black'}`
             }
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold uppercase leading-none ${isDark ? 'bg-gray-200 text-neutral-900' : 'bg-black text-purple-300'}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold uppercase leading-none ${isDark ? 'bg-neutral-200 text-neutral-900' : 'bg-black text-purple-300'}`}>
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
@@ -90,7 +90,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-gray-200' : 'text-black') : (isDark ? 'text-gray-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
+            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-neutral-200' : 'text-black') : (isDark ? 'text-neutral-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
             aria-label="Toggle Spotify player"
             title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
           >
@@ -99,7 +99,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-2 rounded-lg ${isDark ? 'text-neutral-200' : 'text-black'}`}
             aria-label="Toggle theme"
           >
             {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
@@ -107,13 +107,13 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg font-semibold text-sm ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`p-2 rounded-lg font-semibold text-sm ${isDark ? 'text-neutral-200' : 'text-black'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
           <button 
-            className={`md:hidden p-2 ${isDark ? 'text-gray-200' : 'text-black'}`}
+            className={`md:hidden p-2 ${isDark ? 'text-neutral-200' : 'text-black'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
@@ -129,7 +129,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
           }}
           transition={{ duration: 0.2 }}
           className={`absolute right-4 top-[calc(100%+32px)] z-[60] w-[320px] max-w-[90vw] rounded-xl shadow-xl border overflow-hidden ${
-            isDark ? 'bg-black border-gray-800' : 'bg-white border-gray-200'
+            isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-200'
           }`}
           style={{ visibility: spotifyOpen ? 'visible' : 'hidden' }}
         >
@@ -163,12 +163,12 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   className={`group relative text-base tracking-wide uppercase cursor-pointer py-3 px-4 inline-block w-fit ${
-                    isDark ? 'text-gray-100' : 'text-black'
+                    isDark ? 'text-neutral-100' : 'text-black'
                   }`}
                 >
                   {t(`nav.${item.id.replace(/-/g, '')}`)}
                   <span className={`absolute left-4 bottom-1 h-[1.5px] transition-all duration-300 ${
-                    isDark ? 'bg-gray-100' : 'bg-black'
+                    isDark ? 'bg-neutral-100' : 'bg-black'
                   } ${
                     currentSection === item.id ? 'w-[calc(100%-2rem)]' : 'w-0 group-hover:w-[calc(100%-2rem)]'
                   }`} />

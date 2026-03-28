@@ -15,6 +15,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [successMsg, setSuccessMsg] = useState(false);
   const [needsVerification, setNeedsVerification] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState('');
@@ -89,12 +90,16 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
-    if (regPassword !== regPassword2) {
-      setError(t_passNoMatch);
-      return;
-    }
+    setFieldErrors({});
+    const errors = {};
     if (regPassword.length < 8 || !/[A-Z]/.test(regPassword) || !/[0-9]/.test(regPassword)) {
-      setError(t_passWeak);
+      errors.password = t_passWeak;
+    }
+    if (regPassword !== regPassword2) {
+      errors.password2 = t_passNoMatch;
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
     setLoading(true);
@@ -287,7 +292,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
           {['login', 'register'].map(t => (
             <button
               key={t}
-              onClick={() => { setTab(t); setError(''); }}
+              onClick={() => { setTab(t); setError(''); setFieldErrors({}); }}
               className={`flex-1 py-3.5 text-sm font-semibold transition-colors ${
                 tab === t
                   ? `${text} border-b-2 border-black dark:border-white`
@@ -453,12 +458,15 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         onCopy={e => e.preventDefault()}
                         onPaste={e => e.preventDefault()}
                         onCut={e => e.preventDefault()}
-                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password ? 'border-red-500' : ''}`}
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                         {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                       </button>
                     </div>
+                    {fieldErrors.password && (
+                      <p className="mt-1 text-xs text-red-500">{fieldErrors.password}</p>
+                    )}
                   </div>
                   <div>
                     <label className={`text-xs font-medium ${subtext} mb-1 block`}>{t_confirmPass}</label>
@@ -473,12 +481,15 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         onCopy={e => e.preventDefault()}
                         onPaste={e => e.preventDefault()}
                         onCut={e => e.preventDefault()}
-                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password2 ? 'border-red-500' : ''}`}
                       />
-                      {regPassword2 && regPassword === regPassword2 && (
+                      {regPassword2 && regPassword === regPassword2 && !fieldErrors.password2 && (
                         <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
                       )}
                     </div>
+                    {fieldErrors.password2 && (
+                      <p className="mt-1 text-xs text-red-500">{fieldErrors.password2}</p>
+                    )}
                   </div>
                   <button
                     type="submit"

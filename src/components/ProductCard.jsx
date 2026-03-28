@@ -27,7 +27,7 @@ const ProductCard = ({ item, index, onViewDetail }) => {
       />
     </div>
     <div className="p-6">
-      <h4 className={`text-xl leading-7 font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2 line-clamp-2 min-h-[3.5rem]`} title={item.name}>{item.name}</h4>
+      <h4 className={`text-xl leading-7 font-medium ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2 line-clamp-2 min-h-[3.5rem]`} title={item.name}>{item.name}</h4>
       <p className={`font-semibold mb-4 ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>{item.price}</p>
       <motion.button
         whileHover={{ scale: 1.05 }}

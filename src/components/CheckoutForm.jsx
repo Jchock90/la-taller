@@ -106,44 +106,44 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
 
   return createPortal(
     <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm`}>
-      <form onSubmit={handleSubmit} className={`${isDark ? 'bg-gray-950' : 'bg-white'} p-4 md:p-8 shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto win-frame`}>
-        <button type="button" onClick={onClose} className={`absolute top-2 right-2 ${isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-500 hover:text-black'} text-2xl`}>&times;</button>
-        <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>{orderSummaryText}</h2>
+      <form onSubmit={handleSubmit} className={`${isDark ? 'bg-neutral-950' : 'bg-white'} p-4 md:p-8 shadow-lg w-full max-w-lg relative max-h-[90vh] overflow-y-auto win-frame`}>
+        <button type="button" onClick={onClose} className={`absolute top-2 right-2 ${isDark ? 'text-neutral-600 hover:text-neutral-100' : 'text-gray-500 hover:text-black'} text-2xl`}>&times;</button>
+        <h2 className={`text-xl font-bold mb-4 ${isDark ? 'text-neutral-100' : ''}`}>{orderSummaryText}</h2>
 
-        <div className={`mb-6 border p-3 ${isDark ? 'bg-gray-900 border-gray-800' : 'bg-gray-50'}`}>
+        <div className={`mb-6 border p-3 ${isDark ? 'bg-neutral-900 border-neutral-800' : 'bg-gray-50'}`}>
           {cart.map(item => (
-            <div key={item._id} className={`flex justify-between text-sm py-1 ${isDark ? 'text-gray-400' : ''}`}>
+            <div key={item._id} className={`flex justify-between text-sm py-1 ${isDark ? 'text-neutral-400' : ''}`}>
               <span>{item.name} x{item.quantity}</span>
               <span className="font-medium">${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</span>
             </div>
           ))}
-          <div className={`flex justify-between font-bold text-base mt-2 pt-2 ${isDark ? 'border-gray-800 text-gray-100' : 'border-gray-200'} border-t`}>
+          <div className={`flex justify-between font-bold text-base mt-2 pt-2 ${isDark ? 'border-neutral-800 text-neutral-100' : 'border-gray-200'} border-t`}>
             <span>{totalLabel}</span>
             <span>${cartTotal.toLocaleString('es-AR')}</span>
           </div>
         </div>
 
-        <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-gray-100' : ''}`}>{shippingText}</h3>
+        <h3 className={`text-lg font-semibold mb-3 ${isDark ? 'text-neutral-100' : ''}`}>{shippingText}</h3>
         <div className="grid grid-cols-1 gap-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="nombre" value={formData.nombre} onChange={handleInputChange} required placeholder={nameText} className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
+            <input name="apellido" value={formData.apellido} onChange={handleInputChange} required placeholder={lastNameText} className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="email" value={formData.email} onChange={handleInputChange} required type="email" placeholder="Email" className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
+            <input name="telefono" value={formData.telefono} onChange={handleInputChange} required placeholder={phoneText} className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input name="direccion" value={formData.direccion} onChange={handleInputChange} required placeholder={addressText} className={`md:col-span-2 border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <input name="pisoDepto" value={formData.pisoDepto} onChange={handleInputChange} placeholder={floorText} className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
+            <input name="direccion" value={formData.direccion} onChange={handleInputChange} required placeholder={addressText} className={`md:col-span-2 border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
+            <input name="pisoDepto" value={formData.pisoDepto} onChange={handleInputChange} placeholder={floorText} className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} />
-            <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`}>
+            <input name="codigoPostal" value={formData.codigoPostal} onChange={handleInputChange} required placeholder={zipText} className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} />
+            <select name="provincia" value={formData.provincia} onChange={handleInputChange} required className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`}>
               <option value="">{selectProvinceText}</option>
               {provincias.map(prov => <option key={prov.id} value={prov.nombre}>{prov.nombre}</option>)}
             </select>
-            <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-3 text-base ${isDark ? 'bg-gray-900 border-gray-800 text-gray-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
+            <select name="ciudad" value={formData.ciudad} onChange={handleInputChange} required className={`border p-3 text-base ${isDark ? 'bg-neutral-900 border-neutral-800 text-neutral-100' : ''}`} disabled={!formData.provincia || loadingCiudades}>
               <option value="">{loadingCiudades ? loadingCitiesText : selectCityText}</option>
               {ciudades.map(ciudad => <option key={ciudad.id} value={ciudad.nombre}>{ciudad.nombre}</option>)}
             </select>

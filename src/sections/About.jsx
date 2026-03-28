@@ -49,7 +49,7 @@ const About = () => {
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
         transition={{ type: 'spring', stiffness: 60, damping: 14 }}
         viewport={{ once: true }}
-        className={`text-2xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-8 text-center font-italic`}
+        className={`text-2xl md:text-4xl font-bold ${isDark ? 'text-neutral-100' : 'text-black'} mb-8 text-center font-italic`}
       >
         {t('about.originTitle')}
       </motion.h2>
@@ -62,7 +62,7 @@ const About = () => {
           viewport={{ once: true, amount: 0.2 }}
           className="mb-20"
         >
-          <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-6 text-center pb-2`}>
+          <h3 className={`text-2xl font-semibold ${isDark ? 'text-neutral-100' : 'text-black'} mb-6 text-center pb-2`}>
             {t('about.familyQuote')}
           </h3>
 
@@ -78,7 +78,7 @@ const About = () => {
               />
             </div>
 
-            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>
               <p className="text-base md:text-lg leading-relaxed">
                 {t('about.originText1')}
               </p>
@@ -87,7 +87,7 @@ const About = () => {
                 {t('about.originText2')}
               </p>
 
-              <blockquote className={`italic border-l-4 ${isDark ? 'border-gray-500 text-gray-300' : 'border-black text-black'} pl-4 py-2`}>
+              <blockquote className={`italic border-l-4 ${isDark ? 'border-neutral-500 text-neutral-300' : 'border-black text-black'} pl-4 py-2`}>
                 {t('about.craftQuote')}
               </blockquote>
             </div>
@@ -101,7 +101,7 @@ const About = () => {
           viewport={{ once: true, amount: 0.2 }}
           className="mb-16"
         >
-          <h3 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-12 text-center font-italic`}>
+          <h3 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-neutral-100' : 'text-black'} mb-12 text-center font-italic`}>
             {t('about.ownThreadTitle')}
           </h3>
 
@@ -117,7 +117,7 @@ const About = () => {
               />
             </div>
 
-            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className={`md:w-1/2 space-y-4 ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>
               <p className="text-base md:text-lg leading-relaxed">
                 {t('about.threadText1')}
               </p>
@@ -136,7 +136,7 @@ const About = () => {
           viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto mt-12"
         >
-          <blockquote className={`text-xl italic ${isDark ? 'text-gray-300' : 'text-black'}`}>
+          <blockquote className={`text-xl italic ${isDark ? 'text-neutral-300' : 'text-black'}`}>
             {t('about.closingQuote')}
           </blockquote>
         </motion.div>
@@ -157,7 +157,7 @@ const About = () => {
                 <button 
                   onClick={closeImage}
                   className={`absolute top-4 right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
-                    isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                    isDark ? 'hover:text-neutral-300' : 'hover:text-purple-300'
                   }`}
                   aria-label="Cerrar imagen"
                 >
@@ -172,7 +172,7 @@ const About = () => {
                         prevImage();
                       }}
                       className={`absolute left-2 md:left-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
-                        isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                        isDark ? 'hover:text-neutral-300' : 'hover:text-purple-300'
                       }`}
                       aria-label="Imagen anterior"
                     >
@@ -185,7 +185,7 @@ const About = () => {
                         nextImage();
                       }}
                       className={`absolute right-2 md:right-4 text-white text-2xl md:text-4xl z-50 transition-colors p-2 ${
-                        isDark ? 'hover:text-gray-300' : 'hover:text-purple-300'
+                        isDark ? 'hover:text-neutral-300' : 'hover:text-purple-300'
                       }`}
                       aria-label="Siguiente imagen"
                     >

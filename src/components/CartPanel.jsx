@@ -42,31 +42,31 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
             transition={{ type: 'tween', duration: 0.3 }}
             className={`relative w-full max-w-md ${isDark ? 'bg-black' : 'bg-white'} h-full shadow-xl flex flex-col win-frame`}
           >
-            <div className={`flex items-center justify-between p-4 ${isDark ? 'border-gray-800 text-gray-100' : 'border-gray-200'} border-b`}>
+            <div className={`flex items-center justify-between p-4 ${isDark ? 'border-neutral-800 text-neutral-100' : 'border-gray-200'} border-b`}>
               <h2 className="text-xl font-bold">{yourCartText} ({cartCount})</h2>
-              <button onClick={onClose} className={isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-500 hover:text-black'}><FiX size={24} /></button>
+              <button onClick={onClose} className={isDark ? 'text-neutral-600 hover:text-neutral-100' : 'text-gray-500 hover:text-black'}><FiX size={24} /></button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {cart.length === 0 ? (
-                <p className={`${isDark ? 'text-gray-500' : 'text-gray-500'} text-center mt-10`}>{emptyCartText}</p>
+                <p className={`${isDark ? 'text-neutral-500' : 'text-gray-500'} text-center mt-10`}>{emptyCartText}</p>
               ) : (
                 cart.map((item, idx) => (
-                  <div key={`${item._id}-${idx}`} className={`flex items-center gap-4 pb-4 ${isDark ? 'border-gray-800' : 'border-gray-200'} border-b`}>
+                  <div key={`${item._id}-${idx}`} className={`flex items-center gap-4 pb-4 ${isDark ? 'border-neutral-800' : 'border-gray-200'} border-b`}>
                     <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover" />
                     <div className="flex-1">
-                      <h4 className={`font-medium text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{item.name}</h4>
-                      {item.selectedSize && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{sizeText} {item.selectedSize}</p>}
-                      {item.selectedColor && <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>{colorText} {item.selectedColor}</p>}
+                      <h4 className={`font-medium text-sm ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{item.name}</h4>
+                      {item.selectedSize && <p className={`text-xs ${isDark ? 'text-neutral-500' : 'text-gray-500'}`}>{sizeText} {item.selectedSize}</p>}
+                      {item.selectedColor && <p className={`text-xs ${isDark ? 'text-neutral-500' : 'text-gray-500'}`}>{colorText} {item.selectedColor}</p>}
                       <p className={`text-sm font-semibold ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>{item.price}</p>
                       <div className="flex items-center gap-2 mt-1">
-                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiMinus size={16} /></button>
-                        <span className={`text-sm font-medium w-6 text-center ${isDark ? 'text-gray-100' : ''}`}>{item.quantity}</span>
-                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-gray-700 hover:bg-gray-800' : 'border hover:bg-gray-100'}`}><FiPlus size={16} /></button>
+                        <button onClick={() => onUpdateQuantity(idx, -1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border hover:bg-gray-100'}`}><FiMinus size={16} /></button>
+                        <span className={`text-sm font-medium w-6 text-center ${isDark ? 'text-neutral-100' : ''}`}>{item.quantity}</span>
+                        <button onClick={() => onUpdateQuantity(idx, 1)} className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center ${isDark ? 'border-neutral-700 hover:bg-neutral-800' : 'border hover:bg-gray-100'}`}><FiPlus size={16} /></button>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className={`text-sm font-semibold ${isDark ? 'text-gray-100' : ''}`}>${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</p>
+                      <p className={`text-sm font-semibold ${isDark ? 'text-neutral-100' : ''}`}>${(parsePrice(item.price) * item.quantity).toLocaleString('es-AR')}</p>
                       <button onClick={() => onRemove(idx)} className="text-red-500 hover:text-red-700 mt-1"><FiTrash2 size={16} /></button>
                     </div>
                   </div>
@@ -75,8 +75,8 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
             </div>
 
             {cart.length > 0 && (
-              <div className={`p-4 ${isDark ? 'border-gray-800' : 'border-gray-200'} border-t`}>
-                <div className={`flex justify-between text-lg font-bold mb-4 ${isDark ? 'text-gray-100' : ''}`}>
+              <div className={`p-4 ${isDark ? 'border-neutral-800' : 'border-gray-200'} border-t`}>
+                <div className={`flex justify-between text-lg font-bold mb-4 ${isDark ? 'text-neutral-100' : ''}`}>
                   <span>{totalText}</span>
                   <span>${cartTotal.toLocaleString('es-AR')}</span>
                 </div>
@@ -90,7 +90,7 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                 </button>
                 <div className="flex items-center justify-center gap-2 mt-3">
                   <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
-                  <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· {safePayText}</span>
+                  <span className={`text-xs font-medium ${isDark ? 'text-neutral-400' : 'text-gray-500'}`}>· {safePayText}</span>
                 </div>
               </div>
             )}

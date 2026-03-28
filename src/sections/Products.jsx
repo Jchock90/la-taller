@@ -255,14 +255,14 @@ const Products = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{titleText}</h2>
-          <p className={`text-lg ${isDark ? 'text-gray-500' : 'text-gray-600'} max-w-2xl mx-auto`}>
+          <h2 className={`text-3xl md:text-4xl font-bold ${isDark ? 'text-neutral-100' : 'text-black'} mb-4`}>{titleText}</h2>
+          <p className={`text-lg ${isDark ? 'text-neutral-500' : 'text-gray-600'} max-w-2xl mx-auto`}>
             {subtitleText}
           </p>
         </motion.div>
 
         {loadingProducts ? (
-          <div className={`text-center py-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+          <div className={`text-center py-20 ${isDark ? 'text-neutral-500' : 'text-gray-400'}`}>
             <svg className="animate-spin h-8 w-8 mx-auto mb-3" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
@@ -272,9 +272,9 @@ const Products = () => {
         ) : (
         <>
         {/* Filter bar */}
-        <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900 border border-neutral-800' : 'bg-purple-300 border border-purple-400'}`}>
+        <div className={`mb-10 p-4 ${isDark ? 'bg-neutral-900/50 border border-neutral-800' : 'bg-gray-50 border border-gray-200'}`}>
           <div className="flex items-center justify-between mb-3">
-            <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+            <span className={`flex items-center gap-2 text-sm font-medium ${isDark ? 'text-neutral-300' : 'text-gray-700'}`}>
               <FiFilter size={16} />
               {filterLabel}
             </span>
@@ -292,7 +292,7 @@ const Products = () => {
             <select
               value={filters.categoria}
               onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
             >
               <option value="">{allCategories}</option>
               {filterOptions.categorias.map(c => <TranslatedOption key={c} value={c} />)}
@@ -300,7 +300,7 @@ const Products = () => {
             <select
               value={filters.coleccion}
               onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
             >
               <option value="">{allCollections}</option>
               {filterOptions.colecciones.map(c => <TranslatedOption key={c} value={c} />)}
@@ -308,7 +308,7 @@ const Products = () => {
             <select
               value={filters.talle}
               onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
             >
               <option value="">{allSizes}</option>
               {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
@@ -316,7 +316,7 @@ const Products = () => {
             <select
               value={filters.color}
               onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
             >
               <option value="">{allColors}</option>
               {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
@@ -365,7 +365,7 @@ const Products = () => {
               ))}
             </div>
           ) : (
-            <div className={`text-center py-16 mb-20 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+            <div className={`text-center py-16 mb-20 ${isDark ? 'text-neutral-500' : 'text-gray-400'}`}>
               {noResultsText}
             </div>
           )
@@ -381,10 +381,10 @@ const Products = () => {
             className="mb-20"
           >
             <div className="mb-8">
-              <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'}`}>
+              <h3 className={`text-2xl font-semibold ${isDark ? 'text-neutral-100' : 'text-black'}`}>
                 <TranslatedText text={collection.name} />
               </h3>
-              <p className={isDark ? 'text-gray-500' : 'text-gray-600'}>
+              <p className={isDark ? 'text-neutral-500' : 'text-gray-600'}>
                 <TranslatedText text={collection.description} />
               </p>
             </div>
@@ -406,8 +406,8 @@ const Products = () => {
           viewport={{ once: true }}
           className={`${isDark ? 'bg-black' : 'bg-white'} p-8 text-center`}
         >
-          <h3 className={`text-2xl font-semibold ${isDark ? 'text-gray-100' : 'text-black'} mb-4`}>{customTitle}</h3>
-          <p className={`${isDark ? 'text-gray-400' : 'text-gray-700'} mb-6 max-w-2xl mx-auto`}>
+          <h3 className={`text-2xl font-semibold ${isDark ? 'text-neutral-100' : 'text-black'} mb-4`}>{customTitle}</h3>
+          <p className={`${isDark ? 'text-neutral-400' : 'text-gray-700'} mb-6 max-w-2xl mx-auto`}>
             {customDesc}
           </p>
           <motion.a

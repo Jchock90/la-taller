@@ -118,25 +118,25 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
             <div className={`w-full md:w-1/2 p-4 md:p-8 flex-1 min-h-0 overflow-y-auto ${isDark ? 'bg-neutral-900' : ''}`}>
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h2 className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{product.name}</h2>
-                  <p className={isDark ? 'text-xl font-semibold mt-1 text-gray-400' : 'text-xl text-purple-600 font-semibold mt-1'}>{product.price}</p>
+                  <h2 className={`text-2xl font-bold ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{product.name}</h2>
+                  <p className={isDark ? 'text-xl font-semibold mt-1 text-neutral-400' : 'text-xl text-purple-600 font-semibold mt-1'}>{product.price}</p>
                 </div>
-                <button onClick={onClose} className={isDark ? 'text-gray-600 hover:text-gray-100' : 'text-gray-400 hover:text-black'}><FiX size={24} /></button>
+                <button onClick={onClose} className={isDark ? 'text-neutral-600 hover:text-neutral-100' : 'text-gray-400 hover:text-black'}><FiX size={24} /></button>
               </div>
 
               {details && (
-                <div className={`space-y-5 text-sm ${isDark ? 'text-gray-400' : ''}`}>
+                <div className={`space-y-5 text-sm ${isDark ? 'text-neutral-400' : ''}`}>
 
                   {/* Per-unit size/color selectors */}
                   {(hasSizes || hasColors) && selections.map((sel, idx) => (
                     <div key={idx} className={`space-y-4 ${quantity > 1 ? `pt-4 ${idx > 0 ? `border-t ${isDark ? 'border-neutral-700' : 'border-gray-200'}` : ''}` : ''}`}>
                       {quantity > 1 && (
-                        <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{unitLabel} {idx + 1}</h3>
+                        <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{unitLabel} {idx + 1}</h3>
                       )}
 
                       {hasSizes && (
                         <div>
-                          <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>
+                          <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2`}>
                             {sizesAvailableText} *
                           </h3>
                           <div className="flex gap-2 flex-wrap">
@@ -146,7 +146,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                                 onClick={() => updateSelection(idx, 'size', t)}
                                 className={`border px-4 py-2 md:px-3 md:py-1 transition-colors ${
                                   sel.size === t
-                                    ? isDark ? 'border-gray-600 bg-gray-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
+                                    ? isDark ? 'border-neutral-600 bg-neutral-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
                                     : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
                                 }`}
                               >
@@ -159,7 +159,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
 
                       {hasColors && (
                         <div>
-                          <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>
+                          <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2`}>
                             {colorsText} *
                           </h3>
                           <div className="flex gap-2 flex-wrap">
@@ -169,7 +169,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                                 onClick={() => updateSelection(idx, 'color', c)}
                                 className={`px-4 py-2 md:px-3 md:py-1 transition-colors ${
                                   sel.color === c
-                                    ? isDark ? 'bg-gray-600 text-white' : 'bg-purple-600 text-white'
+                                    ? isDark ? 'bg-neutral-600 text-white' : 'bg-purple-600 text-white'
                                     : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                               >
@@ -183,18 +183,18 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                   ))}
 
                   <div>
-                    <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{compositionText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.composicion} /></p>
+                    <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2`}>{compositionText}</h3>
+                    <p className={isDark ? 'text-neutral-500' : 'text-gray-600'}><TranslatedText text={details.composicion} /></p>
                   </div>
 
                   <div>
-                    <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{fabricationText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.fabricacion} /></p>
+                    <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2`}>{fabricationText}</h3>
+                    <p className={isDark ? 'text-neutral-500' : 'text-gray-600'}><TranslatedText text={details.fabricacion} /></p>
                   </div>
 
                   <div>
-                    <h3 className={`font-semibold ${isDark ? 'text-gray-100' : 'text-gray-900'} mb-2`}>{careText}</h3>
-                    <p className={isDark ? 'text-gray-500' : 'text-gray-600'}><TranslatedText text={details.cuidados} /></p>
+                    <h3 className={`font-semibold ${isDark ? 'text-neutral-100' : 'text-gray-900'} mb-2`}>{careText}</h3>
+                    <p className={isDark ? 'text-neutral-500' : 'text-gray-600'}><TranslatedText text={details.cuidados} /></p>
                   </div>
                 </div>
               )}
@@ -216,7 +216,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
 
               {/* Quantity selector */}
               <div className="mt-5 flex items-center gap-4">
-                <h3 className={`font-semibold text-sm ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{quantityLabel}</h3>
+                <h3 className={`font-semibold text-sm ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{quantityLabel}</h3>
                 <div className={`flex items-center border ${isDark ? 'border-neutral-700' : 'border-gray-300'}`}>
                   <button
                     type="button"
@@ -225,7 +225,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                   >
                     <FiMinus size={14} />
                   </button>
-                  <span className={`px-4 py-2 text-sm font-medium min-w-[2.5rem] text-center ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>{quantity}</span>
+                  <span className={`px-4 py-2 text-sm font-medium min-w-[2.5rem] text-center ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{quantity}</span>
                   <button
                     type="button"
                     onClick={() => setQuantity(q => q + 1)}
@@ -249,7 +249,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               </motion.button>
               <div className="flex items-center justify-center gap-2 mt-4 mb-2">
                 <img src="/img/mercadopago.svg" alt="Mercado Pago" className="h-9" />
-                <span className={`text-xs font-medium ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>· {safePayText}</span>
+                <span className={`text-xs font-medium ${isDark ? 'text-neutral-400' : 'text-gray-500'}`}>· {safePayText}</span>
               </div>
             </div>
           </motion.div>
