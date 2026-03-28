@@ -22,11 +22,11 @@ const TickerBar = () => {
   }, []);
 
   return (
-    <div className="w-full flex items-center overflow-hidden bg-black win-ridge" style={{ minHeight: 0, height: '12px' }}>
+    <div className="w-full flex items-center overflow-hidden bg-black win-ridge" style={{ minHeight: 0, height: '18px' }}>
       <div className="relative w-full">
         <span
           ref={tickerRef}
-          className={`block whitespace-nowrap text-[7px] font-medium ticker-text animate-ticker leading-none ${
+          className={`block whitespace-nowrap text-[9px] font-medium ticker-text animate-ticker leading-none ${
             isDark ? 'text-gray-300' : 'text-neutral-300'
           }`}
         >
