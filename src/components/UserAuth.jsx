@@ -36,7 +36,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const [regNombre, setRegNombre] = useState('');
   const [regApellido, setRegApellido] = useState('');
   const [regEmail, setRegEmail] = useState('');
-  const [regEmail2, setRegEmail2] = useState('');
   const [regPassword, setRegPassword] = useState('');
   const [regPassword2, setRegPassword2] = useState('');
 
@@ -50,7 +49,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { translatedText: t_name } = useAutoTranslate('Nombre');
   const { translatedText: t_lastname } = useAutoTranslate('Apellido');
   const { translatedText: t_confirmPass } = useAutoTranslate('Confirmar contraseña');
-  const { translatedText: t_confirmEmail } = useAutoTranslate('Confirmar email');
   const { translatedText: t_or } = useAutoTranslate('o');
   const { translatedText: t_google } = useAutoTranslate('Continuar con Google');
   const { translatedText: t_noAccount } = useAutoTranslate('¿No tenés cuenta?');
@@ -60,7 +58,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { translatedText: t_benefit2 } = useAutoTranslate('Historial completo de todas tus compras');
   const { translatedText: t_benefit3 } = useAutoTranslate('Proceso de compra más rápido');
   const { translatedText: t_passNoMatch } = useAutoTranslate('Las contraseñas no coinciden');
-  const { translatedText: t_emailNoMatch } = useAutoTranslate('Los emails no coinciden');
   const { translatedText: t_successTitle } = useAutoTranslate('¡Cuenta creada!');
   const { translatedText: t_successMsg } = useAutoTranslate('Te enviamos un email para verificar tu cuenta. Revisá tu bandeja de entrada.');
   const { translatedText: t_processing } = useAutoTranslate('Procesando...');
@@ -92,10 +89,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
-    if (regEmail !== regEmail2) {
-      setError(t_emailNoMatch);
-      return;
-    }
     if (regPassword !== regPassword2) {
       setError(t_passNoMatch);
       return;
@@ -445,23 +438,6 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
-                    </div>
-                  </div>
-                  <div>
-                    <label className={`text-xs font-medium ${subtext} mb-1 block`}>{t_confirmEmail}</label>
-                    <div className="relative">
-                      <FiMail className={`absolute left-3 top-1/2 -translate-y-1/2 ${subtext}`} />
-                      <input
-                        type="email"
-                        required
-                        value={regEmail2}
-                        onChange={e => setRegEmail2(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
-                        placeholder="tu@email.com"
-                      />
-                      {regEmail2 && regEmail === regEmail2 && (
-                        <FiCheck className={`absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400`} size={16} />
-                      )}
                     </div>
                   </div>
                   <div>
