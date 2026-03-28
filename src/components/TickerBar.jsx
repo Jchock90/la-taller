@@ -22,7 +22,7 @@ const TickerBar = () => {
   }, []);
 
   return (
-    <div className="w-full py-0.5 flex items-center overflow-hidden bg-black win-ridge" style={{ minHeight: 0 }}>
+    <div className="w-full py-1.5 flex items-center overflow-hidden bg-black win-ridge" style={{ minHeight: 0 }}>
       <div className="relative w-full">
         <span
           ref={tickerRef}
