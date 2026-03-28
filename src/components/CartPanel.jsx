@@ -82,7 +82,7 @@ const CartPanel = ({ cart, cartCount, cartTotal, showCart, onClose, onUpdateQuan
                 </div>
                 <button
                   onClick={onCheckout}
-                  className={`w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 ${
+                  className={`w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 win-btn ${
                     isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
                   }`}
                 >

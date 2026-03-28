@@ -159,7 +159,7 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
             {errorMsg}
           </div>
         )}
-        <button type="submit" className={`mt-6 w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 ${
+        <button type="submit" className={`mt-6 w-full py-3 tracking-widest uppercase text-xs border cursor-pointer transition-colors duration-300 win-btn ${
           isDark ? 'border-neutral-600 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-100'
         } disabled:opacity-50 disabled:cursor-not-allowed`} disabled={loading}>
           {loading ? processingText : goToPayText}
