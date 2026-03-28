@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
-import { FiTrash2, FiSearch, FiMail, FiUsers, FiRefreshCw, FiChevronDown, FiChevronUp, FiShoppingBag, FiPackage, FiTruck, FiExternalLink, FiSend } from 'react-icons/fi';
+import { FiTrash2, FiSearch, FiMail, FiUsers, FiRefreshCw, FiChevronDown, FiChevronUp, FiShoppingBag, FiPackage, FiTruck, FiExternalLink, FiSend, FiUser, FiPhone, FiMapPin } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import { userApi } from '../services/userApi';
 import { adminApi } from '../services/api';
@@ -28,6 +28,7 @@ export default function UsersPanel() {
   const [search, setSearch] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [expanded, setExpanded] = useState(null);
+  const [profileExpanded, setProfileExpanded] = useState(null);
   const [editingTracking, setEditingTracking] = useState(null);
   const [trackingUrl, setTrackingUrl] = useState('');
   const [sendingTracking, setSendingTracking] = useState(false);
@@ -143,6 +144,16 @@ export default function UsersPanel() {
                 </div>
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setProfileExpanded(profileExpanded === user._id ? null : user._id)}
+                      className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full transition-colors ${
+                        profileExpanded === user._id
+                          ? 'bg-violet-900/50 text-violet-300'
+                          : 'bg-violet-900/20 text-violet-400 hover:bg-violet-900/40'
+                      }`}
+                    >
+                      <FiUser size={11} /> Datos
+                    </button>
                     {stats.totalPurchases > 0 ? (
                       <button
                         onClick={() => setExpanded(isExpanded ? null : user._id)}
@@ -171,6 +182,29 @@ export default function UsersPanel() {
                     </button>
                   )}
                 </div>
+                {/* Expanded profile data */}
+                {profileExpanded === user._id && (
+                  <div className="mt-3 pt-3 border-t border-neutral-800">
+                    <p className="text-neutral-500 uppercase font-semibold text-[10px] mb-2">Datos personales</p>
+                    <div className="bg-neutral-800/40 rounded-lg p-3 space-y-1.5 text-xs text-neutral-400">
+                      {user.telefono ? (
+                        <p className="flex items-center gap-1.5"><FiPhone size={11} className="text-neutral-600" /> {user.telefono}</p>
+                      ) : (
+                        <p className="flex items-center gap-1.5"><FiPhone size={11} className="text-neutral-700" /> <span className="text-neutral-600 italic">Sin teléfono</span></p>
+                      )}
+                      {user.direccion ? (
+                        <p className="flex items-start gap-1.5"><FiMapPin size={11} className="text-neutral-600 mt-0.5 shrink-0" /> {user.direccion}{user.pisoDepto ? ` (${user.pisoDepto})` : ''}</p>
+                      ) : (
+                        <p className="flex items-center gap-1.5"><FiMapPin size={11} className="text-neutral-700" /> <span className="text-neutral-600 italic">Sin dirección</span></p>
+                      )}
+                      {(user.ciudad || user.provincia) ? (
+                        <p className="pl-5">{[user.ciudad, user.provincia].filter(Boolean).join(', ')}{user.codigoPostal ? ` (CP: ${user.codigoPostal})` : ''}</p>
+                      ) : (
+                        <p className="pl-5 text-neutral-600 italic">Sin ubicación</p>
+                      )}
+                    </div>
+                  </div>
+                )}
                 {/* Expanded purchases */}
                 {isExpanded && user.purchases?.length > 0 && (
                   <div className="mt-3 pt-3 border-t border-neutral-800 space-y-3 max-h-80 overflow-y-auto">
@@ -297,32 +331,75 @@ export default function UsersPanel() {
                         {new Date(user.createdAt).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                       </td>
                       <td className="px-4 py-3 text-right">
-                        {confirmDelete === user._id ? (
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="text-xs text-red-400">¿Eliminar?</span>
-                            <button
-                              onClick={() => handleDelete(user._id)}
-                              className="text-xs bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500"
-                            >
-                              Sí
-                            </button>
-                            <button
-                              onClick={() => setConfirmDelete(null)}
-                              className="text-xs bg-neutral-700 text-neutral-300 px-2 py-1 rounded hover:bg-neutral-600"
-                            >
-                              No
-                            </button>
-                          </div>
-                        ) : (
+                        <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => setConfirmDelete(user._id)}
-                            className="text-neutral-500 hover:text-red-400 transition-colors"
+                            onClick={() => setProfileExpanded(profileExpanded === user._id ? null : user._id)}
+                            className={`p-1.5 rounded transition-colors ${profileExpanded === user._id ? 'bg-violet-900/50 text-violet-300' : 'text-neutral-500 hover:text-violet-400'}`}
+                            title="Ver datos personales"
                           >
-                            <FiTrash2 size={15} />
+                            <FiUser size={14} />
                           </button>
-                        )}
+                          {confirmDelete === user._id ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-red-400">¿Eliminar?</span>
+                              <button
+                                onClick={() => handleDelete(user._id)}
+                                className="text-xs bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500"
+                              >
+                                Sí
+                              </button>
+                              <button
+                                onClick={() => setConfirmDelete(null)}
+                                className="text-xs bg-neutral-700 text-neutral-300 px-2 py-1 rounded hover:bg-neutral-600"
+                              >
+                                No
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setConfirmDelete(user._id)}
+                              className="text-neutral-500 hover:text-red-400 transition-colors"
+                            >
+                              <FiTrash2 size={15} />
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
+                    {/* Expanded profile row */}
+                    {profileExpanded === user._id && (
+                      <tr>
+                        <td colSpan={7} className="px-4 py-3 bg-violet-950/20 border-l-2 border-violet-800/50">
+                          <p className="text-neutral-500 uppercase font-semibold text-[10px] mb-2">Datos personales</p>
+                          <div className="grid grid-cols-3 gap-4 text-xs text-neutral-400">
+                            <div className="space-y-1">
+                              <p className="text-neutral-600 text-[10px] uppercase font-medium">Teléfono</p>
+                              {user.telefono ? (
+                                <p className="flex items-center gap-1.5"><FiPhone size={12} className="text-neutral-600" /> {user.telefono}</p>
+                              ) : (
+                                <p className="text-neutral-600 italic">No registrado</p>
+                              )}
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-neutral-600 text-[10px] uppercase font-medium">Dirección</p>
+                              {user.direccion ? (
+                                <p className="flex items-start gap-1.5"><FiMapPin size={12} className="text-neutral-600 mt-0.5 shrink-0" /> {user.direccion}{user.pisoDepto ? ` (${user.pisoDepto})` : ''}</p>
+                              ) : (
+                                <p className="text-neutral-600 italic">No registrada</p>
+                              )}
+                            </div>
+                            <div className="space-y-1">
+                              <p className="text-neutral-600 text-[10px] uppercase font-medium">Ubicación</p>
+                              {(user.ciudad || user.provincia) ? (
+                                <p>{[user.ciudad, user.provincia].filter(Boolean).join(', ')}{user.codigoPostal ? ` (CP: ${user.codigoPostal})` : ''}</p>
+                              ) : (
+                                <p className="text-neutral-600 italic">No registrada</p>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                     {/* Expanded purchases row */}
                     {isExpanded && user.purchases?.length > 0 && (
                       <tr>
