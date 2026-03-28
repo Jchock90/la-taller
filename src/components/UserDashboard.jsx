@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FiPackage, FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiLogOut, FiUser, FiChevronDown, FiChevronUp, FiTruck, FiExternalLink, FiMapPin, FiSave, FiEdit3 } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { useUserAuth } from '../context/UserAuthContext';
@@ -241,7 +241,6 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                 return (
                   <motion.div
                     key={purchase._id}
-                    layout
                     className={`${cardBg} overflow-hidden border ${borderColor}`}
                   >
                     <button
@@ -274,13 +273,17 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                       {isExpanded ? <FiChevronUp className={subtext} /> : <FiChevronDown className={subtext} />}
                     </button>
 
+                    <AnimatePresence initial={false}>
                     {isExpanded && (
                       <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: 'auto' }}
-                        className={`border-t ${borderColor} px-4 pb-4`}
+                        key="details"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2, ease: 'easeInOut' }}
+                        className={`border-t ${borderColor} overflow-hidden`}
                       >
-                        <div className="pt-3 space-y-2">
+                        <div className="px-4 pb-4 pt-3 space-y-2">
                           {purchase.items?.map((item, i) => (
                             <div key={i} className="flex justify-between text-sm">
                               <span className={subtext}>
@@ -317,6 +320,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
                         </div>
                       </motion.div>
                     )}
+                    </AnimatePresence>
                   </motion.div>
                 );
               })}

@@ -474,6 +474,9 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         minLength={8}
                         value={regPassword}
                         onChange={e => setRegPassword(e.target.value)}
+                        onCopy={e => e.preventDefault()}
+                        onPaste={e => e.preventDefault()}
+                        onCut={e => e.preventDefault()}
                         className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
@@ -491,6 +494,9 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         minLength={8}
                         value={regPassword2}
                         onChange={e => setRegPassword2(e.target.value)}
+                        onCopy={e => e.preventDefault()}
+                        onPaste={e => e.preventDefault()}
+                        onCut={e => e.preventDefault()}
                         className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                       {regPassword2 && regPassword === regPassword2 && (
