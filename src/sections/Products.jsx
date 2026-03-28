@@ -292,7 +292,7 @@ const Products = () => {
             <select
               value={filters.categoria}
               onChange={e => setFilters(f => ({ ...f, categoria: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allCategories}</option>
               {filterOptions.categorias.map(c => <TranslatedOption key={c} value={c} />)}
@@ -300,7 +300,7 @@ const Products = () => {
             <select
               value={filters.coleccion}
               onChange={e => setFilters(f => ({ ...f, coleccion: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allCollections}</option>
               {filterOptions.colecciones.map(c => <TranslatedOption key={c} value={c} />)}
@@ -308,7 +308,7 @@ const Products = () => {
             <select
               value={filters.talle}
               onChange={e => setFilters(f => ({ ...f, talle: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allSizes}</option>
               {filterOptions.talles.map(t => <option key={t} value={t}>{t}</option>)}
@@ -316,7 +316,7 @@ const Products = () => {
             <select
               value={filters.color}
               onChange={e => setFilters(f => ({ ...f, color: e.target.value }))}
-              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-purple-300 text-gray-800 border-purple-400'} border`}
+              className={`px-3 py-2 text-sm ${isDark ? 'bg-neutral-800 text-neutral-200 border-neutral-700' : 'bg-white text-gray-800 border-gray-300'} border`}
             >
               <option value="">{allColors}</option>
               {filterOptions.colores.map(c => <option key={c} value={c}>{c}</option>)}
