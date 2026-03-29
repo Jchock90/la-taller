@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiPackage, FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiLogOut, FiUser, FiChevronDown, FiChevronUp, FiTruck, FiExternalLink, FiMapPin, FiSave, FiEdit3 } from 'react-icons/fi';
+import { FiPackage, FiClock, FiCheckCircle, FiXCircle, FiAlertCircle, FiLogOut, FiUser, FiChevronDown, FiChevronUp, FiTruck, FiExternalLink, FiMapPin, FiSave, FiEdit3, FiX } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { useUserAuth } from '../context/UserAuthContext';
 import { userApi } from '../services/userApi';
@@ -164,9 +164,15 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} w-full max-w-lg md:max-w-xl max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2`}
+        className={`${bg} w-full max-w-lg md:max-w-xl max-h-[85vh] shadow-2xl overflow-hidden flex flex-col mx-2 relative`}
         onClick={e => e.stopPropagation()}
       >
+        <button
+          onClick={onClose}
+          className={`absolute top-3 right-3 z-10 p-1 transition-colors ${subtext} hover:${text}`}
+        >
+          <FiX size={18} />
+        </button>
         <div className={`p-5 border-b ${borderColor} flex items-center justify-between`}>
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full ${isDark ? 'bg-neutral-800' : 'bg-gray-100'} flex items-center justify-center`}>
