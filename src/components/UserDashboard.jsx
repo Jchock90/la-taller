@@ -169,7 +169,7 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
       >
         <button
           onClick={onClose}
-          className={`absolute top-3 right-3 z-10 p-1 transition-colors ${subtext} hover:${text}`}
+          className={`absolute top-1 right-1 z-10 p-1 transition-colors ${subtext} hover:${text}`}
         >
           <FiX size={18} />
         </button>
