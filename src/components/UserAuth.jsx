@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiCheck, FiPackage, FiClock, FiHeart } from 'react-icons/fi';
+import { FiMail, FiLock, FiUser, FiEye, FiEyeOff, FiCheck, FiPackage, FiClock, FiHeart, FiX } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { useUserAuth } from '../context/UserAuthContext';
 import { userApi } from '../services/userApi';
@@ -13,6 +13,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
   const { login } = useUserAuth();
   const [tab, setTab] = useState(initialTab);
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
@@ -277,9 +278,15 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className={`${bg} w-full max-w-md shadow-2xl overflow-hidden max-h-[90vh] flex flex-col`}
+        className={`${bg} w-full max-w-md shadow-2xl overflow-hidden max-h-[90vh] flex flex-col relative`}
         onClick={e => e.stopPropagation()}
       >
+        <button
+          onClick={onClose}
+          className={`absolute top-3 right-3 z-10 p-1 transition-colors ${subtext} hover:${text}`}
+        >
+          <FiX size={18} />
+        </button>
         <div className="flex border-b border-gray-200 dark:border-neutral-700 shrink-0">
           {['login', 'register'].map(t => (
             <button
@@ -449,7 +456,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                     <div className="relative">
                       <FiLock className={`absolute left-3 top-1/2 -translate-y-1/2 ${subtext}`} />
                       <input
-                        type="password"
+                        type={showPassword2 ? 'text' : 'password'}
                         required
                         minLength={8}
                         value={regPassword2}
@@ -457,10 +464,14 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         onCopy={e => e.preventDefault()}
                         onPaste={e => e.preventDefault()}
                         onCut={e => e.preventDefault()}
-                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password2 ? 'border-red-500' : ''}`}
+                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password2 ? 'border-red-500' : ''}`}
                       />
-                      {regPassword2 && regPassword === regPassword2 && !fieldErrors.password2 && (
+                      {regPassword2 && regPassword === regPassword2 && !fieldErrors.password2 ? (
                         <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
+                      ) : (
+                        <button type="button" onClick={() => setShowPassword2(!showPassword2)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
+                          {showPassword2 ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                        </button>
                       )}
                     </div>
                     {fieldErrors.password2 && (
