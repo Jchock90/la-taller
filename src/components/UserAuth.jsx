@@ -398,7 +398,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                           type="text"
                           required
                           value={regNombre}
-                          onChange={e => setRegNombre(e.target.value.replace(/\b\w/g, c => c.toUpperCase()))}
+                          onChange={e => setRegNombre(e.target.value.replace(/(^|\s)\S/g, c => c.toUpperCase()))}
                           className={`w-full pl-10 pr-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         />
                       </div>
@@ -409,7 +409,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         type="text"
                         required
                         value={regApellido}
-                          onChange={e => setRegApellido(e.target.value.replace(/\b\w/g, c => c.toUpperCase()))}
+                          onChange={e => setRegApellido(e.target.value.replace(/(^|\s)\S/g, c => c.toUpperCase()))}
                         className={`w-full px-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                     </div>

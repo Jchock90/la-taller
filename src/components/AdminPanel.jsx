@@ -88,7 +88,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
   const [uploadError, setUploadError] = useState('');
   const { token } = useAuth();
 
-  const cap = v => v.replace(/\b\w/g, c => c.toUpperCase());
+  const cap = v => v.replace(/(^|\s)\S/g, c => c.toUpperCase());
   const capFields = ['name', 'collectionName', 'collectionDescription', 'composicion', 'fabricacion', 'cuidados', 'categoria'];
 
   const handleChange = (field, value) => {
@@ -383,7 +383,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
           <input
             className={inputClass}
             value={newColor}
-            onChange={e => setNewColor(e.target.value.replace(/\b\w/g, c => c.toUpperCase()))}
+            onChange={e => setNewColor(e.target.value.replace(/(^|\s)\S/g, c => c.toUpperCase()))}
             placeholder="Agregar color..."
             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addColor(); }}}
           />
