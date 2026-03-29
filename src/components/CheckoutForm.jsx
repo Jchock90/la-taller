@@ -67,9 +67,12 @@ const CheckoutForm = ({ cart, cartTotal, onClose, onSuccess }) => {
     }
   }, [formData.provincia]);
 
+  const cap = v => v.replace(/\b\w/g, c => c.toUpperCase());
+  const capFields = ['nombre', 'apellido', 'direccion', 'pisoDepto'];
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: capFields.includes(name) ? cap(value) : value }));
   };
 
   const handleSubmit = async (e) => {

@@ -121,8 +121,12 @@ export default function UserDashboard({ onClose, setCurrentSection }) {
     }
   }, [profileForm.provincia]);
 
+  const cap = v => v.replace(/\b\w/g, c => c.toUpperCase());
+  const capFields = ['nombre', 'apellido', 'direccion', 'pisoDepto'];
+
   const handleProfileChange = (field, value) => {
-    setProfileForm(prev => ({ ...prev, [field]: value }));
+    const v = capFields.includes(field) ? cap(value) : value;
+    setProfileForm(prev => ({ ...prev, [field]: v }));
     if (field === 'provincia') {
       setProfileForm(prev => ({ ...prev, ciudad: '' }));
     }
