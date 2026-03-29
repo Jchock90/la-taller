@@ -93,6 +93,12 @@ export const userApi = {
     return json;
   },
 
+  async checkVerification(email) {
+    const res = await fetch(`${API_URL}/api/users/check-verification?email=${encodeURIComponent(email)}`);
+    const json = await res.json();
+    return json;
+  },
+
   async resendVerification(email) {
     const res = await fetch(`${API_URL}/api/users/resend-verification`, {
       method: 'POST',

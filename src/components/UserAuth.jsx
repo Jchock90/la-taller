@@ -202,6 +202,21 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
     }
   };
 
+  useEffect(() => {
+    if ((!needsVerification && !successMsg) || !verificationEmail) return;
+    const interval = setInterval(async () => {
+      try {
+        const data = await userApi.checkVerification(verificationEmail);
+        if (data.verified) {
+          clearInterval(interval);
+          login(data.token, data.user);
+          onSuccess?.();
+        }
+      } catch {}
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [needsVerification, successMsg, verificationEmail, login, onSuccess]);
+
   if (needsVerification) {
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
