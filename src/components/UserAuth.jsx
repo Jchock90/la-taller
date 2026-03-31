@@ -379,6 +379,17 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                     {t_register}
                   </button>
                 </p>
+
+                {GOOGLE_CLIENT_ID && (
+                  <>
+                    <div className="flex items-center gap-3 my-2">
+                      <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
+                      <span className={`text-xs ${subtext}`}>{t_or}</span>
+                      <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
+                    </div>
+                    <div ref={googleBtnRef} className="w-full" />
+                  </>
+                )}
               </motion.form>
             ) : (
               <motion.div
@@ -508,6 +519,17 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                     </button>
                   </p>
                 </form>
+
+                {GOOGLE_CLIENT_ID && (
+                  <>
+                    <div className="flex items-center gap-3 my-3">
+                      <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
+                      <span className={`text-xs ${subtext}`}>{t_or}</span>
+                      <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
+                    </div>
+                    <div ref={googleBtnRegRef} className="w-full" />
+                  </>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
