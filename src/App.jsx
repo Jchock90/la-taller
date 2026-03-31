@@ -14,12 +14,13 @@ import Footer from './components/Footer';
 import PaymentStatus from './components/PaymentStatus';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
-import CookieConsent from './components/CookieConsent';
+import SplashScreen from './components/SplashScreen';
 import EmailVerification from './components/EmailVerification';
 
 function AppContent({ currentSection, setCurrentSection, renderSection }) {
   const { isDark } = useTheme();
   const { isAuthenticated } = useAuth();
+  const [splashDone, setSplashDone] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -55,22 +56,24 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   }
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 relative win-scanlines ${isDark ? 'bg-black' : 'bg-white'}`}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded">Ir al contenido</a>
-      <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
-        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
-          <>
-            <TickerBar />
-            <Navbar currentSection={currentSection} setCurrentSection={setCurrentSection} />
-          </>
-        )}
-        <main id="main-content">{renderSection()}</main>
-        {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
-          <Footer setCurrentSection={setCurrentSection} />
-        )}
-        <CookieConsent />
+    <>
+      {!splashDone && <SplashScreen onReady={() => setSplashDone(true)} />}
+      <div className={`min-h-screen transition-colors duration-300 relative win-scanlines ${isDark ? 'bg-black' : 'bg-white'}`}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded">Ir al contenido</a>
+        <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
+          {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
+            <>
+              <TickerBar />
+              <Navbar currentSection={currentSection} setCurrentSection={setCurrentSection} />
+            </>
+          )}
+          <main id="main-content">{renderSection()}</main>
+          {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
+            <Footer setCurrentSection={setCurrentSection} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
