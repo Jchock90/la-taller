@@ -318,7 +318,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
           ))}
         </div>
 
-        <div className="p-6 overflow-y-auto">
+        <div className="p-5 overflow-y-auto">
           {error && (
             <div className="mb-4 p-3 bg-red-50 dark:bg-neutral-800 text-red-600 dark:text-neutral-400 text-sm">
               {error}
@@ -398,9 +398,9 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
               >
-                <div className={`${cardBg} p-4 mb-5`}>
-                  <h3 className={`text-sm font-bold ${text} mb-2`}>{t_benefits}</h3>
-                  <ul className="space-y-1.5">
+                <div className={`${cardBg} p-3 mb-3`}>
+                  <h3 className={`text-sm font-bold ${text} mb-1.5`}>{t_benefits}</h3>
+                  <ul className="space-y-1">
                     {[
                       { icon: FiClock, text: t_benefit1 },
                       { icon: FiPackage, text: t_benefit2 },
@@ -414,7 +414,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                   </ul>
                 </div>
 
-                <form onSubmit={handleRegister} className="space-y-3">
+                <form onSubmit={handleRegister} className="space-y-2">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className={`text-xs font-medium ${subtext} mb-1 block`}>{t_name}</label>
@@ -425,7 +425,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                           required
                           value={regNombre}
                           onChange={e => setRegNombre(e.target.value.replace(/(^|\s)\S/g, c => c.toUpperCase()))}
-                          className={`w-full pl-10 pr-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                          className={`w-full pl-10 pr-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         />
                       </div>
                     </div>
@@ -436,7 +436,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regApellido}
                           onChange={e => setRegApellido(e.target.value.replace(/(^|\s)\S/g, c => c.toUpperCase()))}
-                        className={`w-full px-3 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full px-3 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                       />
                     </div>
                   </div>
@@ -449,7 +449,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         required
                         value={regEmail}
                         onChange={e => setRegEmail(e.target.value)}
-                        className={`w-full pl-10 pr-4 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
+                        className={`w-full pl-10 pr-4 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20`}
                         placeholder="tu@email.com"
                       />
                     </div>
@@ -467,7 +467,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         onCopy={e => e.preventDefault()}
                         onPaste={e => e.preventDefault()}
                         onCut={e => e.preventDefault()}
-                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password ? 'border-red-500' : ''}`}
+                        className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password ? 'border-red-500' : ''}`}
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${subtext}`}>
                         {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
@@ -490,7 +490,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
                         onCopy={e => e.preventDefault()}
                         onPaste={e => e.preventDefault()}
                         onCut={e => e.preventDefault()}
-                        className={`w-full pl-10 pr-10 py-3 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password2 ? 'border-red-500' : ''}`}
+                        className={`w-full pl-10 pr-10 py-2.5 border ${inputBg} text-sm focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 ${fieldErrors.password2 ? 'border-red-500' : ''}`}
                       />
                       {regPassword2 && regPassword === regPassword2 && !fieldErrors.password2 ? (
                         <FiCheck className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
@@ -522,7 +522,7 @@ export default function UserAuth({ onClose, onSuccess, initialTab = 'login' }) {
 
                 {GOOGLE_CLIENT_ID && (
                   <>
-                    <div className="flex items-center gap-3 my-3">
+                    <div className="flex items-center gap-3 my-2">
                       <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
                       <span className={`text-xs ${subtext}`}>{t_or}</span>
                       <div className={`flex-1 h-px ${isDark ? 'bg-neutral-700' : 'bg-gray-200'}`} />
