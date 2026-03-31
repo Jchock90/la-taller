@@ -31,8 +31,8 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
   return (
     <>
       <motion.nav 
-        initial={{ opacity: 0, filter: 'blur(12px)' }}
-        animate={{ opacity: 1, filter: 'blur(0px)' }}
+        initial={{ filter: 'blur(12px)' }}
+        animate={{ filter: 'blur(0px)' }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className={`relative w-full z-50 flex items-center justify-between py-1 px-4 shadow-md ${isDark ? 'bg-neutral-900' : 'bg-purple-300'}`}
       >
