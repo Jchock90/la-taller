@@ -80,7 +80,7 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold uppercase leading-none ${isDark ? 'bg-neutral-200 text-neutral-900' : 'bg-black text-purple-300'}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black uppercase ${isDark ? 'bg-neutral-200 text-neutral-900' : 'bg-black text-purple-300'}`} style={{ lineHeight: 0, paddingTop: '1px' }}>
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (

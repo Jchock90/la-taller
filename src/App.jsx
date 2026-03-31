@@ -63,7 +63,6 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
         <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
           {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
             <>
-              <TickerBar />
               <Navbar currentSection={currentSection} setCurrentSection={setCurrentSection} />
             </>
           )}
