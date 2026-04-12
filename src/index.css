@@ -8,77 +8,244 @@
 }
 
 body {
-  font-family: 'Overpass Mono', monospace;
+  font-family: 'Space Grotesk', 'Overpass Mono', monospace;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', 'Overpass Mono', monospace;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
+/* Futuristic Scrollbar */
 ::-webkit-scrollbar {
-  width: 14px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #d4d0c8;
-  border-left: 1px solid #808080;
+  background: #0a0a0f;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d0c8;
-  border: 1px solid;
-  border-color: #ffffff #404040 #404040 #ffffff;
+  background: linear-gradient(180deg, #06b6d4, #0891b2);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c0bcb4;
-}
-::-webkit-scrollbar-button:single-button {
-  height: 14px;
-  background: #d4d0c8;
-  border: 1px solid;
-  border-color: #ffffff #404040 #404040 #ffffff;
+  background: linear-gradient(180deg, #22d3ee, #06b6d4);
 }
 
 html.dark ::-webkit-scrollbar-track {
-  background: #1a1a1a;
-  border-left: 1px solid #333;
+  background: #050508;
 }
 html.dark ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
-  border-color: #444 #111 #111 #444;
+  background: linear-gradient(180deg, #06b6d4, #0e7490);
+  border-radius: 4px;
 }
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #333;
-}
-html.dark ::-webkit-scrollbar-button:single-button {
-  background: #2a2a2a;
-  border-color: #444 #111 #111 #444;
+  background: linear-gradient(180deg, #22d3ee, #06b6d4);
 }
 
+/* === NEXUSTECH FUTURISTIC DESIGN SYSTEM === */
+
+/* Neon glow utilities */
+.neon-cyan {
+  text-shadow: 0 0 7px #06b6d4, 0 0 10px #06b6d4, 0 0 21px #06b6d4;
+}
+
+.neon-border {
+  box-shadow: 0 0 5px rgba(6, 182, 212, 0.3), inset 0 0 5px rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.neon-border-hover:hover {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.5), inset 0 0 10px rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.7);
+}
+
+/* Grid background pattern */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.grid-bg-dense {
+  background-image: 
+    linear-gradient(rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Scanline effect - lighter, more subtle */
+.scan-lines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(6, 182, 212, 0.008) 3px,
+    rgba(6, 182, 212, 0.008) 6px
+  );
+  z-index: 1;
+}
+
+/* Glitch effect for headings */
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+  60% { clip-path: inset(40% 0 40% 0); transform: translate(-1px, 1px); }
+  80% { clip-path: inset(10% 0 80% 0); transform: translate(1px, -2px); }
+}
+
+.glitch-text {
+  position: relative;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.glitch-text::before {
+  color: #22d3ee;
+  animation: glitch 3s infinite;
+  opacity: 0.3;
+}
+.glitch-text::after {
+  color: #f43f5e;
+  animation: glitch 3s infinite reverse;
+  opacity: 0.3;
+}
+
+/* Cyber button style */
+.cyber-btn {
+  position: relative;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  background: rgba(6, 182, 212, 0.05);
+  color: #22d3ee;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.cyber-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+.cyber-btn:hover::before {
+  left: 100%;
+}
+.cyber-btn:hover {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.7);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+/* Cyber card */
+.cyber-card {
+  background: rgba(10, 10, 20, 0.8);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+}
+.cyber-card:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Light mode card */
+.cyber-card-light {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
+}
+.cyber-card-light:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 4px 30px rgba(6, 182, 212, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Animated gradient border */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(6, 182, 212, 0.3); }
+  50% { border-color: rgba(6, 182, 212, 0.6); }
+}
+.glow-border-anim {
+  animation: borderGlow 3s ease-in-out infinite;
+}
+
+/* Pulse dot */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(6, 182, 212, 0); }
+}
+.pulse-dot {
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #22d3ee, #06b6d4, #0891b2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-warm {
+  background: linear-gradient(135deg, #f97316, #ef4444, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Matrix rain background */
+@keyframes matrixFade {
+  0% { opacity: 0; transform: translateY(-20px); }
+  50% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+/* Legacy win-* classes remapped to cyber theme */
 .win-ridge {
-  border-bottom: 2px solid;
-  border-image: linear-gradient(to right, #808080, #a0a0a0) 1;
-  box-shadow: 0 1px 0 0 rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+  box-shadow: 0 1px 0 0 rgba(6, 182, 212, 0.05);
 }
 
 .win-status-bar {
-  border-top: 2px solid;
-  border-image: linear-gradient(to right, #606060, #909090, #606060) 1;
-  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(6, 182, 212, 0.2);
 }
 
 .win-btn {
-  border: 2px solid !important;
-  border-color: rgba(255,255,255,0.25) rgba(0,0,0,0.35) rgba(0,0,0,0.35) rgba(255,255,255,0.25) !important;
-  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12), 1px 1px 2px rgba(0,0,0,0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3) !important;
+  transition: all 0.3s ease;
+}
+.win-btn:hover {
+  border-color: rgba(6, 182, 212, 0.6) !important;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
 }
 .win-btn:active {
-  border-color: rgba(0,0,0,0.35) rgba(255,255,255,0.25) rgba(255,255,255,0.25) rgba(0,0,0,0.35) !important;
-  box-shadow: inset 2px 2px 3px rgba(0,0,0,0.25);
+  box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.2);
 }
 
 .win-inset {
-  box-shadow:
-    inset 2px 2px 0 rgba(0,0,0,0.2),
-    inset -2px -2px 0 rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.05);
 }
 
 .win-scanlines::after {
@@ -89,40 +256,39 @@ html.dark ::-webkit-scrollbar-button:single-button {
   background: repeating-linear-gradient(
     0deg,
     transparent,
-    transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
+    transparent 3px,
+    rgba(6, 182, 212, 0.006) 3px,
+    rgba(6, 182, 212, 0.006) 6px
   );
   z-index: 1;
 }
 
 .win-titlebar {
-  background: linear-gradient(90deg, #000080, #1084d0);
+  background: linear-gradient(90deg, #0a0f1a, #0c1a2e);
   padding: 2px 6px;
   font-size: 11px;
-  color: white;
+  color: #22d3ee;
   font-weight: bold;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 html.dark .win-titlebar {
-  background: linear-gradient(90deg, #1a1a2e, #16213e);
+  background: linear-gradient(90deg, #050810, #0a1020);
 }
 
 .win-frame {
-  border: 2px solid;
-  border-color: rgba(255,255,255,0.12) rgba(0,0,0,0.25) rgba(0,0,0,0.25) rgba(255,255,255,0.12);
+  border: 1px solid rgba(6, 182, 212, 0.2);
 }
 
 .win-etch {
   border: none;
-  height: 2px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(255,255,255,0.08));
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(6, 182, 212, 0.2), transparent);
 }
 
 .win-chip {
-  border: 1px solid;
-  border-color: rgba(255,255,255,0.1) rgba(0,0,0,0.15) rgba(0,0,0,0.15) rgba(255,255,255,0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
   font-size: 10px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: #22d3ee;
 }

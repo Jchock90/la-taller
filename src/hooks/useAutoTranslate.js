@@ -3,51 +3,30 @@ import { useLanguage } from '../context/LanguageContext';
 import { translateText } from '../services/translationService';
 
 const localTranslations = {
-  'Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo💘':
-    'I accompany people on a journey toward their own creation, in a safe, sensitive and creative space💘',
-  'Acompaño a las personas en un viaje hacia su propia creación, en un espacio seguro, sensible y creativo.':
-    'I accompany people on a journey toward their own creation, in a safe, sensitive and creative space.',
+  'En NexusTech no solo vendemos tecnología, la entendemos y la compartimos.': 'At NexusTech we don\'t just sell technology, we understand it and share it.',
+  'Nuestro equipo de especialistas está preparado para asesorarte en cada paso: desde elegir los componentes ideales para tu presupuesto hasta el armado y configuración completa de tu equipo.': 'Our team of specialists is ready to advise you every step of the way: from choosing the ideal components for your budget to the complete assembly and configuration of your setup.',
+  'Ya sea que busques armar tu primera PC gaming, actualizar tu estación de trabajo profesional o simplemente necesites un diagnóstico técnico, estamos para ayudarte.': 'Whether you\'re looking to build your first gaming PC, upgrade your professional workstation, or just need a technical diagnosis, we\'re here to help.',
 
-  'La ropa que vistes es la primera pregunta que responde tu cuerpo cada mañana. En La Taller, aprendemos a responder con consciencia, creatividad y amor.':
-    'The clothes you wear are the first question your body answers every morning. At La Taller, we learn to answer with awareness, creativity and love.',
-  'Momentos en La Taller': 'Moments at La Taller',
-  'Lo que dicen nuestras alumnas': 'What our students say',
-  'Años tejiendo historias': 'Years weaving stories',
-  'Alumnas formadas': 'Students trained',
-  'Prendas creadas': 'Garments created',
-  'Talleres realizados': 'Workshops held',
-  'La Taller cambió mi forma de relacionarme con mi cuerpo y la ropa. Cada prenda que creo es un acto de amor propio.':
-    'La Taller changed the way I relate to my body and clothes. Every garment I create is an act of self-love.',
-  'Llegué sin saber coser nada y salí con una bombacha hecha por mis propias manos. Fue mágico.':
-    'I arrived not knowing how to sew at all and left with underwear made by my own hands. It was magical.',
-  'Es más que un taller, es un espacio donde te permites ser creativa y vulnerable al mismo tiempo.':
-    'It\'s more than a workshop, it\'s a space where you allow yourself to be creative and vulnerable at the same time.',
-  'Conocé más': 'Learn more',
+  'La tecnología que usás define cómo trabajas, jugás y creás. En NexusTech, te ayudamos a elegir con conocimiento y confianza.': 'The technology you use defines how you work, play and create. At NexusTech, we help you choose with knowledge and confidence.',
+  'Nuestra tienda': 'Our store',
+  'Lo que dicen nuestros clientes': 'What our clients say',
+  'Años en el mercado': 'Years in the market',
+  'Clientes satisfechos': 'Satisfied clients',
+  'Productos disponibles': 'Products available',
+  'Marcas oficiales': 'Official brands',
+  'NexusTech cambió mi forma de armar setups. El asesoramiento fue clave para elegir todo perfecto.': 'NexusTech changed the way I build setups. The advice was key to choosing everything perfectly.',
+  'Armé mi primera PC gaming con ellos y quedó increíble. El stress test fue súper completo.': 'I built my first gaming PC with them and it turned out incredible. The stress test was super thorough.',
+  'El soporte técnico es rápido y profesional. Siempre vuelvo por más.': 'Technical support is fast and professional. I always come back for more.',
 
-  'Soy guía, docente e intérprete en el universo de la indumentaria. Enseño a hacer tu ropa desde cero: elegir la tela, imaginar el diseño, trazar el molde, cortar, coser, ajustar, estampar, bordar, revelar… hasta que la prenda toma forma, y con ella, la identidad de quien la viste.':
-    'I am a guide, teacher and interpreter in the world of fashion. I teach you to make your own clothes from scratch: choose the fabric, imagine the design, trace the pattern, cut, sew, adjust, print, embroider, reveal… until the garment takes shape, and with it, the identity of the wearer.',
-  'No solo comparto un saber técnico, comparto un oficio, un lenguaje sensible, una forma de pensar el cuerpo, el deseo y la vida cotidiana.':
-    'I don\'t just share technical knowledge, I share a craft, a sensitive language, a way of thinking about the body, desire and everyday life.',
-  'Mi trabajo tiene raíces profundas en un linaje de mujeres que transmitían el hacer con las manos, en ronda, en confianza, en comunidad.':
-    'My work has deep roots in a lineage of women who passed down handwork, in circles, in trust, in community.',
-  'He creado un espacio de aprendizaje sin estructuras rígidas, donde cualquiera puede llegar sin saber nada y salir con una prenda hecha por sus propias manos… y con una parte nueva de sí descubierta.':
-    'I\'ve created a learning space without rigid structures, where anyone can arrive knowing nothing and leave with a garment made by their own hands… and a new part of themselves discovered.',
-  'No enseño a coser ropa: enseño a habitarla.':
-    'I don\'t teach sewing clothes: I teach how to inhabit them.',
-  'Ofrezco un servicio que es un refugio textil donde cada persona puede explorar a su ritmo, sin juicios ni exigencias. Donde la prenda que nace de tus manos también te enseña algo de vos.':
-    'I offer a service that is a textile refuge where each person can explore at their own pace, without judgment or demands. Where the garment born from your hands also teaches you something about yourself.',
-  'La taller': 'The Workshop',
-  'Taller de bombachas': 'Underwear Workshop',
-  'Taller de cianotipia': 'Cyanotype Workshop',
-  'Taller de infancias': 'Children\'s Workshop',
+  'Armado de PC a medida': 'Custom PC building',
+  'Soporte técnico': 'Technical support',
+  'Asesoramiento': 'Consulting',
 
-  'Tesoro': 'Treasure',
-  'Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle':
-    'Exclusive pieces designed with artisanal care and attention to detail',
-  '¿Buscas algo personalizado?': 'Looking for something custom?',
-  'Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.':
-    'Each piece can be adapted to your measurements and preferences. Contact me to create something unique for you.',
-  'Solicitar diseño personalizado': 'Request custom design',
+  'Tienda': 'Store',
+  'Tecnología de última generación seleccionada por expertos para vos': 'Cutting-edge technology hand-picked by experts for you',
+  '¿Necesitás un armado a medida?': 'Need a custom build?',
+  'Configuramos tu equipo ideal según tu presupuesto y necesidades. Asesoramiento personalizado sin compromiso.': 'We configure your ideal setup based on your budget and needs. Personalized advice with no commitment.',
+  'Consultar por WhatsApp': 'Ask via WhatsApp',
   'Cargando productos...': 'Loading products...',
   'Filtrar productos': 'Filter products',
   'Limpiar filtros': 'Clear filters',
@@ -60,11 +39,9 @@ const localTranslations = {
   'producto': 'product',
   'productos': 'products',
   'Colección Atemporal': 'Timeless Collection',
-  'Piezas clásicas diseñadas para trascender temporadas':
-    'Classic pieces designed to transcend seasons',
+  'Productos seleccionados para máximo rendimiento': 'Products selected for maximum performance',
   'Colección Experimental': 'Experimental Collection',
-  'Diseños vanguardistas que desafían convenciones':
-    'Avant-garde designs that challenge conventions',
+  'Lo último en tecnología e innovación': 'The latest in technology and innovation',
 
   'Agregar al carrito': 'Add to cart',
   'Ver más': 'View more',
@@ -103,8 +80,8 @@ const localTranslations = {
   '¡Compra exitosa!': 'Purchase successful!',
   'Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.':
     'Your payment was processed successfully. You will soon receive an email with your purchase details and shipping tracking.',
-  'Gracias por confiar en La Taller. Nos pondremos en contacto contigo muy pronto.':
-    'Thank you for trusting La Taller. We will contact you very soon.',
+  'Gracias por confiar en NexusTech. Nos pondremos en contacto contigo muy pronto.':
+    'Thank you for trusting NexusTech. We will contact you very soon.',
   'Error en el pago': 'Payment error',
   'Hubo un problema al procesar tu pago. No se realizó ningún cargo.':
     'There was a problem processing your payment. No charges were made.',
@@ -123,7 +100,7 @@ const localTranslations = {
   'No, gracias': 'No, thanks',
   'Sí, dale': 'Yes, accept',
 
-  'Diseño de indumentaria artesanal por Jess': 'Artisanal clothing design by Jess',
+  'Tienda de tecnología y servicios informáticos': 'Technology store and IT services',
   'Navegación': 'Navigation',
   'Contacto': 'Contact',
   'Todos los derechos reservados.': 'All rights reserved.',

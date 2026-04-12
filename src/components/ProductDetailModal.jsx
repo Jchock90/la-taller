@@ -111,7 +111,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h2 className={`text-2xl font-bold ${isDark ? 'text-neutral-100' : 'text-gray-900'}`}>{product.name}</h2>
-                  <p className={isDark ? 'text-xl font-semibold mt-1 text-neutral-400' : 'text-xl text-purple-600 font-semibold mt-1'}>{product.price}</p>
+                  <p className={isDark ? 'text-xl font-semibold mt-1 text-neutral-400' : 'text-xl text-cyan-600 font-semibold mt-1'}>{product.price}</p>
                 </div>
                 <button onClick={onClose} className={isDark ? 'text-neutral-600 hover:text-neutral-100' : 'text-gray-400 hover:text-black'}><FiX size={24} /></button>
               </div>
@@ -137,8 +137,8 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                                 onClick={() => updateSelection(idx, 'size', t)}
                                 className={`border px-4 py-2 md:px-3 md:py-1 transition-colors ${
                                   sel.size === t
-                                    ? isDark ? 'border-neutral-600 bg-neutral-600 text-white' : 'border-purple-600 bg-purple-600 text-white'
-                                    : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-purple-400'
+                                    ? isDark ? 'border-neutral-600 bg-neutral-600 text-white' : 'border-cyan-600 bg-cyan-600 text-white'
+                                    : isDark ? 'border-neutral-700 text-neutral-400 hover:border-neutral-500' : 'border-gray-300 text-gray-700 hover:border-cyan-400'
                                 }`}
                               >
                                 {t}
@@ -160,7 +160,7 @@ const ProductDetailModal = ({ product, onClose, onAddToCart }) => {
                                 onClick={() => updateSelection(idx, 'color', c)}
                                 className={`px-4 py-2 md:px-3 md:py-1 transition-colors ${
                                   sel.color === c
-                                    ? isDark ? 'bg-neutral-600 text-white' : 'bg-purple-600 text-white'
+                                    ? isDark ? 'bg-neutral-600 text-white' : 'bg-cyan-600 text-white'
                                     : isDark ? 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                               >

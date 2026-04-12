@@ -58,9 +58,9 @@ function AppContent({ currentSection, setCurrentSection, renderSection }) {
   return (
     <>
       {!splashDone && <SplashScreen onReady={() => setSplashDone(true)} />}
-      <div className={`min-h-screen transition-colors duration-300 relative win-scanlines ${isDark ? 'bg-black' : 'bg-white'}`}>
+      <div className={`min-h-screen transition-colors duration-300 relative win-scanlines ${isDark ? 'bg-[#050508]' : 'bg-gray-50'}`}>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-black focus:text-white focus:rounded">Ir al contenido</a>
-        <div className={`${isDark ? 'bg-black' : 'bg-white'}`}>
+        <div className={`${isDark ? 'bg-[#050508]' : 'bg-gray-50'}`}>
           {!['success', 'failure', 'pending', 'verificar-email'].includes(currentSection) && (
             <>
               <Navbar currentSection={currentSection} setCurrentSection={setCurrentSection} />

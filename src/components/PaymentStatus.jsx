@@ -9,7 +9,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
   const { isDark } = useTheme();
   const { translatedText: successTitle } = useAutoTranslate('¡Compra exitosa!');
   const { translatedText: successMsg } = useAutoTranslate('Tu pago fue procesado correctamente. Pronto recibirás un email con los detalles de tu compra y el seguimiento del envío.');
-  const { translatedText: successSub } = useAutoTranslate('Gracias por confiar en La Taller. Nos pondremos en contacto contigo muy pronto.');
+  const { translatedText: successSub } = useAutoTranslate('Gracias por confiar en NexusTech. Nos pondremos en contacto contigo muy pronto.');
   const { translatedText: failTitle } = useAutoTranslate('Error en el pago');
   const { translatedText: failMsg } = useAutoTranslate('Hubo un problema al procesar tu pago. No se realizó ningún cargo.');
   const { translatedText: failSub } = useAutoTranslate('Por favor, intenta nuevamente o contáctanos si el problema persiste.');
@@ -102,7 +102,7 @@ const PaymentStatus = ({ status, setCurrentSection }) => {
               whileTap={{ scale: 0.95 }}
               onClick={() => setCurrentSection('que-vendo')}
               className={`px-8 py-3 rounded-lg font-medium shadow-lg transition-colors text-white ${
-                isDark ? 'bg-neutral-700 hover:bg-neutral-800' : 'bg-purple-600 hover:bg-purple-700'
+                isDark ? 'bg-neutral-700 hover:bg-neutral-800' : 'bg-cyan-600 hover:bg-cyan-700'
               }`}
             >
               {viewProductsText}

@@ -357,7 +357,7 @@ const ProductForm = ({ product, onSave, onCancel, onDelete, loading, existingCol
               onClick={() => toggleTalle(t)}
               className={`px-3 py-1 rounded text-sm border transition-colors ${
                 form.talles.includes(t)
-                  ? 'border-purple-600 bg-neutral-100 text-neutral-900'
+                  ? 'border-cyan-600 bg-neutral-100 text-neutral-900'
                   : 'border-neutral-700 text-neutral-400 hover:border-neutral-500'
               }`}
             >

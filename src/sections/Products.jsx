@@ -125,11 +125,11 @@ const Products = () => {
   const { t } = useLanguage();
   const { isDark } = useTheme();
   
-  const { translatedText: titleText } = useAutoTranslate('Tesoro');
-  const { translatedText: subtitleText } = useAutoTranslate('Piezas exclusivas diseñadas con cuidado artesanal y atención al detalle');
-  const { translatedText: customTitle } = useAutoTranslate('¿Buscas algo personalizado?');
-  const { translatedText: customDesc } = useAutoTranslate('Cada pieza puede ser adaptada a tus medidas y preferencias. Contáctame para crear algo único para ti.');
-  const { translatedText: customButton } = useAutoTranslate('Solicitar diseño personalizado');
+  const { translatedText: titleText } = useAutoTranslate('Tienda');
+  const { translatedText: subtitleText } = useAutoTranslate('Tecnología de última generación seleccionada por expertos para vos');
+  const { translatedText: customTitle } = useAutoTranslate('¿Necesitás un armado a medida?');
+  const { translatedText: customDesc } = useAutoTranslate('Configuramos tu equipo ideal según tu presupuesto y necesidades. Asesoramiento personalizado sin compromiso.');
+  const { translatedText: customButton } = useAutoTranslate('Consultar por WhatsApp');
   const { translatedText: loadingText } = useAutoTranslate('Cargando productos...');
   const { translatedText: filterLabel } = useAutoTranslate('Filtrar productos');
   const { translatedText: clearLabel } = useAutoTranslate('Limpiar filtros');
@@ -179,7 +179,7 @@ const Products = () => {
 
   const [cart, setCart] = useState(() => {
     try {
-      const saved = localStorage.getItem('la-taller-cart');
+      const saved = localStorage.getItem('nexustech-cart');
       return saved ? JSON.parse(saved) : [];
     } catch { return []; }
   });
@@ -190,7 +190,7 @@ const Products = () => {
   const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('la-taller-cart', JSON.stringify(cart));
+    localStorage.setItem('nexustech-cart', JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (item, selectedSize, selectedColor, quantity = 1) => {
@@ -235,13 +235,13 @@ const Products = () => {
 
   const handlePaymentSuccess = (initPoint) => {
     setShowForm(false);
-    localStorage.removeItem('la-taller-cart');
+    localStorage.removeItem('nexustech-cart');
     setCart([]);
     setTimeout(() => { window.location.href = initPoint; }, 300);
   };
 
   return (
-    <section id="que-vendo" className={`py-20 pt-10 ${isDark ? 'bg-black' : 'bg-white'}`}>
+    <section id="que-vendo" className={`py-20 pt-10 ${isDark ? 'bg-[#050508]' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 50, filter: 'blur(15px)' }}
@@ -275,7 +275,7 @@ const Products = () => {
             {hasActiveFilter && (
               <button
                 onClick={clearFilters}
-                className="flex items-center gap-1 text-sm text-purple-500 hover:text-purple-400"
+                className="flex items-center gap-1 text-sm text-cyan-500 hover:text-cyan-400"
               >
                 <FiX size={14} /> {clearLabel}
               </button>

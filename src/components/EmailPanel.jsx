@@ -571,7 +571,7 @@ export default function EmailPanel() {
                         )}
                         <div className="flex items-center gap-3 mt-1.5">
                           <span className={`text-[10px] px-1.5 py-0.5 ${
-                            em.type === 'newsletter' ? 'bg-purple-900/40 text-purple-400' :
+                            em.type === 'newsletter' ? 'bg-cyan-900/40 text-cyan-400' :
                             em.type === 'selected' ? 'bg-cyan-900/40 text-cyan-400' :
                             'bg-neutral-700 text-neutral-400'
                           }`}>

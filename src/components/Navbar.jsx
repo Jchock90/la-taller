@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiSun, FiMoon, FiUser } from 'react-icons/fi';
-import { FaSpotify } from 'react-icons/fa';
+import { FiMenu, FiX, FiSun, FiMoon, FiUser, FiZap } from 'react-icons/fi';
 import { useState } from 'react';
 import { NAV_ITEMS } from '../data/constants';
 import { useLanguage } from '../context/LanguageContext';
@@ -13,15 +12,11 @@ import UserDashboard from './UserDashboard';
 
 const Navbar = ({ currentSection, setCurrentSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [spotifyOpen, setSpotifyOpen] = useState(false);
   const [showUserAuth, setShowUserAuth] = useState(false);
   const [showUserDashboard, setShowUserDashboard] = useState(false);
   const { language, toggleLanguage, t } = useLanguage();
   const { isDark, toggleTheme } = useTheme();
   const { isUserAuthenticated, user } = useUserAuth();
-  const consent = getConsent();
-  const spotifyAllowed = consent?.thirdParty !== false;
-  const { translatedText: spotifyDisabledText } = useAutoTranslate('Spotify deshabilitado (cookies de terceros rechazadas)');
 
   const handleNavClick = (id) => {
     setCurrentSection(id);
@@ -34,145 +29,109 @@ const Navbar = ({ currentSection, setCurrentSection }) => {
         initial={{ filter: 'blur(12px)' }}
         animate={{ filter: 'blur(0px)' }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className={`relative w-full z-50 flex items-center justify-between py-1 px-4 shadow-md ${isDark ? 'bg-neutral-900' : 'bg-purple-300'}`}
+        className={`relative w-full z-50 flex items-center justify-between py-2 px-4 md:px-8 border-b ${isDark ? 'bg-[#0a0a0f]/95 border-cyan-500/20' : 'bg-white/95 border-cyan-500/30'} backdrop-blur-xl`}
       >
-        <div className="flex items-center">
-          <motion.img 
-            src={isDark ? '/img/logo-white.png' : '/img/logo.png'} 
-            alt="La Taller Logo" 
-            className="h-8 cursor-pointer"
-            onClick={() => handleNavClick('home')}
-            animate={{ 
-              y: [0, -3, 0],
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          />
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNavClick('home')}>
+          <div className={`w-8 h-8 rounded flex items-center justify-center ${isDark ? 'bg-cyan-500/10 border border-cyan-500/30' : 'bg-cyan-500/10 border border-cyan-500/40'}`}>
+            <FiZap className="text-cyan-400" size={18} />
+          </div>
+          <span className={`text-lg font-bold tracking-wider ${isDark ? 'text-white' : 'text-gray-900'}`}>
+            NEXUS<span className="gradient-text">TECH</span>
+          </span>
         </div>
 
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex items-center gap-1">
           {NAV_ITEMS.map((item) => (
-            <a
+            <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`group relative text-sm tracking-wide uppercase font-medium cursor-pointer pb-0.5 ${
-                isDark ? 'text-neutral-200' : 'text-black'
+              className={`relative px-4 py-1.5 text-xs tracking-[0.15em] uppercase font-medium transition-all duration-300 rounded ${
+                currentSection === item.id
+                  ? isDark ? 'text-cyan-400 bg-cyan-500/10' : 'text-cyan-600 bg-cyan-500/10'
+                  : isDark ? 'text-neutral-400 hover:text-cyan-300 hover:bg-cyan-500/5' : 'text-gray-600 hover:text-cyan-600 hover:bg-cyan-500/5'
               }`}
             >
               {t(`nav.${item.id.replace(/-/g, '')}`)}
-              <span className={`absolute left-0 bottom-0 h-[1.5px] transition-all duration-300 ${
-                isDark ? 'bg-neutral-200' : 'bg-black'
-              } ${
-                currentSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
-              }`} />
-            </a>
+              {currentSection === item.id && (
+                <motion.div
+                  layoutId="nav-indicator"
+                  className="absolute bottom-0 left-2 right-2 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent"
+                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                />
+              )}
+            </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center gap-1">
           <motion.button
             onClick={() => isUserAuthenticated ? setShowUserDashboard(true) : setShowUserAuth(true)}
             whileHover={{ scale: 1.1 }}
-            className={isUserAuthenticated
-              ? `p-2 rounded-lg flex items-center justify-center transition-colors ${isDark ? 'text-neutral-200' : 'text-black'}`
-              : `p-2 rounded-lg ${isDark ? 'text-neutral-200' : 'text-black'}`
-            }
+            className={`p-2 rounded-lg transition-colors ${isDark ? 'text-neutral-400 hover:text-cyan-400' : 'text-gray-600 hover:text-cyan-600'}`}
             aria-label="User account"
             title={isUserAuthenticated ? user?.nombre : 'Mi cuenta'}
           >
             {isUserAuthenticated ? (
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-black uppercase ${isDark ? 'bg-neutral-200 text-neutral-900' : 'bg-black text-purple-300'}`} style={{ lineHeight: 0, paddingTop: '1px' }}>
+              <span className={`w-6 h-6 rounded flex items-center justify-center text-xs font-bold uppercase ${isDark ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' : 'bg-cyan-500/15 text-cyan-600 border border-cyan-500/30'}`} style={{ lineHeight: 0, paddingTop: '1px' }}>
                 {user?.nombre?.charAt(0) || 'U'}
               </span>
             ) : (
-              <FiUser size={20} />
+              <FiUser size={18} />
             )}
-          </motion.button>
-          <motion.button
-            onClick={() => spotifyAllowed && setSpotifyOpen((prev) => !prev)}
-            whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${spotifyAllowed ? (isDark ? 'text-neutral-200' : 'text-black') : (isDark ? 'text-neutral-600 cursor-not-allowed' : 'text-black/30 cursor-not-allowed')}`}
-            aria-label="Toggle Spotify player"
-            title={spotifyAllowed ? 'Spotify' : spotifyDisabledText}
-          >
-            <FaSpotify size={20} />
           </motion.button>
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg ${isDark ? 'text-neutral-200' : 'text-black'}`}
+            className={`p-2 rounded-lg transition-colors ${isDark ? 'text-neutral-400 hover:text-cyan-400' : 'text-gray-600 hover:text-cyan-600'}`}
             aria-label="Toggle theme"
           >
-            {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
+            {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
           </motion.button>
           <motion.button
             onClick={toggleLanguage}
             whileHover={{ scale: 1.1 }}
-            className={`p-2 rounded-lg font-semibold text-sm ${isDark ? 'text-neutral-200' : 'text-black'}`}
+            className={`p-2 rounded-lg font-mono-code font-bold text-xs ${isDark ? 'text-neutral-400 hover:text-cyan-400' : 'text-gray-600 hover:text-cyan-600'}`}
             aria-label="Toggle language"
           >
             {language === 'es' ? 'EN' : 'ES'}
           </motion.button>
           <button 
-            className={`md:hidden p-2 ${isDark ? 'text-neutral-200' : 'text-black'}`}
+            className={`md:hidden p-2 ${isDark ? 'text-neutral-400' : 'text-gray-600'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            {mobileMenuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
           </button>
         </div>
-
-        <motion.div
-          initial={false}
-          animate={{
-            opacity: spotifyOpen ? 1 : 0,
-            y: spotifyOpen ? 0 : -8,
-            pointerEvents: spotifyOpen ? 'auto' : 'none'
-          }}
-          transition={{ duration: 0.2 }}
-          className={`absolute right-4 top-[calc(100%+32px)] z-[60] w-[320px] max-w-[90vw] rounded-xl shadow-xl border overflow-hidden ${
-            isDark ? 'bg-black border-neutral-800' : 'bg-white border-gray-200'
-          }`}
-          style={{ visibility: spotifyOpen ? 'visible' : 'hidden' }}
-        >
-          <iframe
-            src="https://open.spotify.com/embed/playlist/41DWUFcZTx1GbNDIydf6AZ?utm_source=generator&theme=0"
-            width="100%"
-            height="152"
-            frameBorder="0"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-            title="Spotify Mini Player"
-          ></iframe>
-        </motion.div>
-
       </motion.nav>
 
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
+            initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: -30, filter: 'blur(10px)' }}
-            transition={{ type: 'spring', stiffness: 100, damping: 16 }}
-            className={`absolute left-0 right-0 z-40 shadow-lg md:hidden ${
-              isDark ? 'bg-black' : 'bg-white'
-            }`}
+            exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+            className={`absolute left-0 right-0 z-40 shadow-2xl md:hidden border-b ${
+              isDark ? 'bg-[#0a0a0f]/98 border-cyan-500/20' : 'bg-white/98 border-cyan-500/20'
+            } backdrop-blur-xl`}
           >
-            <div className="flex flex-col p-4 space-y-4">
-              {NAV_ITEMS.map((item) => (
-                <a
+            <div className="flex flex-col p-4 space-y-1">
+              {NAV_ITEMS.map((item, i) => (
+                <motion.button
                   key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                   onClick={() => handleNavClick(item.id)}
-                  className={`group relative text-base tracking-wide uppercase cursor-pointer py-3 px-4 inline-block w-fit ${
-                    isDark ? 'text-neutral-100' : 'text-black'
+                  className={`text-left text-sm tracking-[0.15em] uppercase py-3 px-4 rounded transition-all ${
+                    currentSection === item.id
+                      ? isDark ? 'text-cyan-400 bg-cyan-500/10' : 'text-cyan-600 bg-cyan-500/10'
+                      : isDark ? 'text-neutral-300 hover:text-cyan-400 hover:bg-cyan-500/5' : 'text-gray-700 hover:text-cyan-600 hover:bg-cyan-500/5'
                   }`}
                 >
+                  <span className="text-cyan-500/50 mr-2 font-mono-code text-xs">0{i + 1}</span>
                   {t(`nav.${item.id.replace(/-/g, '')}`)}
-                  <span className={`absolute left-4 bottom-1 h-[1.5px] transition-all duration-300 ${
-                    isDark ? 'bg-neutral-100' : 'bg-black'
-                  } ${
-                    currentSection === item.id ? 'w-[calc(100%-2rem)]' : 'w-0 group-hover:w-[calc(100%-2rem)]'
-                  }`} />
-                </a>
+                </motion.button>
               ))}
             </div>
           </motion.div>

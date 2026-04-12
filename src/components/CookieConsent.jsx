@@ -60,7 +60,7 @@ const CookieConsent = () => {
         <div className={`max-w-md mx-auto rounded-2xl shadow-2xl p-5 md:p-6 border ${
           isDark
             ? 'bg-gray-300 border-gray-400 text-black'
-            : 'bg-purple-300 border-purple-400 text-black'
+            : 'bg-cyan-300 border-cyan-400 text-black'
         }`}>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl flex-shrink-0">🍪</span>
@@ -75,7 +75,7 @@ const CookieConsent = () => {
               className={`px-5 py-2 rounded-lg text-sm font-medium text-black transition-colors ${
                 isDark
                   ? 'bg-gray-400/50 hover:bg-gray-400'
-                  : 'bg-purple-400/50 hover:bg-purple-400'
+                  : 'bg-cyan-400/50 hover:bg-cyan-400'
               }`}
             >
               {noThanks}
